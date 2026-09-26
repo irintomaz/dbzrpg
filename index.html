@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragon Ball Z RPG On-Line v2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Press Start 2P & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dbzOrange: '#ff8c00',
+                        dbzYellow: '#ffd700',
+                        dbzDarkBg: '#0f0c1b',
+                        dbzCardBg: '#1a162b',
+                        dbzBorder: '#3a3152',
+                        dbzHover: '#2a2442'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #08060d;
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 140, 0, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+                linear-gradient(to bottom, #08060d, #140f24);
+            background-attachment: fixed;
+        }
+
+        .retro-border {
+            border: 2px solid #3a3152;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8), inset 0 0 5px rgba(255,140,0,0.15);
+        }
+
+        .retro-btn {
+            background: linear-gradient(180deg, #ff9d00 0%, #cc5500 100%);
+            border: 2px solid #ffeb3b;
+            text-shadow: 1px 1px 2px #000;
+            box-shadow: 0 4px 0 #882200, 0 5px 10px rgba(0,0,0,0.5);
+            transition: all 0.1s ease;
+        }
+
+        .retro-btn:hover {
+            background: linear-gradient(180deg, #ffae19 0%, #e66000 100%);
+            transform: translateY(-1px);
+        }
+
+        .retro-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #882200, 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .retro-btn-blue {
+            background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+            border: 2px solid #93c5fd;
+            box-shadow: 0 4px 0 #1e3a8a, 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .retro-btn-blue:hover {
+            background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+        }
+
+        .retro-btn-green {
+            background: linear-gradient(180deg, #22c55e 0%, #15803d 100%);
+            border: 2px solid #86efac;
+            box-shadow: 0 4px 0 #14532d, 0 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .retro-btn-green:hover {
+            background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0c1b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3152;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff8c00;
+        }
+
+        .aura-glow {
+            animation: auraAnimation 1.5s infinite alternate;
+        }
+
+        @keyframes auraAnimation {
+            0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(255, 140, 0, 0.9); }
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-orange-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-dbzDarkBg/95 border-b-2 border-dbzBorder sticky top-0 z-50 shadow-2xl backdrop-blur">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid font-pixel text-2xl text-yellow-400 fa-dragon animate-bounce"></i>
+                <div>
+                    <h1 class="font-pixel text-lg sm:text-xl text-yellow-400 tracking-wider">DBZ RPG ON-LINE <span class="text-xs text-orange-400">v2.0</span></h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">Versão Clássica 2010 - Modo Estudo Offline</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav id="navMenu" class="hidden flex-wrap items-center gap-1 sm:gap-2">
+                <button onclick="switchTab('dashboard')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white" data-tab="dashboard">
+                    <i class="fa-solid fa-user-ninja mr-1"></i> Perfil
+                </button>
+                <button onclick="switchTab('arena')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="arena">
+                    <i class="fa-solid fa-khanda mr-1"></i> Batalha
+                </button>
+                <button onclick="switchTab('shop')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="shop">
+                    <i class="fa-solid fa-store mr-1"></i> Kame House
+                </button>
+                <button onclick="switchTab('ranking')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="ranking">
+                    <i class="fa-solid fa-trophy mr-1"></i> Ranking
+                </button>
+            </nav>
+
+            <!-- Auth Status / Logout -->
+            <div id="authHeaderBtn" class="flex items-center space-x-3">
+                <span id="userStatusBadge" class="text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200">
+                    <i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado
+                </span>
+                <button id="logoutBtn" onclick="handleLogout()" class="hidden text-xs bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded border border-red-400 shadow">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto w-full flex-1 px-2 sm:px-4 py-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+        <!-- Left Sidebar: Character Status Column -->
+        <aside id="leftSidebar" class="hidden lg:block lg:col-span-3 space-y-4">
+            <div class="bg-dbzCardBg retro-border rounded-lg p-4 relative overflow-hidden aura-glow">
+                
+                <div class="flex flex-col items-center mb-3">
+                    <div class="relative group">
+                        <img id="sideAvatar" src="https://placehold.co/120x120/1e1b2e/ff8c00?text=Guerreiro" alt="Avatar" class="w-24 h-24 rounded-lg object-cover border-2 border-yellow-500 shadow-md">
+                        <label for="avatarUploadInput" class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-xs text-yellow-300 cursor-pointer rounded-lg transition">
+                            <i class="fa-solid fa-camera text-lg mb-1"></i>
+                            <span>Alterar Foto</span>
+                        </label>
+                        <input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
+                    </div>
+                    <h2 id="sideName" class="font-pixel text-sm text-yellow-400 mt-2 text-center truncate w-full">Son Goku</h2>
+                    <span id="sideTitle" class="text-xs text-orange-400 font-semibold">Saiyajin</span>
+                </div>
+
+                <!-- Level & Combat Power -->
+                <div class="grid grid-cols-2 gap-2 mb-3 text-center bg-black/40 p-2 rounded border border-dbzBorder">
+                    <div>
+                        <div class="text-[10px] text-gray-400 uppercase">Nível</div>
+                        <div id="sideLevel" class="font-pixel text-sm text-yellow-300">1</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-gray-400 uppercase">Poder de Luta</div>
+                        <div id="sidePL" class="font-pixel text-xs text-orange-400 truncate">1,000</div>
+                    </div>
+                </div>
+
+                <!-- Status Bars -->
+                <div class="space-y-2 text-xs">
+                    <!-- HP -->
+                    <div>
+                        <div class="flex justify-between mb-0.5 text-[11px] font-bold">
+                            <span class="text-red-400"><i class="fa-solid fa-heart mr-1"></i>Vida (HP)</span>
+                            <span id="hpText" class="text-gray-300">100 / 100</span>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-3 border border-red-900/60 overflow-hidden">
+                            <div id="hpBar" class="bg-gradient-to-r from-red-600 to-red-400 h-full transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- KI -->
+                    <div>
+                        <div class="flex justify-between mb-0.5 text-[11px] font-bold">
+                            <span class="text-blue-400"><i class="fa-solid fa-bolt mr-1"></i>Energia (KI)</span>
+                            <span id="kiText" class="text-gray-300">50 / 50</span>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-3 border border-blue-900/60 overflow-hidden">
+                            <div id="kiBar" class="bg-gradient-to-r from-blue-600 to-cyan-400 h-full transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- EXP -->
+                    <div>
+                        <div class="flex justify-between mb-0.5 text-[11px] font-bold">
+                            <span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>Experiência</span>
+                            <span id="expText" class="text-gray-300">0 / 100</span>
+                        </div>
+                        <div class="w-full bg-gray-900 rounded-full h-3 border border-yellow-900/60 overflow-hidden">
+                            <div id="expBar" class="bg-gradient-to-r from-yellow-600 to-amber-300 h-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wallet -->
+                <div class="mt-4 pt-3 border-t border-dbzBorder flex justify-between items-center text-xs">
+                    <span class="text-gray-400"><i class="fa-solid fa-coins text-yellow-500 mr-1"></i>Zeni acumulado:</span>
+                    <span id="sideZeni" class="font-pixel text-yellow-400">300 Z$</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Screen Column -->
+        <section class="lg:col-span-6 space-y-4">
+
+            <!-- AUTH SCREEN (LOGIN & REGISTER) -->
+            <div id="authView" class="bg-dbzCardBg retro-border rounded-lg p-6 max-w-md mx-auto shadow-2xl relative my-6">
+                <div class="text-center mb-6">
+                    <i class="fa-solid fa-dragon text-5xl text-yellow-400 mb-2 drop-shadow"></i>
+                    <h2 class="font-pixel text-base text-yellow-400">DBZ RPG ON-LINE v2</h2>
+                    <p class="text-xs text-gray-400 mt-1">Crie sua conta local para começar a aventura!</p>
+                </div>
+
+                <div class="flex border-b border-dbzBorder mb-4">
+                    <button id="loginTabBtn" onclick="toggleAuthMode('login')" class="flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400">Login</button>
+                    <button id="registerTabBtn" onclick="toggleAuthMode('register')" class="flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200">Cadastrar</button>
+                </div>
+
+                <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1"><i class="fa-solid fa-user mr-1 text-orange-400"></i>Nome do Guerreiro / Login</label>
+                        <input type="text" id="authUsername" required placeholder="Digite seu usuário..." class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1"><i class="fa-solid fa-lock mr-1 text-orange-400"></i>Senha</label>
+                        <input type="password" id="authPassword" required minlength="3" placeholder="******" class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
+                    </div>
+
+                    <div id="raceSelectGroup" class="hidden">
+                        <label class="block text-xs font-bold text-gray-300 mb-1"><i class="fa-solid fa-dna mr-1 text-orange-400"></i>Raça do Personagem</label>
+                        <select id="authRace" class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
+                            <option value="Saiyajin">Saiyajin (+Força)</option>
+                            <option value="Namekuseijin">Namekuseijin (+HP Máximo)</option>
+                            <option value="Android">Androide (+Resistência)</option>
+                            <option value="Humano">Humano (+Velocidade)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="authSubmitBtn" data-mode="login" class="w-full retro-btn py-3 text-white font-pixel text-xs tracking-wider uppercase rounded">
+                        ENTRAR NO JOGO
+                    </button>
+                </form>
+
+                <div id="authError" class="mt-4 text-xs text-red-400 text-center hidden bg-red-950/80 p-2 rounded border border-red-800"></div>
+            </div>
+
+            <!-- TAB 1: DASHBOARD / CHARACTER -->
+            <div id="tabDashboard" class="tab-content hidden space-y-4">
+                <div class="bg-dbzCardBg retro-border rounded-lg p-5">
+                    <div class="flex items-center justify-between border-b border-dbzBorder pb-3 mb-4">
+                        <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-address-card mr-2 text-orange-400"></i>PAINEL DO GUERREIRO</h2>
+                        <span id="dashRaceBadge" class="text-xs bg-orange-950 text-orange-300 px-2 py-0.5 rounded border border-orange-700 font-bold">Saiyajin</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Stats Distribution -->
+                        <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xs font-bold text-gray-300 uppercase">Atributos Base</h3>
+                                <span id="dashAttrPoints" class="text-xs font-pixel text-yellow-400">Pontos: 0</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-red-400 font-bold"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dashStr" class="font-bold text-white">10</span>
+                                    <button onclick="addStat('str')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-green-400 font-bold"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dashRes" class="font-bold text-white">10</span>
+                                    <button onclick="addStat('res')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-cyan-400 font-bold"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
+                                <div class="flex items-center space-x-2">
+                                    <span id="dashSpeed" class="font-bold text-white">10</span>
+                                    <button onclick="addStat('speed')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-3">
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-300 uppercase mb-2">Treino & Recuperação</h3>
+                                <p class="text-xs text-gray-400">Treine para evoluir mais rápido ou recupere sua energia.</p>
+                            </div>
+
+                            <div class="space-y-2">
+                                <button onclick="restCharacter()" class="w-full retro-btn-blue py-2 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-bed mr-1"></i> Descansar (Recuperar HP/KI)
+                                </button>
+                                <button onclick="trainCharacter()" class="w-full retro-btn-green py-2 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-fire-flame-curved mr-1"></i> Treinar (-5 KI / +EXP)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transformations System -->
+                    <div class="mt-5 pt-4 border-t border-dbzBorder">
+                        <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bolt mr-1"></i>Transformações Disponíveis</h3>
+                        <div id="dashTransformations" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="mt-5 pt-4 border-t border-dbzBorder">
+                        <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bag-shopping mr-1"></i>Inventário de Itens</h3>
+                        <div id="dashInventory" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ARENA PVE -->
+            <div id="tabArena" class="tab-content hidden space-y-4">
+                <div class="bg-dbzCardBg retro-border rounded-lg p-5">
+                    <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
+                        <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-khanda mr-2 text-orange-400"></i>ARENA DE COMBATE</h2>
+                        <span class="text-xs text-gray-400">Batalhe contra Oponentes</span>
+                    </div>
+
+                    <div id="arenaEnemySelect" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Enemy cards populated via JS -->
+                    </div>
+
+                    <div id="arenaCombatScreen" class="hidden space-y-4">
+                        <div class="bg-black/60 p-4 rounded-lg border border-dbzBorder grid grid-cols-5 items-center text-center">
+                            <div class="col-span-2 flex flex-col items-center">
+                                <img id="battlePlayerAvatar" src="" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover mb-1">
+                                <span id="battlePlayerName" class="font-pixel text-xs text-yellow-300 truncate w-full">Player</span>
+                                <div class="w-full bg-gray-800 rounded-full h-2 border border-red-900 mt-2">
+                                    <div id="battlePlayerHpBar" class="bg-red-500 h-full rounded-full" style="width: 100%"></div>
+                                </div>
+                                <span id="battlePlayerHpText" class="text-[10px] text-gray-300 mt-0.5">100/100</span>
+                            </div>
+
+                            <div class="col-span-1 font-pixel text-lg text-red-500 animate-pulse">VS</div>
+
+                            <div class="col-span-2 flex flex-col items-center">
+                                <img id="battleEnemyAvatar" src="" class="w-16 h-16 rounded-full border-2 border-red-500 object-cover mb-1">
+                                <span id="battleEnemyName" class="font-pixel text-xs text-red-400 truncate w-full">Vilão</span>
+                                <div class="w-full bg-gray-800 rounded-full h-2 border border-red-900 mt-2">
+                                    <div id="battleEnemyHpBar" class="bg-red-600 h-full rounded-full" style="width: 100%"></div>
+                                </div>
+                                <span id="battleEnemyHpText" class="text-[10px] text-gray-300 mt-0.5">100/100</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="executeCombatTurn('attack')" class="retro-btn py-3 text-xs font-bold text-white rounded">
+                                <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
+                            </button>
+                            <button onclick="executeCombatTurn('ki_blast')" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
+                                <i class="fa-solid fa-bolt mr-1"></i> Kamehameha (-10 KI)
+                            </button>
+                            <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 text-xs font-bold text-white rounded">
+                                <i class="fa-solid fa-person-running mr-1"></i> Fugir
+                            </button>
+                        </div>
+
+                        <div class="bg-black/80 border border-dbzBorder rounded p-3 h-40 overflow-y-auto text-xs space-y-1 font-mono" id="battleLog">
+                            <div class="text-yellow-400">-> A batalha começou! Escolha sua ação.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: KAME HOUSE SHOP -->
+            <div id="tabShop" class="tab-content hidden space-y-4">
+                <div class="bg-dbzCardBg retro-border rounded-lg p-5">
+                    <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
+                        <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-store mr-2 text-orange-400"></i>LOJA DA KAME HOUSE</h2>
+                        <span class="text-xs text-yellow-300 font-bold"><i class="fa-solid fa-coins mr-1"></i>Seu Zeni: <span id="shopUserZeni">0</span> Z$</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="shopItemsContainer">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: RANKING HALL OF FAME -->
+            <div id="tabRanking" class="tab-content hidden space-y-4">
+                <div class="bg-dbzCardBg retro-border rounded-lg p-5">
+                    <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
+                        <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-trophy mr-2 text-yellow-500"></i>RANKING LOCAL DE GUERREIROS</h2>
+                        <span class="text-xs text-gray-400">Armazenado no seu navegador</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="bg-black/60 font-pixel text-[10px] text-yellow-400 border-b border-dbzBorder">
+                                <tr>
+                                    <th class="p-2 text-center">#</th>
+                                    <th class="p-2">Guerreiro</th>
+                                    <th class="p-2 text-center">Raça</th>
+                                    <th class="p-2 text-center">Nível</th>
+                                    <th class="p-2 text-right">Poder de Luta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rankingTableBody" class="divide-y divide-dbzBorder/50">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Column: Simulated Global Chat Box -->
+        <aside class="lg:col-span-3 space-y-4">
+            <div class="bg-dbzCardBg retro-border rounded-lg p-4 flex flex-col h-[520px] relative">
+                <div class="flex items-center justify-between border-b border-dbzBorder pb-2 mb-3">
+                    <h3 class="font-pixel text-xs text-yellow-400"><i class="fa-solid fa-comments mr-1.5 text-orange-400"></i>CHAT GLOBAL</h3>
+                    <span class="text-[10px] text-green-400 flex items-center"><i class="fa-solid fa-circle text-[8px] mr-1 animate-pulse"></i> Online</span>
+                </div>
+
+                <div id="chatMessages" class="flex-1 overflow-y-auto space-y-2 pr-1 mb-3 text-xs">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <form id="chatForm" onsubmit="sendChatMessage(event)" class="mt-auto flex gap-1">
+                    <input type="text" id="chatInput" placeholder="Digite uma mensagem..." required class="flex-1 bg-black/60 border border-dbzBorder rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-orange-500">
+                    <button type="submit" class="retro-btn px-3 text-white text-xs font-bold rounded">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div id="gameNotification" class="fixed bottom-4 right-4 bg-orange-600 text-white font-bold text-xs px-4 py-3 rounded-lg shadow-2xl border border-yellow-300 hidden transform transition-all duration-300 z-50">
+        <span id="notificationText">Notificação</span>
+    </div>
+
+    <script>
+        // LocalStorage Keys
+        const STORAGE_USERS = 'dbz_rpg_users_v2';
+        const STORAGE_SESSION = 'dbz_rpg_session_v2';
+        const STORAGE_CHAT = 'dbz_rpg_chat_v2';
+
+        let currentUser = null;
+        let activeEnemy = null;
+        let combatState = null;
+
+        // Static Game Databases
+        const SHOP_ITEMS = [
+            { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
+            { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
+            { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' }
+        ];
+
+        const TRANSFORMATIONS = [
+            { id: 'ssj1', name: 'Super Saiyajin 1', reqLevel: 5, reqPL: 2000, strBonus: 25, speedBonus: 20 },
+            { id: 'ssj2', name: 'Super Saiyajin 2', reqLevel: 10, reqPL: 8000, strBonus: 60, speedBonus: 50 },
+            { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 }
+        ];
+
+        const ENEMIES = [
+            { id: 'saibaman', name: 'Saibaman', hp: 80, str: 8, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://placehold.co/80/1b381e/86efac?text=Saibaman' },
+            { id: 'raditz', name: 'Raditz', hp: 180, str: 18, expReward: 80, zeniReward: 120, levelReq: 2, avatar: 'https://placehold.co/80/381b1b/fca5a5?text=Raditz' },
+            { id: 'nappa', name: 'Nappa', hp: 350, str: 32, expReward: 180, zeniReward: 250, levelReq: 4, avatar: 'https://placehold.co/80/382b1b/fde047?text=Nappa' },
+            { id: 'vegeta', name: 'Vegeta', hp: 700, str: 55, expReward: 400, zeniReward: 600, levelReq: 7, avatar: 'https://placehold.co/80/1b2438/93c5fd?text=Vegeta' },
+            { id: 'freeza', name: 'Imperador Freeza', hp: 1500, str: 95, expReward: 1000, zeniReward: 1500, levelReq: 10, avatar: 'https://placehold.co/80/321b38/f472b6?text=Freeza' },
+            { id: 'cell', name: 'Cell Perfeito', hp: 3000, str: 160, expReward: 2500, zeniReward: 3500, levelReq: 15, avatar: 'https://placehold.co/80/1b3820/86efac?text=Cell' }
+        ];
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            initChatStorage();
+            checkSession();
+        });
+
+        function checkSession() {
+            const savedUsername = localStorage.getItem(STORAGE_SESSION);
+            if (savedUsername) {
+                const users = getUsersData();
+                if (users[savedUsername]) {
+                    currentUser = users[savedUsername];
+                    loadGameScreen();
+                    return;
+                }
+            }
+            showAuthScreen();
+        }
+
+        function getUsersData() {
+            return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+        }
+
+        function saveUsersData(users) {
+            localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+        }
+
+        function saveCurrentUserData() {
+            if (!currentUser) return;
+            currentUser.combatPower = calculateCombatPower(currentUser);
+            const users = getUsersData();
+            users[currentUser.username] = currentUser;
+            saveUsersData(users);
+            updateUI();
+        }
+
+        function calculateCombatPower(char) {
+            if (!char) return 0;
+            return (char.level * 250) + (char.str * 15) + (char.res * 12) + (char.speed * 10) + (char.maxHp * 2);
+        }
+
+        function showAuthScreen() {
+            document.getElementById('authView').classList.remove('hidden');
+            document.getElementById('leftSidebar').classList.add('hidden');
+            document.getElementById('navMenu').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200";
+            document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado';
+        }
+
+        function loadGameScreen() {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('leftSidebar').classList.remove('hidden');
+            document.getElementById('navMenu').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-green-900/60 border border-green-500 text-green-200";
+            document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-green-400 mr-1 animate-pulse"></i> Conectado';
+
+            renderShop();
+            renderArenaEnemies();
+            renderChat();
+            renderRanking();
+            switchTab('dashboard');
+            updateUI();
+        }
+
+        function toggleAuthMode(mode) {
+            const loginBtn = document.getElementById('loginTabBtn');
+            const regBtn = document.getElementById('registerTabBtn');
+            const raceGroup = document.getElementById('raceSelectGroup');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if (mode === 'login') {
+                loginBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
+                regBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
+                raceGroup.classList.add('hidden');
+                submitBtn.innerText = "ENTRAR NO JOGO";
+                submitBtn.dataset.mode = "login";
+            } else {
+                regBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
+                loginBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
+                raceGroup.classList.remove('hidden');
+                submitBtn.innerText = "CRIAR GUERREIRO";
+                submitBtn.dataset.mode = "register";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value.trim();
+            const password = document.getElementById('authPassword').value;
+            const mode = document.getElementById('authSubmitBtn').dataset.mode;
+            const errBox = document.getElementById('authError');
+
+            errBox.classList.add('hidden');
+            const users = getUsersData();
+
+            if (mode === 'register') {
+                if (users[username]) {
+                    errBox.innerText = "Este nome de guerreiro já existe!";
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+
+                const race = document.getElementById('authRace').value;
+                let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
+                if (race === 'Namekuseijin') raceHp = 40;
+                if (race === 'Saiyajin') raceStr = 5;
+                if (race === 'Android') raceRes = 5;
+                if (race === 'Humano') raceSpeed = 5;
+
+                const newUser = {
+                    username: username,
+                    password: password,
+                    race: race,
+                    level: 1,
+                    exp: 0,
+                    maxExp: 100,
+                    hp: 100 + raceHp,
+                    maxHp: 100 + raceHp,
+                    ki: 50,
+                    maxKi: 50,
+                    str: 10 + raceStr,
+                    res: 10 + raceRes,
+                    speed: 10 + raceSpeed,
+                    statPoints: 5,
+                    zeni: 300,
+                    transformation: 'Base',
+                    inventory: [],
+                    avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
+                };
+                newUser.combatPower = calculateCombatPower(newUser);
+
+                users[username] = newUser;
+                saveUsersData(users);
+
+                currentUser = newUser;
+                localStorage.setItem(STORAGE_SESSION, username);
+                showToast("Conta criada com sucesso! Bem-vindo.");
+                loadGameScreen();
+
+            } else {
+                if (!users[username] || users[username].password !== password) {
+                    errBox.innerText = "Usuário ou senha incorretos!";
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+
+                currentUser = users[username];
+                localStorage.setItem(STORAGE_SESSION, username);
+                showToast("Login efetuado com sucesso!");
+                loadGameScreen();
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem(STORAGE_SESSION);
+            showAuthScreen();
+            showToast("Você saiu da conta.");
+        }
+
+        function updateUI() {
+            if (!currentUser) return;
+
+            document.getElementById('sideName').innerText = currentUser.username;
+            document.getElementById('sideTitle').innerText = `${currentUser.race} (${currentUser.transformation || 'Base'})`;
+            document.getElementById('sideLevel').innerText = currentUser.level;
+            document.getElementById('sidePL').innerText = currentUser.combatPower.toLocaleString('pt-BR');
+            document.getElementById('sideAvatar').src = currentUser.avatar;
+            document.getElementById('sideZeni').innerText = `${currentUser.zeni} Z$`;
+
+            const hpPct = Math.max(0, Math.min(100, (currentUser.hp / currentUser.maxHp) * 100));
+            const kiPct = Math.max(0, Math.min(100, (currentUser.ki / currentUser.maxKi) * 100));
+            const expPct = Math.max(0, Math.min(100, (currentUser.exp / currentUser.maxExp) * 100));
+
+            document.getElementById('hpBar').style.width = `${hpPct}%`;
+            document.getElementById('kiBar').style.width = `${kiPct}%`;
+            document.getElementById('expBar').style.width = `${expPct}%`;
+
+            document.getElementById('hpText').innerText = `${currentUser.hp} / ${currentUser.maxHp}`;
+            document.getElementById('kiText').innerText = `${currentUser.ki} / ${currentUser.maxKi}`;
+            document.getElementById('expText').innerText = `${currentUser.exp} / ${currentUser.maxExp}`;
+
+            document.getElementById('dashRaceBadge').innerText = currentUser.race;
+            document.getElementById('dashStr').innerText = currentUser.str;
+            document.getElementById('dashRes').innerText = currentUser.res;
+            document.getElementById('dashSpeed').innerText = currentUser.speed;
+            document.getElementById('dashAttrPoints').innerText = `Pontos: ${currentUser.statPoints}`;
+            document.getElementById('shopUserZeni').innerText = currentUser.zeni;
+
+            const statBtns = document.querySelectorAll('.add-stat-btn');
+            statBtns.forEach(btn => {
+                if (currentUser.statPoints > 0) btn.classList.remove('hidden');
+                else btn.classList.add('hidden');
+            });
+
+            renderTransformations();
+            renderInventory();
+            renderRanking();
+        }
+
+        function addStat(stat) {
+            if (!currentUser || currentUser.statPoints <= 0) return;
+            currentUser.statPoints -= 1;
+            if (stat === 'str') currentUser.str += 2;
+            if (stat === 'res') {
+                currentUser.res += 2;
+                currentUser.maxHp += 15;
+                currentUser.hp += 15;
+            }
+            if (stat === 'speed') currentUser.speed += 2;
+
+            saveCurrentUserData();
+            showToast(`+2 Pontos em ${stat.toUpperCase()}!`);
+        }
+
+        function restCharacter() {
+            if (!currentUser) return;
+            currentUser.hp = currentUser.maxHp;
+            currentUser.ki = currentUser.maxKi;
+            saveCurrentUserData();
+            showToast("HP e KI totalmente recuperados!");
+        }
+
+        function trainCharacter() {
+            if (!currentUser) return;
+            if (currentUser.ki < 5) {
+                showToast("KI insuficiente para treinar!");
+                return;
+            }
+
+            currentUser.ki -= 5;
+            const expGained = 25 + Math.floor(Math.random() * 20);
+            currentUser.exp += expGained;
+
+            if (currentUser.exp >= currentUser.maxExp) {
+                currentUser.level += 1;
+                currentUser.exp -= currentUser.maxExp;
+                currentUser.maxExp = Math.floor(currentUser.maxExp * 1.5);
+                currentUser.statPoints += 3;
+                currentUser.maxHp += 20;
+                currentUser.hp = currentUser.maxHp;
+                currentUser.maxKi += 10;
+                currentUser.ki = currentUser.maxKi;
+                showToast(`NÍVEL AUMENTOU! Agora você está no Nível ${currentUser.level}!`);
+            } else {
+                showToast(`Treino concluído: +${expGained} EXP!`);
+            }
+
+            saveCurrentUserData();
+        }
+
+        function uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentUser.avatar = e.target.result;
+                saveCurrentUserData();
+                showToast("Foto de perfil atualizada!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderTransformations() {
+            const container = document.getElementById('dashTransformations');
+            container.innerHTML = TRANSFORMATIONS.map(t => {
+                const canTransform = currentUser.level >= t.reqLevel && currentUser.combatPower >= t.reqPL;
+                const isCurrent = currentUser.transformation === t.name;
+
+                return `
+                    <div class="bg-black/50 p-2.5 rounded border border-dbzBorder flex items-center justify-between">
+                        <div>
+                            <div class="text-xs font-bold ${isCurrent ? 'text-yellow-300' : 'text-gray-300'}">${t.name}</div>
+                            <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${t.reqPL}</div>
+                        </div>
+                        <button onclick="transform('${t.name}')" ${!canTransform || isCurrent ? 'disabled' : ''}
+                            class="${isCurrent ? 'bg-yellow-600 text-black font-bold' : canTransform ? 'retro-btn text-white' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2.5 py-1 text-[10px] rounded">
+                            ${isCurrent ? 'Ativo' : 'Transformar'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function transform(name) {
+            const t = TRANSFORMATIONS.find(tr => tr.name === name);
+            if (!t || !currentUser) return;
+
+            currentUser.transformation = t.name;
+            currentUser.str += t.strBonus;
+            currentUser.speed += t.speedBonus;
+            saveCurrentUserData();
+            showToast(`Você se transformou em ${t.name}! Poder aumentado!`);
+        }
+
+        function renderInventory() {
+            const container = document.getElementById('dashInventory');
+            if (currentUser.inventory && currentUser.inventory.length > 0) {
+                container.innerHTML = currentUser.inventory.map((item, idx) => `
+                    <div class="bg-black/60 p-2 rounded border border-dbzBorder flex items-center justify-between">
+                        <span class="text-xs text-yellow-300 font-semibold truncate"><i class="fa-solid fa-box text-orange-400 mr-1"></i>${item.name}</span>
+                        <button onclick="useInventoryItem(${idx})" class="text-[10px] bg-orange-600 hover:bg-orange-500 text-white px-2 py-0.5 rounded">Usar</button>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `<div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>`;
+            }
+        }
+
+        function useInventoryItem(index) {
+            if (!currentUser || !currentUser.inventory[index]) return;
+            const item = currentUser.inventory[index];
+
+            if (item.effect === 'heal_full') {
+                currentUser.hp = currentUser.maxHp;
+                currentUser.ki = currentUser.maxKi;
+                showToast("Semente usada! HP e KI 100% restaurados.");
+            } else if (item.effect === 'stat_scouter') {
+                currentUser.str += 15;
+                currentUser.speed += 15;
+                showToast("Scouter Equipado! +15 Força e +15 Velocidade.");
+            } else if (item.effect === 'stat_gravity') {
+                currentUser.res += 40;
+                currentUser.maxHp += 300;
+                currentUser.hp += 300;
+                showToast("Traje Equipado! +40 Resistência e +300 HP.");
+            }
+
+            currentUser.inventory.splice(index, 1);
+            saveCurrentUserData();
+        }
+
+        function renderShop() {
+            const container = document.getElementById('shopItemsContainer');
+            container.innerHTML = SHOP_ITEMS.map(item => `
+                <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-2">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid ${item.icon} ${item.color} text-lg"></i>
+                            <h4 class="font-pixel text-xs text-yellow-400">${item.name}</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">${item.desc}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-dbzBorder/50">
+                        <span class="text-xs text-yellow-300 font-bold">${item.cost} Z$</span>
+                        <button onclick="buyShopItem('${item.id}')" class="retro-btn-green px-3 py-1 text-xs text-white font-bold rounded">Comprar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function buyShopItem(itemId) {
+            const item = SHOP_ITEMS.find(i => i.id === itemId);
+            if (!item || !currentUser) return;
+
+            if (currentUser.zeni < item.cost) {
+                showToast("Zeni insuficiente!");
+                return;
+            }
+
+            currentUser.zeni -= item.cost;
+            currentUser.inventory = currentUser.inventory || [];
+            currentUser.inventory.push(item);
+
+            saveCurrentUserData();
+            showToast(`Você comprou ${item.name}!`);
+        }
+
+        function renderArenaEnemies() {
+            const container = document.getElementById('arenaEnemySelect');
+            container.innerHTML = ENEMIES.map(enemy => {
+                const canFight = currentUser && currentUser.level >= enemy.levelReq;
+                return `
+                    <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="${enemy.avatar}" class="w-12 h-12 rounded border border-yellow-500 object-cover">
+                            <div>
+                                <h4 class="font-pixel text-xs text-yellow-400">${enemy.name}</h4>
+                                <p class="text-[10px] text-gray-400">Req: Nível ${enemy.levelReq} | Ganho: ${enemy.expReward} EXP / ${enemy.zeniReward} Z$</p>
+                            </div>
+                        </div>
+                        <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} 
+                            class="${canFight ? 'retro-btn' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-3 py-1.5 text-xs text-white font-bold rounded">
+                            ${canFight ? 'Lutar' : 'Bloqueado'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startCombat(enemyId) {
+            activeEnemy = ENEMIES.find(e => e.id === enemyId);
+            if (!activeEnemy) return;
+
+            combatState = {
+                enemyHp: activeEnemy.hp,
+                enemyMaxHp: activeEnemy.hp
+            };
+
+            document.getElementById('arenaEnemySelect').classList.add('hidden');
+            document.getElementById('arenaCombatScreen').classList.remove('hidden');
+
+            document.getElementById('battlePlayerAvatar').src = currentUser.avatar;
+            document.getElementById('battlePlayerName').innerText = currentUser.username;
+            document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
+            document.getElementById('battleEnemyName').innerText = activeEnemy.name;
+
+            updateCombatBars();
+            document.getElementById('battleLog').innerHTML = `<div class="text-yellow-400">-> Você desafiou ${activeEnemy.name}! Escolha sua ação.</div>`;
+        }
+
+        function updateCombatBars() {
+            const playerHpPct = Math.max(0, (currentUser.hp / currentUser.maxHp) * 100);
+            const enemyHpPct = Math.max(0, (combatState.enemyHp / combatState.enemyMaxHp) * 100);
+
+            document.getElementById('battlePlayerHpBar').style.width = `${playerHpPct}%`;
+            document.getElementById('battlePlayerHpText').innerText = `${currentUser.hp}/${currentUser.maxHp}`;
+            
+            document.getElementById('battleEnemyHpBar').style.width = `${enemyHpPct}%`;
+            document.getElementById('battleEnemyHpText').innerText = `${combatState.enemyHp}/${combatState.enemyMaxHp}`;
+        }
+
+        function executeCombatTurn(action) {
+            if (!combatState || !activeEnemy) return;
+
+            const log = document.getElementById('battleLog');
+
+            if (action === 'flee') {
+                log.innerHTML += `<div class="text-gray-400">-> Você fugiu da batalha!</div>`;
+                setTimeout(() => {
+                    document.getElementById('arenaCombatScreen').classList.add('hidden');
+                    document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                }, 1000);
+                return;
+            }
+
+            let playerDamage = 0;
+            if (action === 'attack') {
+                playerDamage = Math.floor(currentUser.str * 1.5) + Math.floor(Math.random() * 8);
+                combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
+                log.innerHTML += `<div class="text-green-400">-> Você atacou ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+            } else if (action === 'ki_blast') {
+                if (currentUser.ki < 10) {
+                    log.innerHTML += `<div class="text-yellow-500">-> KI insuficiente!</div>`;
+                    return;
+                }
+                currentUser.ki -= 10;
+                playerDamage = Math.floor(currentUser.str * 2.2) + Math.floor(Math.random() * 15);
+                combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
+                log.innerHTML += `<div class="text-cyan-400">-> Kamehameha atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+            }
+
+            updateCombatBars();
+
+            if (combatState.enemyHp <= 0) {
+                log.innerHTML += `<div class="text-yellow-300 font-bold">-> VITORIA! Você derrotou ${activeEnemy.name}!</div>`;
+                currentUser.exp += activeEnemy.expReward;
+                currentUser.zeni += activeEnemy.zeniReward;
+
+                if (currentUser.exp >= currentUser.maxExp) {
+                    currentUser.level += 1;
+                    currentUser.exp -= currentUser.maxExp;
+                    currentUser.maxExp = Math.floor(currentUser.maxExp * 1.5);
+                    currentUser.statPoints += 3;
+                    currentUser.maxHp += 20;
+                    currentUser.hp = currentUser.maxHp;
+                    log.innerHTML += `<div class="text-yellow-400 font-pixel text-[10px]">-> LEVEL UP! Nível ${currentUser.level}!</div>`;
+                }
+
+                saveCurrentUserData();
+
+                setTimeout(() => {
+                    document.getElementById('arenaCombatScreen').classList.add('hidden');
+                    document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                }, 1800);
+                return;
+            }
+
+            // Enemy Attack
+            setTimeout(() => {
+                const enemyDamage = Math.max(2, Math.floor(activeEnemy.str - (currentUser.res * 0.4))) + Math.floor(Math.random() * 5);
+                currentUser.hp = Math.max(0, currentUser.hp - enemyDamage);
+                log.innerHTML += `<div class="text-red-400">-> ${activeEnemy.name} atacou e causou ${enemyDamage} de dano!</div>`;
+                
+                updateCombatBars();
+                log.scrollTop = log.scrollHeight;
+
+                if (currentUser.hp <= 0) {
+                    log.innerHTML += `<div class="text-red-600 font-bold">-> DERROTADO! Descanse no perfil para se recuperar.</div>`;
+                    saveCurrentUserData();
+
+                    setTimeout(() => {
+                        document.getElementById('arenaCombatScreen').classList.add('hidden');
+                        document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                    }, 1800);
+                } else {
+                    saveCurrentUserData();
+                }
+            }, 500);
+        }
+
+        function initChatStorage() {
+            if (!localStorage.getItem(STORAGE_CHAT)) {
+                const initialMsgs = [
+                    { sender: 'Mestre Roshi', text: 'Bem-vindos à nova versão do DBZ RPG Online!', time: '12:00' },
+                    { sender: 'Vegeta', text: 'Eu serei o guerreiro número 1 deste ranking!', time: '12:02' }
+                ];
+                localStorage.setItem(STORAGE_CHAT, JSON.stringify(initialMsgs));
+            }
+        }
+
+        function renderChat() {
+            const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+            const chatBox = document.getElementById('chatMessages');
+            
+            chatBox.innerHTML = chatMsgs.map(m => `
+                <div class="bg-black/40 p-2 rounded border border-dbzBorder/60">
+                    <div class="flex justify-between items-center text-[10px]">
+                        <span class="text-yellow-400 font-bold">${m.sender}</span>
+                        <span class="text-gray-500">${m.time}</span>
+                    </div>
+                    <p class="text-gray-300 text-xs mt-0.5 break-words">${m.text}</p>
+                </div>
+            `).join('');
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function sendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text || !currentUser) return;
+
+            const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            chatMsgs.push({
+                sender: currentUser.username,
+                text: text,
+                time: timeStr
+            });
+
+            if (chatMsgs.length > 30) chatMsgs.shift();
+
+            localStorage.setItem(STORAGE_CHAT, JSON.stringify(chatMsgs));
+            input.value = '';
+            renderChat();
+        }
+
+        function renderRanking() {
+            const usersObj = getUsersData();
+            const players = Object.values(usersObj);
+
+            players.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
+
+            const tbody = document.getElementById('rankingTableBody');
+            if (players.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500 italic">Nenhum guerreiro registrado.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = players.map((p, idx) => `
+                <tr class="hover:bg-dbzHover transition ${p.username === currentUser?.username ? 'bg-orange-950/40 border-l-2 border-orange-500' : ''}">
+                    <td class="p-2 text-center font-bold ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
+                    <td class="p-2 flex items-center space-x-2">
+                        <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
+                        <span class="font-bold text-gray-200 truncate">${p.username}</span>
+                    </td>
+                    <td class="p-2 text-center text-gray-400">${p.race}</td>
+                    <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
+                    <td class="p-2 text-right font-pixel text-orange-400">${(p.combatPower || 0).toLocaleString('pt-BR')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function switchTab(tabName) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.add('hidden'));
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(b => {
+                if (b.dataset.tab === tabName) {
+                    b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
+                } else {
+                    b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
+                }
+            });
+
+            if (tabName === 'dashboard') document.getElementById('tabDashboard').classList.remove('hidden');
+            if (tabName === 'arena') document.getElementById('tabArena').classList.remove('hidden');
+            if (tabName === 'shop') document.getElementById('tabShop').classList.remove('hidden');
+            if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('gameNotification');
+            document.getElementById('notificationText').innerText = text;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
