@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon Ball Z RPG On-Line v2</title>
+    <title>Dragon Ball Z RPG On-Line v2 - Atualizado</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -86,7 +86,6 @@
             background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -120,8 +119,8 @@
             <div class="flex items-center space-x-3">
                 <i class="fa-solid font-pixel text-2xl text-yellow-400 fa-dragon animate-bounce"></i>
                 <div>
-                    <h1 class="font-pixel text-lg sm:text-xl text-yellow-400 tracking-wider">DBZ RPG ON-LINE <span class="text-xs text-orange-400">v2.0</span></h1>
-                    <p class="text-xs text-gray-400 hidden sm:block">Versão Clássica 2010 - Modo Estudo Offline</p>
+                    <h1 class="font-pixel text-lg sm:text-xl text-yellow-400 tracking-wider">DBZ RPG ON-LINE <span class="text-xs text-orange-400">v2.5</span></h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">Edição Segura & Expandida</p>
                 </div>
             </div>
 
@@ -171,6 +170,7 @@
                     </div>
                     <h2 id="sideName" class="font-pixel text-sm text-yellow-400 mt-2 text-center truncate w-full">Son Goku</h2>
                     <span id="sideTitle" class="text-xs text-orange-400 font-semibold">Saiyajin</span>
+                    <span id="sideRankTitle" class="text-[10px] text-yellow-300 italic mt-0.5">Iniciante</span>
                 </div>
 
                 <!-- Level & Combat Power -->
@@ -221,10 +221,23 @@
                     </div>
                 </div>
 
-                <!-- Wallet -->
-                <div class="mt-4 pt-3 border-t border-dbzBorder flex justify-between items-center text-xs">
-                    <span class="text-gray-400"><i class="fa-solid fa-coins text-yellow-500 mr-1"></i>Zeni acumulado:</span>
-                    <span id="sideZeni" class="font-pixel text-yellow-400">300 Z$</span>
+                <!-- Wallet & Backup -->
+                <div class="mt-4 pt-3 border-t border-dbzBorder space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-gray-400"><i class="fa-solid fa-coins text-yellow-500 mr-1"></i>Zeni acumulado:</span>
+                        <span id="sideZeni" class="font-pixel text-yellow-400">300 Z$</span>
+                    </div>
+
+                    <!-- Save Export/Import Actions -->
+                    <div class="pt-2 flex gap-2">
+                        <button onclick="exportSaveData()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-[10px] text-gray-300 py-1 rounded border border-dbzBorder">
+                            <i class="fa-solid fa-download mr-1"></i> Backup
+                        </button>
+                        <label class="flex-1 bg-gray-800 hover:bg-gray-700 text-[10px] text-gray-300 py-1 rounded border border-dbzBorder text-center cursor-pointer">
+                            <i class="fa-solid fa-upload mr-1"></i> Importar
+                            <input type="file" accept=".json" class="hidden" onchange="importSaveData(event)">
+                        </label>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -237,7 +250,7 @@
                 <div class="text-center mb-6">
                     <i class="fa-solid fa-dragon text-5xl text-yellow-400 mb-2 drop-shadow"></i>
                     <h2 class="font-pixel text-base text-yellow-400">DBZ RPG ON-LINE v2</h2>
-                    <p class="text-xs text-gray-400 mt-1">Crie sua conta local para começar a aventura!</p>
+                    <p class="text-xs text-gray-400 mt-1">Crie sua conta local protegida por hash!</p>
                 </div>
 
                 <div class="flex border-b border-dbzBorder mb-4">
@@ -248,12 +261,12 @@
                 <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-1"><i class="fa-solid fa-user mr-1 text-orange-400"></i>Nome do Guerreiro / Login</label>
-                        <input type="text" id="authUsername" required placeholder="Digite seu usuário..." class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
+                        <input type="text" id="authUsername" maxlength="20" required placeholder="Digite seu usuário..." class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-1"><i class="fa-solid fa-lock mr-1 text-orange-400"></i>Senha</label>
-                        <input type="password" id="authPassword" required minlength="3" placeholder="******" class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
+                        <input type="password" id="authPassword" required minlength="4" placeholder="******" class="w-full bg-dbzDarkBg border border-dbzBorder rounded p-2.5 text-sm text-white focus:border-orange-500 focus:outline-none">
                     </div>
 
                     <div id="raceSelectGroup" class="hidden">
@@ -390,8 +403,8 @@
                             <button onclick="executeCombatTurn('attack')" class="retro-btn py-3 text-xs font-bold text-white rounded">
                                 <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
                             </button>
-                            <button onclick="executeCombatTurn('ki_blast')" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
-                                <i class="fa-solid fa-bolt mr-1"></i> Kamehameha (-10 KI)
+                            <button id="specialAttackBtn" onclick="executeCombatTurn('ki_blast')" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
+                                <i class="fa-solid fa-bolt mr-1"></i> Especial (-10 KI)
                             </button>
                             <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 text-xs font-bold text-white rounded">
                                 <i class="fa-solid fa-person-running mr-1"></i> Fugir
@@ -461,7 +474,7 @@
                 </div>
 
                 <form id="chatForm" onsubmit="sendChatMessage(event)" class="mt-auto flex gap-1">
-                    <input type="text" id="chatInput" placeholder="Digite uma mensagem..." required class="flex-1 bg-black/60 border border-dbzBorder rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-orange-500">
+                    <input type="text" id="chatInput" maxlength="120" placeholder="Digite uma mensagem..." required class="flex-1 bg-black/60 border border-dbzBorder rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-orange-500">
                     <button type="submit" class="retro-btn px-3 text-white text-xs font-bold rounded">
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -486,27 +499,50 @@
         let activeEnemy = null;
         let combatState = null;
 
-        // Static Game Databases
+        // Expanded Static Databases
         const SHOP_ITEMS = [
             { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
             { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
-            { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' }
+            { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
+            { id: 'capsule_house', name: 'Cápsula de Treino', cost: 2500, icon: 'fa-capsules', color: 'text-yellow-400', desc: '+50 Força e +50 Resistência.', effect: 'stat_capsule' },
+            { id: 'power_pole', name: 'Bastão Mágico', cost: 1500, icon: 'fa-wand-magic-sparkles', color: 'text-red-400', desc: '+35 Velocidade e +20 Força.', effect: 'stat_pole' },
+            { id: 'angel_feather', name: 'Semente Dourada', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+100 Força, +100 Resistência e +1000 HP.', effect: 'stat_god' }
         ];
 
         const TRANSFORMATIONS = [
             { id: 'ssj1', name: 'Super Saiyajin 1', reqLevel: 5, reqPL: 2000, strBonus: 25, speedBonus: 20 },
             { id: 'ssj2', name: 'Super Saiyajin 2', reqLevel: 10, reqPL: 8000, strBonus: 60, speedBonus: 50 },
-            { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 }
+            { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 },
+            { id: 'god', name: 'Super Saiyajin Deus', reqLevel: 22, reqPL: 75000, strBonus: 350, speedBonus: 300 }
         ];
 
+        // Extended Enemies with anime artwork representations
         const ENEMIES = [
-            { id: 'saibaman', name: 'Saibaman', hp: 80, str: 8, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://placehold.co/80/1b381e/86efac?text=Saibaman' },
-            { id: 'raditz', name: 'Raditz', hp: 180, str: 18, expReward: 80, zeniReward: 120, levelReq: 2, avatar: 'https://placehold.co/80/381b1b/fca5a5?text=Raditz' },
-            { id: 'nappa', name: 'Nappa', hp: 350, str: 32, expReward: 180, zeniReward: 250, levelReq: 4, avatar: 'https://placehold.co/80/382b1b/fde047?text=Nappa' },
-            { id: 'vegeta', name: 'Vegeta', hp: 700, str: 55, expReward: 400, zeniReward: 600, levelReq: 7, avatar: 'https://placehold.co/80/1b2438/93c5fd?text=Vegeta' },
-            { id: 'freeza', name: 'Imperador Freeza', hp: 1500, str: 95, expReward: 1000, zeniReward: 1500, levelReq: 10, avatar: 'https://placehold.co/80/321b38/f472b6?text=Freeza' },
-            { id: 'cell', name: 'Cell Perfeito', hp: 3000, str: 160, expReward: 2500, zeniReward: 3500, levelReq: 15, avatar: 'https://placehold.co/80/1b3820/86efac?text=Cell' }
+            { id: 'saibaman', name: 'Saibaman', hp: 80, str: 8, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/saibaman-dragon-ball-z-mario-pasqualotto.jpg' },
+            { id: 'raditz', name: 'Raditz', hp: 180, str: 18, expReward: 80, zeniReward: 120, levelReq: 2, avatar: 'https://cdn.myanimelist.net/images/characters/16/81223.jpg' },
+            { id: 'nappa', name: 'Nappa', hp: 350, str: 32, expReward: 180, zeniReward: 250, levelReq: 4, avatar: 'https://cdn.myanimelist.net/images/characters/16/81222.jpg' },
+            { id: 'vegeta', name: 'Vegeta', hp: 700, str: 55, expReward: 400, zeniReward: 600, levelReq: 7, avatar: 'https://cdn.myanimelist.net/images/characters/2/488052.jpg' },
+            { id: 'freeza', name: 'Imperador Freeza', hp: 1500, str: 95, expReward: 1000, zeniReward: 1500, levelReq: 10, avatar: 'https://cdn.myanimelist.net/images/characters/13/81220.jpg' },
+            { id: 'cell', name: 'Cell Perfeito', hp: 3000, str: 160, expReward: 2500, zeniReward: 3500, levelReq: 15, avatar: 'https://cdn.myanimelist.net/images/characters/11/276853.jpg' },
+            { id: 'majin_boo', name: 'Majin Boo', hp: 6000, str: 280, expReward: 5000, zeniReward: 7500, levelReq: 20, avatar: 'https://cdn.myanimelist.net/images/characters/12/306771.jpg' },
+            { id: 'jiren', name: 'Jiren', hp: 12000, str: 500, expReward: 12000, zeniReward: 15000, levelReq: 25, avatar: 'https://cdn.myanimelist.net/images/characters/2/342938.jpg' }
         ];
+
+        // Security Utility: Sanitizer
+        function sanitizeHTML(str) {
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        }
+
+        // Security Utility: SHA-256 Hash algorithm
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + "_dbz_salt_2026");
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
@@ -519,7 +555,7 @@
             if (savedUsername) {
                 const users = getUsersData();
                 if (users[savedUsername]) {
-                    currentUser = users[savedUsername];
+                    currentUser = validateCharacterIntegrity(users[savedUsername]);
                     loadGameScreen();
                     return;
                 }
@@ -527,8 +563,29 @@
             showAuthScreen();
         }
 
+        // Integrity Anti-Cheat Verification
+        function validateCharacterIntegrity(char) {
+            if (!char) return null;
+            char.level = Math.max(1, Math.floor(char.level || 1));
+            char.str = Math.max(10, Math.floor(char.str || 10));
+            char.res = Math.max(10, Math.floor(char.res || 10));
+            char.speed = Math.max(10, Math.floor(char.speed || 10));
+            char.maxHp = Math.max(100, Math.floor(char.maxHp || 100));
+            char.maxKi = Math.max(50, Math.floor(char.maxKi || 50));
+            char.hp = Math.min(char.maxHp, Math.max(0, Math.floor(char.hp || char.maxHp)));
+            char.ki = Math.min(char.maxKi, Math.max(0, Math.floor(char.ki || char.maxKi)));
+            char.zeni = Math.max(0, Math.floor(char.zeni || 0));
+            char.statPoints = Math.max(0, Math.floor(char.statPoints || 0));
+            char.combatPower = calculateCombatPower(char);
+            return char;
+        }
+
         function getUsersData() {
-            return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+            } catch (e) {
+                return {};
+            }
         }
 
         function saveUsersData(users) {
@@ -537,7 +594,7 @@
 
         function saveCurrentUserData() {
             if (!currentUser) return;
-            currentUser.combatPower = calculateCombatPower(currentUser);
+            currentUser = validateCharacterIntegrity(currentUser);
             const users = getUsersData();
             users[currentUser.username] = currentUser;
             saveUsersData(users);
@@ -547,6 +604,14 @@
         function calculateCombatPower(char) {
             if (!char) return 0;
             return (char.level * 250) + (char.str * 15) + (char.res * 12) + (char.speed * 10) + (char.maxHp * 2);
+        }
+
+        function getRankTitle(pl) {
+            if (pl < 2000) return "Guerreiro Aprendiz";
+            if (pl < 8000) return "Lutador de Elite";
+            if (pl < 25000) return "Mestre das Artes Marciais";
+            if (pl < 75000) return "Lenda da Galáxia";
+            return "Deus da Destruição";
         }
 
         function showAuthScreen() {
@@ -595,15 +660,22 @@
             }
         }
 
-        function handleAuthSubmit(e) {
+        async function handleAuthSubmit(e) {
             e.preventDefault();
-            const username = document.getElementById('authUsername').value.trim();
-            const password = document.getElementById('authPassword').value;
+            const username = sanitizeHTML(document.getElementById('authUsername').value.trim());
+            const rawPassword = document.getElementById('authPassword').value;
             const mode = document.getElementById('authSubmitBtn').dataset.mode;
             const errBox = document.getElementById('authError');
 
+            if (!username || username.length < 3) {
+                errBox.innerText = "O nome deve ter no mínimo 3 caracteres!";
+                errBox.classList.remove('hidden');
+                return;
+            }
+
             errBox.classList.add('hidden');
             const users = getUsersData();
+            const passwordHash = await hashPassword(rawPassword);
 
             if (mode === 'register') {
                 if (users[username]) {
@@ -621,7 +693,7 @@
 
                 const newUser = {
                     username: username,
-                    password: password,
+                    passwordHash: passwordHash,
                     race: race,
                     level: 1,
                     exp: 0,
@@ -646,17 +718,35 @@
 
                 currentUser = newUser;
                 localStorage.setItem(STORAGE_SESSION, username);
-                showToast("Conta criada com sucesso! Bem-vindo.");
+                showToast("Conta criada com segurança! Bem-vindo.");
                 loadGameScreen();
 
             } else {
-                if (!users[username] || users[username].password !== password) {
+                if (!users[username]) {
                     errBox.innerText = "Usuário ou senha incorretos!";
                     errBox.classList.remove('hidden');
                     return;
                 }
 
-                currentUser = users[username];
+                // Verify Hash or Legacy Plain Password
+                const validPass = users[username].passwordHash ? 
+                    (users[username].passwordHash === passwordHash) : 
+                    (users[username].password === rawPassword);
+
+                if (!validPass) {
+                    errBox.innerText = "Usuário ou senha incorretos!";
+                    errBox.classList.remove('hidden');
+                    return;
+                }
+
+                // Upgrade legacy accounts to Hash password
+                if (!users[username].passwordHash) {
+                    users[username].passwordHash = passwordHash;
+                    delete users[username].password;
+                    saveUsersData(users);
+                }
+
+                currentUser = validateCharacterIntegrity(users[username]);
                 localStorage.setItem(STORAGE_SESSION, username);
                 showToast("Login efetuado com sucesso!");
                 loadGameScreen();
@@ -675,6 +765,7 @@
 
             document.getElementById('sideName').innerText = currentUser.username;
             document.getElementById('sideTitle').innerText = `${currentUser.race} (${currentUser.transformation || 'Base'})`;
+            document.getElementById('sideRankTitle').innerText = getRankTitle(currentUser.combatPower);
             document.getElementById('sideLevel').innerText = currentUser.level;
             document.getElementById('sidePL').innerText = currentUser.combatPower.toLocaleString('pt-BR');
             document.getElementById('sideAvatar').src = currentUser.avatar;
@@ -698,6 +789,14 @@
             document.getElementById('dashSpeed').innerText = currentUser.speed;
             document.getElementById('dashAttrPoints').innerText = `Pontos: ${currentUser.statPoints}`;
             document.getElementById('shopUserZeni').innerText = currentUser.zeni;
+
+            // Attack button label dynamic based on race
+            const specBtn = document.getElementById('specialAttackBtn');
+            let specialName = "Kamehameha";
+            if (currentUser.race === 'Namekuseijin') specialName = "Makankosappo";
+            if (currentUser.race === 'Android') specialName = "Android Blast";
+            if (currentUser.race === 'Humano') specialName = "Kienzan";
+            specBtn.innerHTML = `<i class="fa-solid fa-bolt mr-1"></i> ${specialName} (-10 KI)`;
 
             const statBtns = document.querySelectorAll('.add-stat-btn');
             statBtns.forEach(btn => {
@@ -765,6 +864,11 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            if (file.size > 2 * 1024 * 1024) {
+                showToast("A imagem deve ter no máximo 2MB!");
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentUser.avatar = e.target.result;
@@ -772,6 +876,43 @@
                 showToast("Foto de perfil atualizada!");
             };
             reader.readAsDataURL(file);
+        }
+
+        function exportSaveData() {
+            if (!currentUser) return;
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentUser));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `dbz_save_${currentUser.username}.json`);
+            document.body.appendChild(dlAnchorElem);
+            dlAnchorElem.click();
+            dlAnchorElem.remove();
+        }
+
+        function importSaveData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedUser = JSON.parse(e.target.result);
+                    if (!importedUser || !importedUser.username) throw new Error("Save inválido");
+                    
+                    const validUser = validateCharacterIntegrity(importedUser);
+                    const users = getUsersData();
+                    users[validUser.username] = validUser;
+                    saveUsersData(users);
+
+                    currentUser = validUser;
+                    localStorage.setItem(STORAGE_SESSION, validUser.username);
+                    showToast("Save importado com sucesso!");
+                    updateUI();
+                } catch (err) {
+                    showToast("Arquivo de Save corrompido ou inválido!");
+                }
+            };
+            reader.readAsText(file);
         }
 
         function renderTransformations() {
@@ -811,7 +952,7 @@
             if (currentUser.inventory && currentUser.inventory.length > 0) {
                 container.innerHTML = currentUser.inventory.map((item, idx) => `
                     <div class="bg-black/60 p-2 rounded border border-dbzBorder flex items-center justify-between">
-                        <span class="text-xs text-yellow-300 font-semibold truncate"><i class="fa-solid fa-box text-orange-400 mr-1"></i>${item.name}</span>
+                        <span class="text-xs text-yellow-300 font-semibold truncate"><i class="fa-solid fa-box text-orange-400 mr-1"></i>${sanitizeHTML(item.name)}</span>
                         <button onclick="useInventoryItem(${idx})" class="text-[10px] bg-orange-600 hover:bg-orange-500 text-white px-2 py-0.5 rounded">Usar</button>
                     </div>
                 `).join('');
@@ -837,6 +978,20 @@
                 currentUser.maxHp += 300;
                 currentUser.hp += 300;
                 showToast("Traje Equipado! +40 Resistência e +300 HP.");
+            } else if (item.effect === 'stat_capsule') {
+                currentUser.str += 50;
+                currentUser.res += 50;
+                showToast("Cápsula de Treino Ativada! +50 Força e +50 Resistência.");
+            } else if (item.effect === 'stat_pole') {
+                currentUser.speed += 35;
+                currentUser.str += 20;
+                showToast("Bastão Mágico Equipado! +35 Velocidade e +20 Força.");
+            } else if (item.effect === 'stat_god') {
+                currentUser.str += 100;
+                currentUser.res += 100;
+                currentUser.maxHp += 1000;
+                currentUser.hp += 1000;
+                showToast("Semente Dourada Consumida! Poder Divino Concedido.");
             }
 
             currentUser.inventory.splice(index, 1);
@@ -886,7 +1041,7 @@
                 return `
                     <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <img src="${enemy.avatar}" class="w-12 h-12 rounded border border-yellow-500 object-cover">
+                            <img src="${enemy.avatar}" onerror="this.src='https://placehold.co/80/1b1b2e/ff8c00?text=${enemy.name}'" class="w-12 h-12 rounded border border-yellow-500 object-cover">
                             <div>
                                 <h4 class="font-pixel text-xs text-yellow-400">${enemy.name}</h4>
                                 <p class="text-[10px] text-gray-400">Req: Nível ${enemy.levelReq} | Ganho: ${enemy.expReward} EXP / ${enemy.zeniReward} Z$</p>
@@ -916,6 +1071,9 @@
             document.getElementById('battlePlayerAvatar').src = currentUser.avatar;
             document.getElementById('battlePlayerName').innerText = currentUser.username;
             document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
+            document.getElementById('battleEnemyAvatar').onerror = function() {
+                this.src = 'https://placehold.co/80/1b1b2e/ff8c00?text=' + activeEnemy.name;
+            };
             document.getElementById('battleEnemyName').innerText = activeEnemy.name;
 
             updateCombatBars();
@@ -958,9 +1116,9 @@
                     return;
                 }
                 currentUser.ki -= 10;
-                playerDamage = Math.floor(currentUser.str * 2.2) + Math.floor(Math.random() * 15);
+                playerDamage = Math.floor(currentUser.str * 2.3) + Math.floor(Math.random() * 15);
                 combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
-                log.innerHTML += `<div class="text-cyan-400">-> Kamehameha atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+                log.innerHTML += `<div class="text-cyan-400">-> Ataque Especial atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
             }
 
             updateCombatBars();
@@ -1015,8 +1173,8 @@
         function initChatStorage() {
             if (!localStorage.getItem(STORAGE_CHAT)) {
                 const initialMsgs = [
-                    { sender: 'Mestre Roshi', text: 'Bem-vindos à nova versão do DBZ RPG Online!', time: '12:00' },
-                    { sender: 'Vegeta', text: 'Eu serei o guerreiro número 1 deste ranking!', time: '12:02' }
+                    { sender: 'Mestre Roshi', text: 'Bem-vindos ao DBZ RPG Online v2.5!', time: '12:00' },
+                    { sender: 'Vegeta', text: 'Ninguém superará o Príncipe dos Saiyajins!', time: '12:02' }
                 ];
                 localStorage.setItem(STORAGE_CHAT, JSON.stringify(initialMsgs));
             }
@@ -1029,10 +1187,10 @@
             chatBox.innerHTML = chatMsgs.map(m => `
                 <div class="bg-black/40 p-2 rounded border border-dbzBorder/60">
                     <div class="flex justify-between items-center text-[10px]">
-                        <span class="text-yellow-400 font-bold">${m.sender}</span>
+                        <span class="text-yellow-400 font-bold">${sanitizeHTML(m.sender)}</span>
                         <span class="text-gray-500">${m.time}</span>
                     </div>
-                    <p class="text-gray-300 text-xs mt-0.5 break-words">${m.text}</p>
+                    <p class="text-gray-300 text-xs mt-0.5 break-words">${sanitizeHTML(m.text)}</p>
                 </div>
             `).join('');
 
@@ -1042,7 +1200,7 @@
         function sendChatMessage(e) {
             e.preventDefault();
             const input = document.getElementById('chatInput');
-            const text = input.value.trim();
+            const text = sanitizeHTML(input.value.trim());
             if (!text || !currentUser) return;
 
             const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
@@ -1079,7 +1237,7 @@
                     <td class="p-2 text-center font-bold ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
                     <td class="p-2 flex items-center space-x-2">
                         <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
-                        <span class="font-bold text-gray-200 truncate">${p.username}</span>
+                        <span class="font-bold text-gray-200 truncate">${sanitizeHTML(p.username)}</span>
                     </td>
                     <td class="p-2 text-center text-gray-400">${p.race}</td>
                     <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
