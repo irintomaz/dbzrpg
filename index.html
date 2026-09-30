@@ -543,8 +543,8 @@
     </div>
 
     <script>
-        // Declaracoes globais para permitir invocacao via HTML onclick
-        let handleAuthSubmit, handleLogout, addStat, trainCharacter, uploadAvatar;
+        // Declarações globais para invocação via HTML onclick
+        let handleAuthSubmit, handleLogout, toggleAuthMode, addStat, trainCharacter, uploadAvatar;
         let exportSaveData, importSaveData, transform, useInventoryItem, buyShopItem;
         let startCombat, executeCombatTurn, sendChatMessage, switchTab, startHomeResting;
 
@@ -578,7 +578,6 @@
                 { id: 'ssjblue', name: 'Super Saiyajin Blue', reqLevel: 30, reqPL: 150000, strBonus: 600, speedBonus: 500 }
             ];
 
-            // Inimigos Originais (Com Buffs) + Novos Inimigos com Imagens
             const ENEMIES = [
                 { id: 'saibaman', name: 'Saibaman', hp: 200, str: 20, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
                 { id: 'raditz', name: 'Raditz', hp: 450, str: 40, expReward: 70, zeniReward: 100, levelReq: 2, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
@@ -601,11 +600,6 @@
                 { id: 'broly_super', name: 'Broly (DB Super)', hp: 130000, str: 7200, expReward: 30000, zeniReward: 42000, levelReq: 42, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d8/Broly_DBS_Dokkan.png' },
                 { id: 'bills', name: 'Lord Bills (God of Destruction)', hp: 180000, str: 10000, expReward: 50000, zeniReward: 70000, levelReq: 45, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7a/Beerus_DBFZ.png' }
             ];
-
-            // Anti-Cheat: Getter Imutável
-            function getCurrentUser() {
-                return _currentUser ? JSON.parse(JSON.stringify(_currentUser)) : null;
-            }
 
             function getUsersData() {
                 return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
@@ -666,6 +660,31 @@
                 switchTab('dashboard');
                 updateUI();
             }
+
+            // Alternar entre abas de Login e Cadastro
+            toggleAuthMode = function(mode) {
+                const loginTabBtn = document.getElementById('loginTabBtn');
+                const registerTabBtn = document.getElementById('registerTabBtn');
+                const raceSelectGroup = document.getElementById('raceSelectGroup');
+                const authSubmitBtn = document.getElementById('authSubmitBtn');
+                const errBox = document.getElementById('authError');
+
+                errBox.classList.add('hidden');
+
+                if (mode === 'register') {
+                    loginTabBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
+                    registerTabBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
+                    raceSelectGroup.classList.remove('hidden');
+                    authSubmitBtn.innerText = "CRIAR CONTA E JOGAR";
+                    authSubmitBtn.dataset.mode = "register";
+                } else {
+                    loginTabBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
+                    registerTabBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
+                    raceSelectGroup.classList.add('hidden');
+                    authSubmitBtn.innerText = "ENTRAR NO JOGO";
+                    authSubmitBtn.dataset.mode = "login";
+                }
+            };
 
             handleAuthSubmit = function(e) {
                 e.preventDefault();
