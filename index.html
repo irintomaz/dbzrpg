@@ -543,774 +543,769 @@
     </div>
 
     <script>
-        // LocalStorage Keys
-        const STORAGE_USERS = 'dbz_rpg_users_v2';
-        const STORAGE_SESSION = 'dbz_rpg_session_v2';
-        const STORAGE_CHAT = 'dbz_rpg_chat_v2';
+        // Declaracoes globais para permitir invocacao via HTML onclick
+        let handleAuthSubmit, handleLogout, addStat, trainCharacter, uploadAvatar;
+        let exportSaveData, importSaveData, transform, useInventoryItem, buyShopItem;
+        let startCombat, executeCombatTurn, sendChatMessage, switchTab, startHomeResting;
 
-        let currentUser = null;
-        let activeEnemy = null;
-        let combatState = null;
-        let restInterval = null;
+        // IIFE / Closure Proteção Anti-Cheat
+        (function() {
+            const STORAGE_USERS = 'dbz_rpg_users_v2';
+            const STORAGE_SESSION = 'dbz_rpg_session_v2';
+            const STORAGE_CHAT = 'dbz_rpg_chat_v2';
 
-        // Expanded Static Game Databases
-        const SHOP_ITEMS = [
-            { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
-            { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e concede +5 KI Máximo permanente.', effect: 'ki_boost' },
-            { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
-            { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
-            { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
-            { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
-            { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
-        ];
+            // Estado interno privado
+            let _currentUser = null;
+            let activeEnemy = null;
+            let combatState = null;
+            let restInterval = null;
 
-        const TRANSFORMATIONS = [
-            { id: 'ssj1', name: 'Super Saiyajin 1', reqLevel: 5, reqPL: 2000, strBonus: 25, speedBonus: 20 },
-            { id: 'ssj2', name: 'Super Saiyajin 2', reqLevel: 10, reqPL: 8000, strBonus: 60, speedBonus: 50 },
-            { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 },
-            { id: 'ssj4', name: 'Super Saiyajin 4', reqLevel: 20, reqPL: 60000, strBonus: 300, speedBonus: 250 },
-            { id: 'ssjblue', name: 'Super Saiyajin Blue', reqLevel: 30, reqPL: 150000, strBonus: 600, speedBonus: 500 }
-        ];
+            const SHOP_ITEMS = [
+                { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
+                { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e concede +5 KI Máximo permanente.', effect: 'ki_boost' },
+                { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
+                { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
+                { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
+                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
+                { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
+            ];
 
-        const ENEMIES = [
-            { id: 'saibaman', name: 'Saibaman', hp: 80, str: 8, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
-            { id: 'raditz', name: 'Raditz', hp: 150, str: 15, expReward: 70, zeniReward: 100, levelReq: 2, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
-            { id: 'nappa', name: 'Nappa', hp: 300, str: 28, expReward: 150, zeniReward: 220, levelReq: 4, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
-            { id: 'vegeta', name: 'Vegeta (Saiyajin)', hp: 500, str: 45, expReward: 300, zeniReward: 450, levelReq: 6, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
-            { id: 'dodoria', name: 'Dodoria', hp: 700, str: 60, expReward: 450, zeniReward: 650, levelReq: 8, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c5/Dodoria.png' },
-            { id: 'zarbon', name: 'Zarbon', hp: 900, str: 80, expReward: 600, zeniReward: 850, levelReq: 10, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonTransformed.png' },
-            { id: 'ginyu', name: 'Capitão Ginyu', hp: 1200, str: 100, expReward: 850, zeniReward: 1200, levelReq: 12, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/80/Captain_Ginyu_DBFZ.png' },
-            { id: 'freeza', name: 'Freeza (Final)', hp: 1800, str: 140, expReward: 1200, zeniReward: 1800, levelReq: 15, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
-            { id: 'android18', name: 'Android 18', hp: 2500, str: 190, expReward: 1800, zeniReward: 2500, levelReq: 18, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/Android_18_DBFZ.png' },
-            { id: 'cell', name: 'Cell Perfeito', hp: 4500, str: 280, expReward: 3000, zeniReward: 4200, levelReq: 22, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
-            { id: 'majinboo', name: 'Majin Boo', hp: 7000, str: 400, expReward: 5000, zeniReward: 7000, levelReq: 26, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
-            { id: 'kidboo', name: 'Kid Boo', hp: 12000, str: 650, expReward: 8500, zeniReward: 11000, levelReq: 30, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/9e/Kid_Buu_DBFZ.png' },
-            { id: 'broly', name: 'Broly Lendário', hp: 18000, str: 950, expReward: 15000, zeniReward: 20000, levelReq: 35, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/05/Broly_DBFZ.png' }
-        ];
+            const TRANSFORMATIONS = [
+                { id: 'ssj1', name: 'Super Saiyajin 1', reqLevel: 5, reqPL: 2000, strBonus: 25, speedBonus: 20 },
+                { id: 'ssj2', name: 'Super Saiyajin 2', reqLevel: 10, reqPL: 8000, strBonus: 60, speedBonus: 50 },
+                { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 },
+                { id: 'ssj4', name: 'Super Saiyajin 4', reqLevel: 20, reqPL: 60000, strBonus: 300, speedBonus: 250 },
+                { id: 'ssjblue', name: 'Super Saiyajin Blue', reqLevel: 30, reqPL: 150000, strBonus: 600, speedBonus: 500 }
+            ];
 
-        // Initialization
-        window.addEventListener('DOMContentLoaded', () => {
-            initChatStorage();
-            checkSession();
-        });
+            // Inimigos Originais (Com Buffs) + Novos Inimigos com Imagens
+            const ENEMIES = [
+                { id: 'saibaman', name: 'Saibaman', hp: 200, str: 20, expReward: 35, zeniReward: 50, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
+                { id: 'raditz', name: 'Raditz', hp: 450, str: 40, expReward: 70, zeniReward: 100, levelReq: 2, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
+                { id: 'nappa', name: 'Nappa', hp: 850, str: 75, expReward: 150, zeniReward: 220, levelReq: 4, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
+                { id: 'vegeta', name: 'Vegeta (Saiyajin)', hp: 1500, str: 120, expReward: 300, zeniReward: 450, levelReq: 6, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
+                { id: 'dodoria', name: 'Dodoria', hp: 2200, str: 170, expReward: 450, zeniReward: 650, levelReq: 8, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c5/Dodoria.png' },
+                { id: 'zarbon', name: 'Zarbon', hp: 3000, str: 220, expReward: 600, zeniReward: 850, levelReq: 10, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonTransformed.png' },
+                { id: 'ginyu', name: 'Capitão Ginyu', hp: 4200, str: 300, expReward: 850, zeniReward: 1200, levelReq: 12, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/80/Captain_Ginyu_DBFZ.png' },
+                { id: 'freeza', name: 'Freeza (Final)', hp: 6000, str: 450, expReward: 1200, zeniReward: 1800, levelReq: 15, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
+                { id: 'android18', name: 'Android 18', hp: 8500, str: 600, expReward: 1800, zeniReward: 2500, levelReq: 18, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/Android_18_DBFZ.png' },
+                { id: 'cell', name: 'Cell Perfeito', hp: 14000, str: 900, expReward: 3000, zeniReward: 4200, levelReq: 22, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
+                { id: 'babidi', name: 'Mago Babidi', hp: 18000, str: 1100, expReward: 4000, zeniReward: 5500, levelReq: 24, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e3/Babidi.png' },
+                { id: 'dabra', name: 'Dabra', hp: 22000, str: 1350, expReward: 4500, zeniReward: 6200, levelReq: 25, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e8/Dabura.png' },
+                { id: 'majinboo', name: 'Majin Boo', hp: 28000, str: 1600, expReward: 5000, zeniReward: 7000, levelReq: 26, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
+                { id: 'superboo', name: 'Super Boo', hp: 35000, str: 2000, expReward: 6800, zeniReward: 9000, levelReq: 28, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a7/Super_Buu_Dokkan.png' },
+                { id: 'kidboo', name: 'Kid Boo', hp: 45000, str: 2500, expReward: 8500, zeniReward: 11000, levelReq: 30, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/9e/Kid_Buu_DBFZ.png' },
+                { id: 'golden_freeza', name: 'Golden Freeza', hp: 58000, str: 3200, expReward: 11000, zeniReward: 15000, levelReq: 33, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/33/Golden_Frieza_DBFZ.png' },
+                { id: 'broly', name: 'Broly Lendário', hp: 75000, str: 4000, expReward: 15000, zeniReward: 20000, levelReq: 35, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/05/Broly_DBFZ.png' },
+                { id: 'jiren', name: 'Jiren', hp: 100000, str: 5500, expReward: 22000, zeniReward: 30000, levelReq: 38, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/25/Jiren_DBFZ.png' },
+                { id: 'broly_super', name: 'Broly (DB Super)', hp: 130000, str: 7200, expReward: 30000, zeniReward: 42000, levelReq: 42, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d8/Broly_DBS_Dokkan.png' },
+                { id: 'bills', name: 'Lord Bills (God of Destruction)', hp: 180000, str: 10000, expReward: 50000, zeniReward: 70000, levelReq: 45, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7a/Beerus_DBFZ.png' }
+            ];
 
-        function checkSession() {
-            const savedUsername = localStorage.getItem(STORAGE_SESSION);
-            if (savedUsername) {
+            // Anti-Cheat: Getter Imutável
+            function getCurrentUser() {
+                return _currentUser ? JSON.parse(JSON.stringify(_currentUser)) : null;
+            }
+
+            function getUsersData() {
+                return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
+            }
+
+            function saveUsersData(users) {
+                localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+            }
+
+            function saveCurrentUserData() {
+                if (!_currentUser) return;
+                _currentUser.combatPower = calculateCombatPower(_currentUser);
                 const users = getUsersData();
-                if (users[savedUsername]) {
-                    currentUser = users[savedUsername];
-                    loadGameScreen();
-                    return;
-                }
-            }
-            showAuthScreen();
-        }
-
-        function getUsersData() {
-            return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
-        }
-
-        function saveUsersData(users) {
-            localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-        }
-
-        function saveCurrentUserData() {
-            if (!currentUser) return;
-            currentUser.combatPower = calculateCombatPower(currentUser);
-            const users = getUsersData();
-            users[currentUser.username] = currentUser;
-            saveUsersData(users);
-            updateUI();
-        }
-
-        function calculateCombatPower(char) {
-            if (!char) return 0;
-            return (char.level * 250) + (char.str * 15) + (char.res * 12) + (char.speed * 10) + (char.maxHp * 2);
-        }
-
-        function showAuthScreen() {
-            document.getElementById('authView').classList.remove('hidden');
-            document.getElementById('leftSidebar').classList.add('hidden');
-            document.getElementById('navMenu').classList.add('hidden');
-            document.getElementById('logoutBtn').classList.add('hidden');
-            document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200";
-            document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado';
-        }
-
-        function loadGameScreen() {
-            document.getElementById('authView').classList.add('hidden');
-            document.getElementById('leftSidebar').classList.remove('hidden');
-            document.getElementById('navMenu').classList.remove('hidden');
-            document.getElementById('logoutBtn').classList.remove('hidden');
-            document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-green-900/60 border border-green-500 text-green-200";
-            document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-green-400 mr-1 animate-pulse"></i> Conectado';
-
-            renderShop();
-            renderArenaEnemies();
-            renderChat();
-            renderRanking();
-            switchTab('dashboard');
-            updateUI();
-        }
-
-        function toggleAuthMode(mode) {
-            const loginBtn = document.getElementById('loginTabBtn');
-            const regBtn = document.getElementById('registerTabBtn');
-            const raceGroup = document.getElementById('raceSelectGroup');
-            const submitBtn = document.getElementById('authSubmitBtn');
-
-            if (mode === 'login') {
-                loginBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
-                regBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
-                raceGroup.classList.add('hidden');
-                submitBtn.innerText = "ENTRAR NO JOGO";
-                submitBtn.dataset.mode = "login";
-            } else {
-                regBtn.className = "flex-1 py-2 font-bold text-sm text-yellow-400 border-b-2 border-yellow-400";
-                loginBtn.className = "flex-1 py-2 font-bold text-sm text-gray-400 hover:text-gray-200";
-                raceGroup.classList.remove('hidden');
-                submitBtn.innerText = "CRIAR GUERREIRO";
-                submitBtn.dataset.mode = "register";
-            }
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const username = document.getElementById('authUsername').value.trim();
-            const password = document.getElementById('authPassword').value;
-            const mode = document.getElementById('authSubmitBtn').dataset.mode;
-            const errBox = document.getElementById('authError');
-
-            errBox.classList.add('hidden');
-            const users = getUsersData();
-
-            if (mode === 'register') {
-                if (users[username]) {
-                    errBox.innerText = "Este nome de guerreiro já existe!";
-                    errBox.classList.remove('hidden');
-                    return;
-                }
-
-                const race = document.getElementById('authRace').value;
-                let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
-                if (race === 'Namekuseijin') raceHp = 40;
-                if (race === 'Saiyajin') raceStr = 5;
-                if (race === 'Android') raceRes = 5;
-                if (race === 'Humano') raceSpeed = 5;
-
-                const newUser = {
-                    username: username,
-                    password: password,
-                    race: race,
-                    level: 1,
-                    exp: 0,
-                    maxExp: 100,
-                    hp: 100 + raceHp,
-                    maxHp: 100 + raceHp,
-                    ki: 50,
-                    maxKi: 50,
-                    str: 10 + raceStr,
-                    res: 10 + raceRes,
-                    speed: 10 + raceSpeed,
-                    statPoints: 5,
-                    zeni: 300,
-                    transformation: 'Base',
-                    inventory: [],
-                    avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
-                };
-                newUser.combatPower = calculateCombatPower(newUser);
-
-                users[username] = newUser;
+                users[_currentUser.username] = _currentUser;
                 saveUsersData(users);
+                updateUI();
+            }
 
-                currentUser = newUser;
-                localStorage.setItem(STORAGE_SESSION, username);
-                showToast("Conta criada com sucesso! Bem-vindo.");
-                loadGameScreen();
+            function calculateCombatPower(char) {
+                if (!char) return 0;
+                return (char.level * 250) + (char.str * 15) + (char.res * 12) + (char.speed * 10) + (char.maxHp * 2);
+            }
 
-            } else {
-                if (!users[username] || users[username].password !== password) {
-                    errBox.innerText = "Usuário ou senha incorretos!";
-                    errBox.classList.remove('hidden');
-                    return;
+            function checkSession() {
+                const savedUsername = localStorage.getItem(STORAGE_SESSION);
+                if (savedUsername) {
+                    const users = getUsersData();
+                    if (users[savedUsername]) {
+                        _currentUser = users[savedUsername];
+                        loadGameScreen();
+                        return;
+                    }
                 }
-
-                currentUser = users[username];
-                localStorage.setItem(STORAGE_SESSION, username);
-                showToast("Login efetuado com sucesso!");
-                loadGameScreen();
-            }
-        }
-
-        function handleLogout() {
-            if (restInterval) clearInterval(restInterval);
-            currentUser = null;
-            localStorage.removeItem(STORAGE_SESSION);
-            showAuthScreen();
-            showToast("Você saiu da conta.");
-        }
-
-        function updateUI() {
-            if (!currentUser) return;
-
-            document.getElementById('sideName').innerText = currentUser.username;
-            document.getElementById('sideTitle').innerText = `${currentUser.race} (${currentUser.transformation || 'Base'})`;
-            document.getElementById('sideLevel').innerText = currentUser.level;
-            document.getElementById('sidePL').innerText = currentUser.combatPower.toLocaleString('pt-BR');
-            document.getElementById('sideAvatar').src = currentUser.avatar;
-            document.getElementById('sideZeni').innerText = `${currentUser.zeni} Z$`;
-
-            const hpPct = Math.max(0, Math.min(100, (currentUser.hp / currentUser.maxHp) * 100));
-            const kiPct = Math.max(0, Math.min(100, (currentUser.ki / currentUser.maxKi) * 100));
-            const expPct = Math.max(0, Math.min(100, (currentUser.exp / currentUser.maxExp) * 100));
-
-            document.getElementById('hpBar').style.width = `${hpPct}%`;
-            document.getElementById('kiBar').style.width = `${kiPct}%`;
-            document.getElementById('expBar').style.width = `${expPct}%`;
-
-            document.getElementById('hpText').innerText = `${currentUser.hp} / ${currentUser.maxHp}`;
-            document.getElementById('kiText').innerText = `${currentUser.ki} / ${currentUser.maxKi}`;
-            document.getElementById('expText').innerText = `${currentUser.exp} / ${currentUser.maxExp}`;
-
-            document.getElementById('dashRaceBadge').innerText = currentUser.race;
-            document.getElementById('dashStr').innerText = currentUser.str;
-            document.getElementById('dashRes').innerText = currentUser.res;
-            document.getElementById('dashSpeed').innerText = currentUser.speed;
-            document.getElementById('dashAttrPoints').innerText = `Pontos: ${currentUser.statPoints}`;
-            document.getElementById('shopUserZeni').innerText = currentUser.zeni;
-
-            const statBtns = document.querySelectorAll('.add-stat-btn');
-            statBtns.forEach(btn => {
-                if (currentUser.statPoints > 0) btn.classList.remove('hidden');
-                else btn.classList.add('hidden');
-            });
-
-            renderTransformations();
-            renderInventory();
-            renderRanking();
-        }
-
-        function addStat(stat) {
-            if (!currentUser || currentUser.statPoints <= 0) return;
-            currentUser.statPoints -= 1;
-            if (stat === 'str') currentUser.str += 2;
-            if (stat === 'res') {
-                currentUser.res += 2;
-                currentUser.maxHp += 15;
-                currentUser.hp += 15;
-            }
-            if (stat === 'speed') currentUser.speed += 2;
-
-            saveCurrentUserData();
-            showToast(`+2 Pontos em ${stat.toUpperCase()}!`);
-        }
-
-        // Home Rest System (1 Minute Duration)
-        function startHomeResting() {
-            if (!currentUser || restInterval) return;
-
-            if (currentUser.hp >= currentUser.maxHp && currentUser.ki >= currentUser.maxKi) {
-                showToast("Você já está com Vida e Ki no máximo!");
-                return;
+                showAuthScreen();
             }
 
-            const btn = document.getElementById('btnHomeRest');
-            const progressContainer = document.getElementById('restProgressContainer');
-            const progressBar = document.getElementById('restProgressBar');
-            const timerText = document.getElementById('restTimerText');
-
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            progressContainer.classList.remove('hidden');
-
-            let totalSeconds = 60;
-            let elapsedSeconds = 0;
-
-            const initialHp = currentUser.hp;
-            const initialKi = currentUser.ki;
-
-            const hpNeeded = currentUser.maxHp - initialHp;
-            const kiNeeded = currentUser.maxKi - initialKi;
-
-            restInterval = setInterval(() => {
-                elapsedSeconds++;
-                const remaining = totalSeconds - elapsedSeconds;
-                const progressPct = (elapsedSeconds / totalSeconds) * 100;
-
-                progressBar.style.width = `${progressPct}%`;
-                timerText.innerText = `${remaining}s`;
-
-                // Gradual Healing Calculation
-                currentUser.hp = Math.min(currentUser.maxHp, Math.floor(initialHp + (hpNeeded * (elapsedSeconds / totalSeconds))));
-                currentUser.ki = Math.min(currentUser.maxKi, Math.floor(initialKi + (kiNeeded * (elapsedSeconds / totalSeconds))));
-                saveCurrentUserData();
-
-                if (elapsedSeconds >= totalSeconds) {
-                    clearInterval(restInterval);
-                    restInterval = null;
-
-                    currentUser.hp = currentUser.maxHp;
-                    currentUser.ki = currentUser.maxKi;
-                    saveCurrentUserData();
-
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    progressContainer.classList.add('hidden');
-                    progressBar.style.width = '0%';
-                    
-                    showToast("Descanso concluído! HP e KI totalmente recuperados!");
-                }
-            }, 1000);
-        }
-
-        function trainCharacter() {
-            if (!currentUser) return;
-            if (currentUser.ki < 5) {
-                showToast("KI insuficiente para treinar!");
-                return;
+            function showAuthScreen() {
+                document.getElementById('authView').classList.remove('hidden');
+                document.getElementById('leftSidebar').classList.add('hidden');
+                document.getElementById('navMenu').classList.add('hidden');
+                document.getElementById('logoutBtn').classList.add('hidden');
+                document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200";
+                document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado';
             }
 
-            currentUser.ki -= 5;
-            const expGained = 25 + Math.floor(Math.random() * 20);
-            currentUser.exp += expGained;
+            function loadGameScreen() {
+                document.getElementById('authView').classList.add('hidden');
+                document.getElementById('leftSidebar').classList.remove('hidden');
+                document.getElementById('navMenu').classList.remove('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-green-900/60 border border-green-500 text-green-200";
+                document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-green-400 mr-1 animate-pulse"></i> Conectado';
 
-            if (currentUser.exp >= currentUser.maxExp) {
-                currentUser.level += 1;
-                currentUser.exp -= currentUser.maxExp;
-                currentUser.maxExp = Math.floor(currentUser.maxExp * 1.5);
-                currentUser.statPoints += 3;
-                currentUser.maxHp += 20;
-                currentUser.hp = currentUser.maxHp;
-                currentUser.maxKi += 10;
-                currentUser.ki = currentUser.maxKi;
-                showToast(`NÍVEL AUMENTOU! Agora você está no Nível ${currentUser.level}!`);
-            } else {
-                showToast(`Treino concluído: +${expGained} EXP!`);
+                renderShop();
+                renderArenaEnemies();
+                renderChat();
+                renderRanking();
+                switchTab('dashboard');
+                updateUI();
             }
 
-            saveCurrentUserData();
-        }
+            handleAuthSubmit = function(e) {
+                e.preventDefault();
+                const username = document.getElementById('authUsername').value.trim();
+                const password = document.getElementById('authPassword').value;
+                const mode = document.getElementById('authSubmitBtn').dataset.mode;
+                const errBox = document.getElementById('authError');
 
-        function uploadAvatar(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+                errBox.classList.add('hidden');
+                const users = getUsersData();
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentUser.avatar = e.target.result;
-                saveCurrentUserData();
-                showToast("Foto de perfil atualizada!");
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Save Export / Import System
-        function exportSaveData() {
-            if (!currentUser) return;
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentUser, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `dbz_save_${currentUser.username}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast("Save exportado com sucesso!");
-        }
-
-        function importSaveData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedUser = JSON.parse(e.target.result);
-                    if (!importedUser.username || !importedUser.level) {
-                        showToast("Ficheiro de Save inválido!");
+                if (mode === 'register') {
+                    if (users[username]) {
+                        errBox.innerText = "Este nome de guerreiro já existe!";
+                        errBox.classList.remove('hidden');
                         return;
                     }
 
-                    const users = getUsersData();
-                    users[importedUser.username] = importedUser;
+                    const race = document.getElementById('authRace').value;
+                    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
+                    if (race === 'Namekuseijin') raceHp = 40;
+                    if (race === 'Saiyajin') raceStr = 5;
+                    if (race === 'Android') raceRes = 5;
+                    if (race === 'Humano') raceSpeed = 5;
+
+                    const newUser = {
+                        username: username,
+                        password: password,
+                        race: race,
+                        level: 1,
+                        exp: 0,
+                        maxExp: 100,
+                        hp: 100 + raceHp,
+                        maxHp: 100 + raceHp,
+                        ki: 50,
+                        maxKi: 50,
+                        str: 10 + raceStr,
+                        res: 10 + raceRes,
+                        speed: 10 + raceSpeed,
+                        statPoints: 5,
+                        zeni: 300,
+                        transformation: 'Base',
+                        inventory: [],
+                        avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
+                    };
+                    newUser.combatPower = calculateCombatPower(newUser);
+
+                    users[username] = newUser;
                     saveUsersData(users);
 
-                    currentUser = importedUser;
-                    localStorage.setItem(STORAGE_SESSION, importedUser.username);
-                    saveCurrentUserData();
-                    showToast("Progresso importado com sucesso!");
-                } catch (err) {
-                    showToast("Erro ao ler o ficheiro de Save.");
+                    _currentUser = newUser;
+                    localStorage.setItem(STORAGE_SESSION, username);
+                    showToast("Conta criada com sucesso! Bem-vindo.");
+                    loadGameScreen();
+
+                } else {
+                    if (!users[username] || users[username].password !== password) {
+                        errBox.innerText = "Usuário ou senha incorretos!";
+                        errBox.classList.remove('hidden');
+                        return;
+                    }
+
+                    _currentUser = users[username];
+                    localStorage.setItem(STORAGE_SESSION, username);
+                    showToast("Login efetuado com sucesso!");
+                    loadGameScreen();
                 }
             };
-            reader.readAsText(file);
-        }
 
-        function renderTransformations() {
-            const container = document.getElementById('dashTransformations');
-            container.innerHTML = TRANSFORMATIONS.map(t => {
-                const canTransform = currentUser.level >= t.reqLevel && currentUser.combatPower >= t.reqPL;
-                const isCurrent = currentUser.transformation === t.name;
-
-                return `
-                    <div class="bg-black/50 p-2.5 rounded border border-dbzBorder flex items-center justify-between">
-                        <div>
-                            <div class="text-xs font-bold ${isCurrent ? 'text-yellow-300' : 'text-gray-300'}">${t.name}</div>
-                            <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${t.reqPL}</div>
-                        </div>
-                        <button onclick="transform('${t.name}')" ${!canTransform || isCurrent ? 'disabled' : ''}
-                            class="${isCurrent ? 'bg-yellow-600 text-black font-bold' : canTransform ? 'retro-btn text-white' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2.5 py-1 text-[10px] rounded">
-                            ${isCurrent ? 'Ativo' : 'Transformar'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function transform(name) {
-            const t = TRANSFORMATIONS.find(tr => tr.name === name);
-            if (!t || !currentUser) return;
-
-            currentUser.transformation = t.name;
-            currentUser.str += t.strBonus;
-            currentUser.speed += t.speedBonus;
-            saveCurrentUserData();
-            showToast(`Você se transformou em ${t.name}! Poder aumentado!`);
-        }
-
-        function renderInventory() {
-            const container = document.getElementById('dashInventory');
-            if (currentUser.inventory && currentUser.inventory.length > 0) {
-                container.innerHTML = currentUser.inventory.map((item, idx) => `
-                    <div class="bg-black/60 p-2 rounded border border-dbzBorder flex items-center justify-between">
-                        <span class="text-xs text-yellow-300 font-semibold truncate"><i class="fa-solid fa-box text-orange-400 mr-1"></i>${item.name}</span>
-                        <button onclick="useInventoryItem(${idx})" class="text-[10px] bg-orange-600 hover:bg-orange-500 text-white px-2 py-0.5 rounded">Usar</button>
-                    </div>
-                `).join('');
-            } else {
-                container.innerHTML = `<div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>`;
-            }
-        }
-
-        function useInventoryItem(index) {
-            if (!currentUser || !currentUser.inventory[index]) return;
-            const item = currentUser.inventory[index];
-
-            if (item.effect === 'heal_full') {
-                currentUser.hp = currentUser.maxHp;
-                currentUser.ki = currentUser.maxKi;
-                showToast("Semente usada! HP e KI 100% restaurados.");
-            } else if (item.effect === 'ki_boost') {
-                currentUser.maxKi += 5;
-                currentUser.ki = Math.min(currentUser.maxKi, currentUser.ki + 50);
-                showToast("Essência de Ki usada! +50 KI e +5 KI Máximo.");
-            } else if (item.effect === 'stat_scouter') {
-                currentUser.str += 15;
-                currentUser.speed += 15;
-                showToast("Scouter Equipado! +15 Força e +15 Velocidade.");
-            } else if (item.effect === 'stat_gravity') {
-                currentUser.res += 40;
-                currentUser.maxHp += 300;
-                currentUser.hp += 300;
-                showToast("Traje Equipado! +40 Resistência e +300 HP.");
-            } else if (item.effect === 'exp_boost') {
-                currentUser.exp += 300;
-                showToast("Cápsula Usada! +300 EXP obtidos.");
-                if (currentUser.exp >= currentUser.maxExp) {
-                    currentUser.level += 1;
-                    currentUser.exp -= currentUser.maxExp;
-                    currentUser.maxExp = Math.floor(currentUser.maxExp * 1.5);
-                    currentUser.statPoints += 3;
-                }
-            } else if (item.effect === 'stat_all') {
-                currentUser.str += 50;
-                currentUser.res += 50;
-                currentUser.speed += 50;
-                showToast("Radar Ativado! +50 em todos os atributos!");
-            } else if (item.effect === 'stat_potara') {
-                currentUser.str += 150;
-                currentUser.maxHp += 1000;
-                currentUser.hp += 1000;
-                showToast("Brincos Equipados! Poder massivo obtido.");
-            }
-
-            currentUser.inventory.splice(index, 1);
-            saveCurrentUserData();
-        }
-
-        function renderShop() {
-            const container = document.getElementById('shopItemsContainer');
-            container.innerHTML = SHOP_ITEMS.map(item => `
-                <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-2">
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <i class="fa-solid ${item.icon} ${item.color} text-lg"></i>
-                            <h4 class="font-pixel text-xs text-yellow-400">${item.name}</h4>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-1">${item.desc}</p>
-                    </div>
-                    <div class="flex justify-between items-center pt-2 border-t border-dbzBorder/50">
-                        <span class="text-xs text-yellow-300 font-bold">${item.cost} Z$</span>
-                        <button onclick="buyShopItem('${item.id}')" class="retro-btn-green px-3 py-1 text-xs text-white font-bold rounded">Comprar</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function buyShopItem(itemId) {
-            const item = SHOP_ITEMS.find(i => i.id === itemId);
-            if (!item || !currentUser) return;
-
-            if (currentUser.zeni < item.cost) {
-                showToast("Zeni insuficiente!");
-                return;
-            }
-
-            currentUser.zeni -= item.cost;
-            currentUser.inventory = currentUser.inventory || [];
-            currentUser.inventory.push(item);
-
-            saveCurrentUserData();
-            showToast(`Você comprou ${item.name}!`);
-        }
-
-        function renderArenaEnemies() {
-            const container = document.getElementById('arenaEnemySelect');
-            container.innerHTML = ENEMIES.map(enemy => {
-                const canFight = currentUser && currentUser.level >= enemy.levelReq;
-                return `
-                    <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <img src="${enemy.avatar}" class="w-12 h-12 rounded border border-yellow-500 object-cover bg-black">
-                            <div>
-                                <h4 class="font-pixel text-xs text-yellow-400">${enemy.name}</h4>
-                                <p class="text-[10px] text-gray-400">Req: Nível ${enemy.levelReq} | Ganho: ${enemy.expReward} EXP / ${enemy.zeniReward} Z$</p>
-                            </div>
-                        </div>
-                        <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} 
-                            class="${canFight ? 'retro-btn' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-3 py-1.5 text-xs text-white font-bold rounded">
-                            ${canFight ? 'Lutar' : 'Bloqueado'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function startCombat(enemyId) {
-            activeEnemy = ENEMIES.find(e => e.id === enemyId);
-            if (!activeEnemy) return;
-
-            combatState = {
-                enemyHp: activeEnemy.hp,
-                enemyMaxHp: activeEnemy.hp
+            handleLogout = function() {
+                if (restInterval) clearInterval(restInterval);
+                _currentUser = null;
+                localStorage.removeItem(STORAGE_SESSION);
+                showAuthScreen();
+                showToast("Você saiu da conta.");
             };
 
-            document.getElementById('arenaEnemySelect').classList.add('hidden');
-            document.getElementById('arenaCombatScreen').classList.remove('hidden');
+            function updateUI() {
+                if (!_currentUser) return;
 
-            document.getElementById('battlePlayerAvatar').src = currentUser.avatar;
-            document.getElementById('battlePlayerName').innerText = currentUser.username;
-            document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
-            document.getElementById('battleEnemyName').innerText = activeEnemy.name;
+                document.getElementById('sideName').innerText = _currentUser.username;
+                document.getElementById('sideTitle').innerText = `${_currentUser.race} (${_currentUser.transformation || 'Base'})`;
+                document.getElementById('sideLevel').innerText = _currentUser.level;
+                document.getElementById('sidePL').innerText = _currentUser.combatPower.toLocaleString('pt-BR');
+                document.getElementById('sideAvatar').src = _currentUser.avatar;
+                document.getElementById('sideZeni').innerText = `${_currentUser.zeni} Z$`;
 
-            updateCombatBars();
-            document.getElementById('battleLog').innerHTML = `<div class="text-yellow-400">-> Você desafiou ${activeEnemy.name}! Escolha sua ação.</div>`;
-        }
+                const hpPct = Math.max(0, Math.min(100, (_currentUser.hp / _currentUser.maxHp) * 100));
+                const kiPct = Math.max(0, Math.min(100, (_currentUser.ki / _currentUser.maxKi) * 100));
+                const expPct = Math.max(0, Math.min(100, (_currentUser.exp / _currentUser.maxExp) * 100));
 
-        function updateCombatBars() {
-            const playerHpPct = Math.max(0, (currentUser.hp / currentUser.maxHp) * 100);
-            const enemyHpPct = Math.max(0, (combatState.enemyHp / combatState.enemyMaxHp) * 100);
+                document.getElementById('hpBar').style.width = `${hpPct}%`;
+                document.getElementById('kiBar').style.width = `${kiPct}%`;
+                document.getElementById('expBar').style.width = `${expPct}%`;
 
-            document.getElementById('battlePlayerHpBar').style.width = `${playerHpPct}%`;
-            document.getElementById('battlePlayerHpText').innerText = `${currentUser.hp}/${currentUser.maxHp}`;
-            
-            document.getElementById('battleEnemyHpBar').style.width = `${enemyHpPct}%`;
-            document.getElementById('battleEnemyHpText').innerText = `${combatState.enemyHp}/${combatState.enemyMaxHp}`;
-        }
+                document.getElementById('hpText').innerText = `${_currentUser.hp} / ${_currentUser.maxHp}`;
+                document.getElementById('kiText').innerText = `${_currentUser.ki} / ${_currentUser.maxKi}`;
+                document.getElementById('expText').innerText = `${_currentUser.exp} / ${_currentUser.maxExp}`;
 
-        function executeCombatTurn(action) {
-            if (!combatState || !activeEnemy) return;
+                document.getElementById('dashRaceBadge').innerText = _currentUser.race;
+                document.getElementById('dashStr').innerText = _currentUser.str;
+                document.getElementById('dashRes').innerText = _currentUser.res;
+                document.getElementById('dashSpeed').innerText = _currentUser.speed;
+                document.getElementById('dashAttrPoints').innerText = `Pontos: ${_currentUser.statPoints}`;
+                document.getElementById('shopUserZeni').innerText = _currentUser.zeni;
 
-            const log = document.getElementById('battleLog');
+                const statBtns = document.querySelectorAll('.add-stat-btn');
+                statBtns.forEach(btn => {
+                    if (_currentUser.statPoints > 0) btn.classList.remove('hidden');
+                    else btn.classList.add('hidden');
+                });
 
-            if (action === 'flee') {
-                log.innerHTML += `<div class="text-gray-400">-> Você fugiu da batalha!</div>`;
-                setTimeout(() => {
-                    document.getElementById('arenaCombatScreen').classList.add('hidden');
-                    document.getElementById('arenaEnemySelect').classList.remove('hidden');
-                }, 1000);
-                return;
+                renderTransformations();
+                renderInventory();
+                renderRanking();
             }
 
-            let playerDamage = 0;
-            if (action === 'attack') {
-                playerDamage = Math.floor(currentUser.str * 1.5) + Math.floor(Math.random() * 8);
-                combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
-                log.innerHTML += `<div class="text-green-400">-> Você atacou ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
-            } else if (action === 'ki_blast') {
-                if (currentUser.ki < 10) {
-                    log.innerHTML += `<div class="text-yellow-500">-> KI insuficiente!</div>`;
+            addStat = function(stat) {
+                if (!_currentUser || _currentUser.statPoints <= 0) return;
+                _currentUser.statPoints -= 1;
+                if (stat === 'str') _currentUser.str += 2;
+                if (stat === 'res') {
+                    _currentUser.res += 2;
+                    _currentUser.maxHp += 15;
+                    _currentUser.hp += 15;
+                }
+                if (stat === 'speed') _currentUser.speed += 2;
+
+                saveCurrentUserData();
+                showToast(`+2 Pontos em ${stat.toUpperCase()}!`);
+            };
+
+            startHomeResting = function() {
+                if (!_currentUser || restInterval) return;
+
+                if (_currentUser.hp >= _currentUser.maxHp && _currentUser.ki >= _currentUser.maxKi) {
+                    showToast("Você já está com Vida e Ki no máximo!");
                     return;
                 }
-                currentUser.ki -= 10;
-                playerDamage = Math.floor(currentUser.str * 2.2) + Math.floor(Math.random() * 15);
-                combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
-                log.innerHTML += `<div class="text-cyan-400">-> Kamehameha atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
-            }
 
-            updateCombatBars();
+                const btn = document.getElementById('btnHomeRest');
+                const progressContainer = document.getElementById('restProgressContainer');
+                const progressBar = document.getElementById('restProgressBar');
+                const timerText = document.getElementById('restTimerText');
 
-            if (combatState.enemyHp <= 0) {
-                log.innerHTML += `<div class="text-yellow-300 font-bold">-> VITÓRIA! Você derrotou ${activeEnemy.name}!</div>`;
-                currentUser.exp += activeEnemy.expReward;
-                currentUser.zeni += activeEnemy.zeniReward;
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                progressContainer.classList.remove('hidden');
 
-                if (currentUser.exp >= currentUser.maxExp) {
-                    currentUser.level += 1;
-                    currentUser.exp -= currentUser.maxExp;
-                    currentUser.maxExp = Math.floor(currentUser.maxExp * 1.5);
-                    currentUser.statPoints += 3;
-                    currentUser.maxHp += 20;
-                    currentUser.hp = currentUser.maxHp;
-                    log.innerHTML += `<div class="text-yellow-400 font-pixel text-[10px]">-> LEVEL UP! Nível ${currentUser.level}!</div>`;
+                let totalSeconds = 60;
+                let elapsedSeconds = 0;
+
+                const initialHp = _currentUser.hp;
+                const initialKi = _currentUser.ki;
+
+                const hpNeeded = _currentUser.maxHp - initialHp;
+                const kiNeeded = _currentUser.maxKi - initialKi;
+
+                restInterval = setInterval(() => {
+                    elapsedSeconds++;
+                    const remaining = totalSeconds - elapsedSeconds;
+                    const progressPct = (elapsedSeconds / totalSeconds) * 100;
+
+                    progressBar.style.width = `${progressPct}%`;
+                    timerText.innerText = `${remaining}s`;
+
+                    _currentUser.hp = Math.min(_currentUser.maxHp, Math.floor(initialHp + (hpNeeded * (elapsedSeconds / totalSeconds))));
+                    _currentUser.ki = Math.min(_currentUser.maxKi, Math.floor(initialKi + (kiNeeded * (elapsedSeconds / totalSeconds))));
+                    saveCurrentUserData();
+
+                    if (elapsedSeconds >= totalSeconds) {
+                        clearInterval(restInterval);
+                        restInterval = null;
+
+                        _currentUser.hp = _currentUser.maxHp;
+                        _currentUser.ki = _currentUser.maxKi;
+                        saveCurrentUserData();
+
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        progressContainer.classList.add('hidden');
+                        progressBar.style.width = '0%';
+                        
+                        showToast("Descanso concluído! HP e KI totalmente recuperados!");
+                    }
+                }, 1000);
+            };
+
+            trainCharacter = function() {
+                if (!_currentUser) return;
+                if (_currentUser.ki < 5) {
+                    showToast("KI insuficiente para treinar!");
+                    return;
+                }
+
+                _currentUser.ki -= 5;
+                const expGained = 25 + Math.floor(Math.random() * 20);
+                _currentUser.exp += expGained;
+
+                if (_currentUser.exp >= _currentUser.maxExp) {
+                    _currentUser.level += 1;
+                    _currentUser.exp -= _currentUser.maxExp;
+                    _currentUser.maxExp = Math.floor(_currentUser.maxExp * 1.5);
+                    _currentUser.statPoints += 3;
+                    _currentUser.maxHp += 20;
+                    _currentUser.hp = _currentUser.maxHp;
+                    _currentUser.maxKi += 10;
+                    _currentUser.ki = _currentUser.maxKi;
+                    showToast(`NÍVEL AUMENTOU! Agora você está no Nível ${_currentUser.level}!`);
+                } else {
+                    showToast(`Treino concluído: +${expGained} EXP!`);
                 }
 
                 saveCurrentUserData();
+            };
 
-                setTimeout(() => {
-                    document.getElementById('arenaCombatScreen').classList.add('hidden');
-                    document.getElementById('arenaEnemySelect').classList.remove('hidden');
-                }, 1800);
-                return;
+            uploadAvatar = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    _currentUser.avatar = e.target.result;
+                    saveCurrentUserData();
+                    showToast("Foto de perfil atualizada!");
+                };
+                reader.readAsDataURL(file);
+            };
+
+            exportSaveData = function() {
+                if (!_currentUser) return;
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(_currentUser, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `dbz_save_${_currentUser.username}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                showToast("Save exportado com sucesso!");
+            };
+
+            importSaveData = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedUser = JSON.parse(e.target.result);
+                        if (!importedUser.username || !importedUser.level) {
+                            showToast("Ficheiro de Save inválido!");
+                            return;
+                        }
+
+                        const users = getUsersData();
+                        users[importedUser.username] = importedUser;
+                        saveUsersData(users);
+
+                        _currentUser = importedUser;
+                        localStorage.setItem(STORAGE_SESSION, importedUser.username);
+                        saveCurrentUserData();
+                        showToast("Progresso importado com sucesso!");
+                    } catch (err) {
+                        showToast("Erro ao ler o ficheiro de Save.");
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            function renderTransformations() {
+                const container = document.getElementById('dashTransformations');
+                container.innerHTML = TRANSFORMATIONS.map(t => {
+                    const canTransform = _currentUser.level >= t.reqLevel && _currentUser.combatPower >= t.reqPL;
+                    const isCurrent = _currentUser.transformation === t.name;
+
+                    return `
+                        <div class="bg-black/50 p-2.5 rounded border border-dbzBorder flex items-center justify-between">
+                            <div>
+                                <div class="text-xs font-bold ${isCurrent ? 'text-yellow-300' : 'text-gray-300'}">${t.name}</div>
+                                <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${t.reqPL}</div>
+                            </div>
+                            <button onclick="transform('${t.name}')" ${!canTransform || isCurrent ? 'disabled' : ''}
+                                class="${isCurrent ? 'bg-yellow-600 text-black font-bold' : canTransform ? 'retro-btn text-white' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2.5 py-1 text-[10px] rounded">
+                                ${isCurrent ? 'Ativo' : 'Transformar'}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
             }
 
-            // Enemy Attack
-            setTimeout(() => {
-                const enemyDamage = Math.max(2, Math.floor(activeEnemy.str - (currentUser.res * 0.4))) + Math.floor(Math.random() * 5);
-                currentUser.hp = Math.max(0, currentUser.hp - enemyDamage);
-                log.innerHTML += `<div class="text-red-400">-> ${activeEnemy.name} atacou e causou ${enemyDamage} de dano!</div>`;
-                
-                updateCombatBars();
-                log.scrollTop = log.scrollHeight;
+            transform = function(name) {
+                const t = TRANSFORMATIONS.find(tr => tr.name === name);
+                if (!t || !_currentUser) return;
 
-                if (currentUser.hp <= 0) {
-                    log.innerHTML += `<div class="text-red-600 font-bold">-> DERROTADO! Vá até a Casa para descansar e se recuperar.</div>`;
+                _currentUser.transformation = t.name;
+                _currentUser.str += t.strBonus;
+                _currentUser.speed += t.speedBonus;
+                saveCurrentUserData();
+                showToast(`Você se transformou em ${t.name}! Poder aumentado!`);
+            };
+
+            function renderInventory() {
+                const container = document.getElementById('dashInventory');
+                if (_currentUser.inventory && _currentUser.inventory.length > 0) {
+                    container.innerHTML = _currentUser.inventory.map((item, idx) => `
+                        <div class="bg-black/60 p-2 rounded border border-dbzBorder flex items-center justify-between">
+                            <span class="text-xs text-yellow-300 font-semibold truncate"><i class="fa-solid fa-box text-orange-400 mr-1"></i>${item.name}</span>
+                            <button onclick="useInventoryItem(${idx})" class="text-[10px] bg-orange-600 hover:bg-orange-500 text-white px-2 py-0.5 rounded">Usar</button>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `<div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>`;
+                }
+            }
+
+            useInventoryItem = function(index) {
+                if (!_currentUser || !_currentUser.inventory[index]) return;
+                const item = _currentUser.inventory[index];
+
+                if (item.effect === 'heal_full') {
+                    _currentUser.hp = _currentUser.maxHp;
+                    _currentUser.ki = _currentUser.maxKi;
+                    showToast("Semente usada! HP e KI 100% restaurados.");
+                } else if (item.effect === 'ki_boost') {
+                    _currentUser.maxKi += 5;
+                    _currentUser.ki = Math.min(_currentUser.maxKi, _currentUser.ki + 50);
+                    showToast("Essência de Ki usada! +50 KI e +5 KI Máximo.");
+                } else if (item.effect === 'stat_scouter') {
+                    _currentUser.str += 15;
+                    _currentUser.speed += 15;
+                    showToast("Scouter Equipado! +15 Força e +15 Velocidade.");
+                } else if (item.effect === 'stat_gravity') {
+                    _currentUser.res += 40;
+                    _currentUser.maxHp += 300;
+                    _currentUser.hp += 300;
+                    showToast("Traje Equipado! +40 Resistência e +300 HP.");
+                } else if (item.effect === 'exp_boost') {
+                    _currentUser.exp += 300;
+                    showToast("Cápsula Usada! +300 EXP obtidos.");
+                    if (_currentUser.exp >= _currentUser.maxExp) {
+                        _currentUser.level += 1;
+                        _currentUser.exp -= _currentUser.maxExp;
+                        _currentUser.maxExp = Math.floor(_currentUser.maxExp * 1.5);
+                        _currentUser.statPoints += 3;
+                    }
+                } else if (item.effect === 'stat_all') {
+                    _currentUser.str += 50;
+                    _currentUser.res += 50;
+                    _currentUser.speed += 50;
+                    showToast("Radar Ativado! +50 em todos os atributos!");
+                } else if (item.effect === 'stat_potara') {
+                    _currentUser.str += 150;
+                    _currentUser.maxHp += 1000;
+                    _currentUser.hp += 1000;
+                    showToast("Brincos Equipados! Poder massivo obtido.");
+                }
+
+                _currentUser.inventory.splice(index, 1);
+                saveCurrentUserData();
+            };
+
+            function renderShop() {
+                const container = document.getElementById('shopItemsContainer');
+                container.innerHTML = SHOP_ITEMS.map(item => `
+                    <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-2">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid ${item.icon} ${item.color} text-lg"></i>
+                                <h4 class="font-pixel text-xs text-yellow-400">${item.name}</h4>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">${item.desc}</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-dbzBorder/50">
+                            <span class="text-xs text-yellow-300 font-bold">${item.cost} Z$</span>
+                            <button onclick="buyShopItem('${item.id}')" class="retro-btn-green px-3 py-1 text-xs text-white font-bold rounded">Comprar</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            buyShopItem = function(itemId) {
+                const item = SHOP_ITEMS.find(i => i.id === itemId);
+                if (!item || !_currentUser) return;
+
+                if (_currentUser.zeni < item.cost) {
+                    showToast("Zeni insuficiente!");
+                    return;
+                }
+
+                _currentUser.zeni -= item.cost;
+                _currentUser.inventory = _currentUser.inventory || [];
+                _currentUser.inventory.push(item);
+
+                saveCurrentUserData();
+                showToast(`Você comprou ${item.name}!`);
+            };
+
+            function renderArenaEnemies() {
+                const container = document.getElementById('arenaEnemySelect');
+                container.innerHTML = ENEMIES.map(enemy => {
+                    const canFight = _currentUser && _currentUser.level >= enemy.levelReq;
+                    return `
+                        <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <img src="${enemy.avatar}" class="w-12 h-12 rounded border border-yellow-500 object-cover bg-black">
+                                <div>
+                                    <h4 class="font-pixel text-xs text-yellow-400">${enemy.name}</h4>
+                                    <p class="text-[10px] text-gray-400">Req: Nível ${enemy.levelReq} | Ganho: ${enemy.expReward} EXP / ${enemy.zeniReward} Z$</p>
+                                </div>
+                            </div>
+                            <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} 
+                                class="${canFight ? 'retro-btn' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-3 py-1.5 text-xs text-white font-bold rounded">
+                                ${canFight ? 'Lutar' : 'Bloqueado'}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            startCombat = function(enemyId) {
+                activeEnemy = ENEMIES.find(e => e.id === enemyId);
+                if (!activeEnemy) return;
+
+                combatState = {
+                    enemyHp: activeEnemy.hp,
+                    enemyMaxHp: activeEnemy.hp
+                };
+
+                document.getElementById('arenaEnemySelect').classList.add('hidden');
+                document.getElementById('arenaCombatScreen').classList.remove('hidden');
+
+                document.getElementById('battlePlayerAvatar').src = _currentUser.avatar;
+                document.getElementById('battlePlayerName').innerText = _currentUser.username;
+                document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
+                document.getElementById('battleEnemyName').innerText = activeEnemy.name;
+
+                updateCombatBars();
+                document.getElementById('battleLog').innerHTML = `<div class="text-yellow-400">-> Você desafiou ${activeEnemy.name}! Escolha sua ação.</div>`;
+            };
+
+            function updateCombatBars() {
+                const playerHpPct = Math.max(0, (_currentUser.hp / _currentUser.maxHp) * 100);
+                const enemyHpPct = Math.max(0, (combatState.enemyHp / combatState.enemyMaxHp) * 100);
+
+                document.getElementById('battlePlayerHpBar').style.width = `${playerHpPct}%`;
+                document.getElementById('battlePlayerHpText').innerText = `${_currentUser.hp}/${_currentUser.maxHp}`;
+                
+                document.getElementById('battleEnemyHpBar').style.width = `${enemyHpPct}%`;
+                document.getElementById('battleEnemyHpText').innerText = `${combatState.enemyHp}/${combatState.enemyMaxHp}`;
+            }
+
+            executeCombatTurn = function(action) {
+                if (!combatState || !activeEnemy) return;
+
+                const log = document.getElementById('battleLog');
+
+                if (action === 'flee') {
+                    log.innerHTML += `<div class="text-gray-400">-> Você fugiu da batalha!</div>`;
+                    setTimeout(() => {
+                        document.getElementById('arenaCombatScreen').classList.add('hidden');
+                        document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                    }, 1000);
+                    return;
+                }
+
+                let playerDamage = 0;
+                if (action === 'attack') {
+                    playerDamage = Math.floor(_currentUser.str * 1.5) + Math.floor(Math.random() * 8);
+                    combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
+                    log.innerHTML += `<div class="text-green-400">-> Você atacou ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+                } else if (action === 'ki_blast') {
+                    if (_currentUser.ki < 10) {
+                        log.innerHTML += `<div class="text-yellow-500">-> KI insuficiente!</div>`;
+                        return;
+                    }
+                    _currentUser.ki -= 10;
+                    playerDamage = Math.floor(_currentUser.str * 2.2) + Math.floor(Math.random() * 15);
+                    combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
+                    log.innerHTML += `<div class="text-cyan-400">-> Kamehameha atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+                }
+
+                updateCombatBars();
+
+                if (combatState.enemyHp <= 0) {
+                    log.innerHTML += `<div class="text-yellow-300 font-bold">-> VITÓRIA! Você derrotou ${activeEnemy.name}!</div>`;
+                    _currentUser.exp += activeEnemy.expReward;
+                    _currentUser.zeni += activeEnemy.zeniReward;
+
+                    if (_currentUser.exp >= _currentUser.maxExp) {
+                        _currentUser.level += 1;
+                        _currentUser.exp -= _currentUser.maxExp;
+                        _currentUser.maxExp = Math.floor(_currentUser.maxExp * 1.5);
+                        _currentUser.statPoints += 3;
+                        _currentUser.maxHp += 20;
+                        _currentUser.hp = _currentUser.maxHp;
+                        log.innerHTML += `<div class="text-yellow-400 font-pixel text-[10px]">-> LEVEL UP! Nível ${_currentUser.level}!</div>`;
+                    }
+
                     saveCurrentUserData();
 
                     setTimeout(() => {
                         document.getElementById('arenaCombatScreen').classList.add('hidden');
                         document.getElementById('arenaEnemySelect').classList.remove('hidden');
                     }, 1800);
-                } else {
-                    saveCurrentUserData();
+                    return;
                 }
-            }, 500);
-        }
 
-        function initChatStorage() {
-            if (!localStorage.getItem(STORAGE_CHAT)) {
-                const initialMsgs = [
-                    { sender: 'Mestre Roshi', text: 'Bem-vindos à nova versão do DBZ RPG Online!', time: '12:00' },
-                    { sender: 'Vegeta', text: 'Eu serei o guerreiro número 1 deste ranking!', time: '12:02' }
-                ];
-                localStorage.setItem(STORAGE_CHAT, JSON.stringify(initialMsgs));
+                // Enemy Attack
+                setTimeout(() => {
+                    const enemyDamage = Math.max(2, Math.floor(activeEnemy.str - (_currentUser.res * 0.4))) + Math.floor(Math.random() * 5);
+                    _currentUser.hp = Math.max(0, _currentUser.hp - enemyDamage);
+                    log.innerHTML += `<div class="text-red-400">-> ${activeEnemy.name} atacou e causou ${enemyDamage} de dano!</div>`;
+                    
+                    updateCombatBars();
+                    log.scrollTop = log.scrollHeight;
+
+                    if (_currentUser.hp <= 0) {
+                        log.innerHTML += `<div class="text-red-600 font-bold">-> DERROTADO! Vá até a Casa para descansar e se recuperar.</div>`;
+                        saveCurrentUserData();
+
+                        setTimeout(() => {
+                            document.getElementById('arenaCombatScreen').classList.add('hidden');
+                            document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                        }, 1800);
+                    } else {
+                        saveCurrentUserData();
+                    }
+                }, 500);
+            };
+
+            function initChatStorage() {
+                if (!localStorage.getItem(STORAGE_CHAT)) {
+                    const initialMsgs = [
+                        { sender: 'Mestre Roshi', text: 'Bem-vindos à nova versão do DBZ RPG Online!', time: '12:00' },
+                        { sender: 'Vegeta', text: 'Eu serei o guerreiro número 1 deste ranking!', time: '12:02' }
+                    ];
+                    localStorage.setItem(STORAGE_CHAT, JSON.stringify(initialMsgs));
+                }
             }
-        }
 
-        function renderChat() {
-            const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
-            const chatBox = document.getElementById('chatMessages');
-            
-            chatBox.innerHTML = chatMsgs.map(m => `
-                <div class="bg-black/40 p-2 rounded border border-dbzBorder/60">
-                    <div class="flex justify-between items-center text-[10px]">
-                        <span class="text-yellow-400 font-bold">${m.sender}</span>
-                        <span class="text-gray-500">${m.time}</span>
+            function renderChat() {
+                const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+                const chatBox = document.getElementById('chatMessages');
+                
+                chatBox.innerHTML = chatMsgs.map(m => `
+                    <div class="bg-black/40 p-2 rounded border border-dbzBorder/60">
+                        <div class="flex justify-between items-center text-[10px]">
+                            <span class="text-yellow-400 font-bold">${m.sender}</span>
+                            <span class="text-gray-500">${m.time}</span>
+                        </div>
+                        <p class="text-gray-300 text-xs mt-0.5 break-words">${m.text}</p>
                     </div>
-                    <p class="text-gray-300 text-xs mt-0.5 break-words">${m.text}</p>
-                </div>
-            `).join('');
+                `).join('');
 
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function sendChatMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text || !currentUser) return;
-
-            const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
-            const now = new Date();
-            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-            chatMsgs.push({
-                sender: currentUser.username,
-                text: text,
-                time: timeStr
-            });
-
-            if (chatMsgs.length > 30) chatMsgs.shift();
-
-            localStorage.setItem(STORAGE_CHAT, JSON.stringify(chatMsgs));
-            input.value = '';
-            renderChat();
-        }
-
-        function renderRanking() {
-            const usersObj = getUsersData();
-            const players = Object.values(usersObj);
-
-            players.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
-
-            const tbody = document.getElementById('rankingTableBody');
-            if (players.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500 italic">Nenhum guerreiro registrado.</td></tr>`;
-                return;
+                chatBox.scrollTop = chatBox.scrollHeight;
             }
 
-            tbody.innerHTML = players.map((p, idx) => `
-                <tr class="hover:bg-dbzHover transition ${p.username === currentUser?.username ? 'bg-orange-950/40 border-l-2 border-orange-500' : ''}">
-                    <td class="p-2 text-center font-bold ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
-                    <td class="p-2 flex items-center space-x-2">
-                        <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
-                        <span class="font-bold text-gray-200 truncate">${p.username}</span>
-                    </td>
-                    <td class="p-2 text-center text-gray-400">${p.race}</td>
-                    <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
-                    <td class="p-2 text-right font-pixel text-orange-400">${(p.combatPower || 0).toLocaleString('pt-BR')}</td>
-                </tr>
-            `).join('');
-        }
+            sendChatMessage = function(e) {
+                e.preventDefault();
+                const input = document.getElementById('chatInput');
+                const text = input.value.trim();
+                if (!text || !_currentUser) return;
 
-        function switchTab(tabName) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c => c.classList.add('hidden'));
+                const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+                const now = new Date();
+                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(b => {
-                if (b.dataset.tab === tabName) {
-                    b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
-                } else {
-                    b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
+                chatMsgs.push({
+                    sender: _currentUser.username,
+                    text: text,
+                    time: timeStr
+                });
+
+                if (chatMsgs.length > 30) chatMsgs.shift();
+
+                localStorage.setItem(STORAGE_CHAT, JSON.stringify(chatMsgs));
+                input.value = '';
+                renderChat();
+            };
+
+            function renderRanking() {
+                const usersObj = getUsersData();
+                const players = Object.values(usersObj);
+
+                players.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
+
+                const tbody = document.getElementById('rankingTableBody');
+                if (players.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500 italic">Nenhum guerreiro registrado.</td></tr>`;
+                    return;
                 }
+
+                tbody.innerHTML = players.map((p, idx) => `
+                    <tr class="hover:bg-dbzHover transition ${p.username === _currentUser?.username ? 'bg-orange-950/40 border-l-2 border-orange-500' : ''}">
+                        <td class="p-2 text-center font-bold ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
+                        <td class="p-2 flex items-center space-x-2">
+                            <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
+                            <span class="font-bold text-gray-200 truncate">${p.username}</span>
+                        </td>
+                        <td class="p-2 text-center text-gray-400">${p.race}</td>
+                        <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
+                        <td class="p-2 text-right font-pixel text-orange-400">${(p.combatPower || 0).toLocaleString('pt-BR')}</td>
+                    </tr>
+                `).join('');
+            }
+
+            switchTab = function(tabName) {
+                const contents = document.querySelectorAll('.tab-content');
+                contents.forEach(c => c.classList.add('hidden'));
+
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(b => {
+                    if (b.dataset.tab === tabName) {
+                        b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
+                    } else {
+                        b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
+                    }
+                });
+
+                if (tabName === 'dashboard') document.getElementById('tabDashboard').classList.remove('hidden');
+                if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
+                if (tabName === 'arena') document.getElementById('tabArena').classList.remove('hidden');
+                if (tabName === 'shop') document.getElementById('tabShop').classList.remove('hidden');
+                if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
+            };
+
+            function showToast(text) {
+                const toast = document.getElementById('gameNotification');
+                document.getElementById('notificationText').innerText = text;
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 2500);
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                initChatStorage();
+                checkSession();
             });
-
-            if (tabName === 'dashboard') document.getElementById('tabDashboard').classList.remove('hidden');
-            if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
-            if (tabName === 'arena') document.getElementById('tabArena').classList.remove('hidden');
-            if (tabName === 'shop') document.getElementById('tabShop').classList.remove('hidden');
-            if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
-        }
-
-        function showToast(text) {
-            const toast = document.getElementById('gameNotification');
-            document.getElementById('notificationText').innerText = text;
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 2500);
-        }
+        })();
     </script>
 </body>
 </html>
