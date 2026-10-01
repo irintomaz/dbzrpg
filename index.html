@@ -531,7 +531,7 @@
                         <div id="openPvpLobby" class="bg-black/60 p-6 rounded-lg border border-red-900/60 text-center space-y-4">
                             <i class="fa-solid fa-skull-crossbones text-4xl text-red-500 animate-pulse"></i>
                             <h3 class="font-pixel text-xs text-yellow-300">ARENA ABERTA - BATTLE ROYALE</h3>
-                            <p class="text-xs text-gray-300 max-w-md mx-auto">Deseja entrar na Arena Aberta? Você poderá atacar qualquer guerreiro, mas **os bots também atacarão você periodicamente em tempo real**! Bots de todos os níveis estão presentes.</p>
+                            <p class="text-xs text-gray-300 max-w-md mx-auto">Prepare-se para entrar numa zona de combate livre! Qualquer guerreiro presente pode desferir ataques a qualquer momento. Mantenha a guarda elevada e sobreviva o máximo de tempo possível para obter grandes recompensas.</p>
                             <button onclick="enterOpenPvpArena()" class="retro-btn-red px-6 py-3 text-xs font-bold text-white rounded uppercase tracking-wider">
                                 <i class="fa-solid fa-door-open mr-2"></i> Confirmar Entrada na Arena Aberta
                             </button>
@@ -704,7 +704,7 @@
             let openPvpTimer = 0;
             let openPvpTimerInterval = null;
             let openPvpKills = 0;
-            let openPvpBotAttackInterval = null;
+            let openPvpBotAttackTimeout = null;
 
             // 50 BOTS COM NOMES VARIADOS (Animes, Celebridades, Memes, Pessoas Comuns)
             const AUTHENTIC_BOT_NAMES = [
@@ -812,7 +812,7 @@
                 if (bots.length === 0) {
                     bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
                         const race = BOT_RACES[i % BOT_RACES.length];
-                        const lvl = Math.floor(Math.random() * 35) + 1; // Bots de variados níveis
+                        const lvl = Math.floor(Math.random() * 35) + 1;
                         const str = 10 + (lvl * 4);
                         const res = 10 + (lvl * 3);
                         const speed = 10 + (lvl * 3);
@@ -1293,7 +1293,6 @@
                     directSec.classList.remove('hidden');
                     openSec.classList.add('hidden');
                     
-                    // ALTERNA SEMPRE QUE O PLAYER ENTRA NA PÁGINA PVP 1x1
                     renderPvpDirectList();
                 }
             };
@@ -1303,7 +1302,6 @@
                 if (!directContainer) return;
 
                 const bots = getBotsData();
-                // Embaralha aleatoriamente os bots para alternar sempre que abre
                 const shuffledBots = [...bots].sort(() => Math.random() - 0.5);
 
                 directContainer.innerHTML = shuffledBots.map(b => `
@@ -1365,7 +1363,6 @@
 
                 updateCombatUI();
 
-                // 50% de chance do bot atacar antes que o player!
                 if (Math.random() < 0.5) {
                     logBattle(`⚡ ${bot.username} tomou a iniciativa e atacou primeiro!`, 'text-orange-400 font-bold');
                     executeEnemyTurn();
@@ -1373,7 +1370,35 @@
                 }
             };
 
-            // ARENA ABERTA (BATTLE ROYALE SISTEMA COMPLETO)
+            // ARENA ABERTA (SISTEMA COM TIMERS VARIÁVEIS DE 3 SEGUNDOS A 2 MINUTOS)
+            function scheduleNextOpenPvpBotAttack() {
+                if (!inOpenPvp || !_currentUser) return;
+
+                // Tempo aleatório entre 3 segundos (3000ms) e 2 minutos (120000ms)
+                const randomDelay = Math.floor(Math.random() * (120000 - 3000 + 1)) + 3000;
+
+                openPvpBotAttackTimeout = setTimeout(() => {
+                    if (!inOpenPvp || !_currentUser) return;
+
+                    const bots = getBotsData();
+                    const randomBot = bots[Math.floor(Math.random() * bots.length)];
+
+                    const botDmg = Math.max(5, Math.floor(randomBot.str * 0.8) - Math.floor(_currentUser.res * 0.3));
+                    _currentUser.hp = Math.max(0, _currentUser.hp - botDmg);
+                    saveCurrentUserData();
+
+                    showToast(`⚔️ ${randomBot.username} atacou você na Arena causando ${botDmg} de dano!`);
+
+                    if (_currentUser.hp <= 0) {
+                        showToast("Você foi derrotado na Arena Aberta!");
+                        leaveOpenPvpArena();
+                    } else {
+                        // Agenda o próximo ataque
+                        scheduleNextOpenPvpBotAttack();
+                    }
+                }, randomDelay);
+            }
+
             enterOpenPvpArena = function() {
                 if (!_currentUser) return;
                 if (_currentUser.afkState) {
@@ -1400,7 +1425,6 @@
                     const secs = (openPvpTimer % 60).toString().padStart(2, '0');
                     document.getElementById('openPvpTimerDisplay').innerText = `${mins}:${secs}`;
 
-                    // Recompensa periódica por sobrevivência a cada 10 segundos
                     if (openPvpTimer % 10 === 0) {
                         const expBonus = 20;
                         const zeniBonus = 30;
@@ -1411,39 +1435,22 @@
                     }
                 }, 1000);
 
-                // Bots atacam o player aleatoriamente a cada 4 segundos
-                openPvpBotAttackInterval = setInterval(() => {
-                    if (!inOpenPvp || !_currentUser) return;
-
-                    const bots = getBotsData();
-                    const randomBot = bots[Math.floor(Math.random() * bots.length)];
-
-                    const botDmg = Math.max(5, Math.floor(randomBot.str * 0.8) - Math.floor(_currentUser.res * 0.3));
-                    _currentUser.hp = Math.max(0, _currentUser.hp - botDmg);
-                    saveCurrentUserData();
-
-                    showToast(`⚔️ ${randomBot.username} atacou você na Arena causando ${botDmg} de dano!`);
-
-                    if (_currentUser.hp <= 0) {
-                        showToast("Você foi derrotado na Arena Aberta!");
-                        leaveOpenPvpArena();
-                    }
-                }, 4000);
+                // Inicia o ciclo de ataques aleatórios de bots
+                scheduleNextOpenPvpBotAttack();
             };
 
             leaveOpenPvpArena = function() {
                 inOpenPvp = false;
                 if (openPvpTimerInterval) clearInterval(openPvpTimerInterval);
-                if (openPvpBotAttackInterval) clearInterval(openPvpBotAttackInterval);
+                if (openPvpBotAttackTimeout) clearTimeout(openPvpBotAttackTimeout);
 
                 openPvpTimerInterval = null;
-                openPvpBotAttackInterval = null;
+                openPvpBotAttackTimeout = null;
 
                 document.getElementById('openPvpLobby').classList.remove('hidden');
                 document.getElementById('openPvpActiveContainer').classList.add('hidden');
             };
 
-            // Органиização da Grelha dos Bots (Até 5 por linha)
             function renderOpenPvpGrid() {
                 const gridContainer = document.getElementById('pvpOpenGrid');
                 if (!gridContainer) return;
@@ -1467,10 +1474,7 @@
                 const bot = bots.find(b => b.username === botName);
                 if (!bot || !_currentUser) return;
 
-                // Leva o combate para a tela de batalha PvE completa com o bot
                 startPvpDirect(botName);
-                
-                // Marca que se o inimigo for derrotado no combate, ganha +1 Kill na Arena
                 activeEnemy.isOpenPvpTarget = true;
             };
 
