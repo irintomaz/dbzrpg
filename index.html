@@ -120,6 +120,16 @@
             0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
             100% { box-shadow: 0 0 25px rgba(255, 140, 0, 0.9); }
         }
+
+        /* Remove arrows from number inputs */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body class="font-sans min-h-screen flex flex-col justify-between overflow-x-hidden selection:bg-orange-500 selection:text-white">
@@ -146,7 +156,6 @@
                 <button onclick="switchTab('arena')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="arena">
                     <i class="fa-solid fa-khanda mr-1"></i> Batalha
                 </button>
-                <!-- NOVO BOTAO PLATAFORMA CELESTE -->
                 <button onclick="switchTab('celestial')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-cyan-300" data-tab="celestial">
                     <i class="fa-solid fa-cloud-moon mr-1"></i> Plataforma Celeste
                 </button>
@@ -312,27 +321,42 @@
                                 <span id="dashAttrPoints" class="text-xs font-pixel text-yellow-400">Pontos: 0</span>
                             </div>
 
+                            <!-- Força -->
                             <div class="flex justify-between items-center text-xs">
-                                <span class="text-red-400 font-bold"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
-                                <div class="flex items-center space-x-2">
-                                    <span id="dashStr" class="font-bold text-white">10</span>
-                                    <button onclick="addStat('str')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                <span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
+                                <div class="flex items-center space-x-1.5">
+                                    <span id="dashStr" class="font-bold text-white mr-1">10</span>
+                                    <div class="stat-controls hidden items-center space-x-1">
+                                        <input type="number" id="inputStr" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                        <button onclick="addCustomStat('str')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
+                                        <button onclick="addAllStat('str')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- Resistência -->
                             <div class="flex justify-between items-center text-xs">
-                                <span class="text-green-400 font-bold"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
-                                <div class="flex items-center space-x-2">
-                                    <span id="dashRes" class="font-bold text-white">10</span>
-                                    <button onclick="addStat('res')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                <span class="text-green-400 font-bold flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
+                                <div class="flex items-center space-x-1.5">
+                                    <span id="dashRes" class="font-bold text-white mr-1">10</span>
+                                    <div class="stat-controls hidden items-center space-x-1">
+                                        <input type="number" id="inputRes" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                        <button onclick="addCustomStat('res')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
+                                        <button onclick="addAllStat('res')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- Velocidade -->
                             <div class="flex justify-between items-center text-xs">
-                                <span class="text-cyan-400 font-bold"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
-                                <div class="flex items-center space-x-2">
-                                    <span id="dashSpeed" class="font-bold text-white">10</span>
-                                    <button onclick="addStat('speed')" class="add-stat-btn hidden w-5 h-5 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold">+</button>
+                                <span class="text-cyan-400 font-bold flex items-center"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
+                                <div class="flex items-center space-x-1.5">
+                                    <span id="dashSpeed" class="font-bold text-white mr-1">10</span>
+                                    <div class="stat-controls hidden items-center space-x-1">
+                                        <input type="number" id="inputSpeed" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                        <button onclick="addCustomStat('speed')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
+                                        <button onclick="addAllStat('speed')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -594,7 +618,7 @@
 
     <script>
         // Declarações globais para invocação via HTML onclick
-        let handleAuthSubmit, handleLogout, toggleAuthMode, addStat, trainCharacter, uploadAvatar;
+        let handleAuthSubmit, handleLogout, toggleAuthMode, addCustomStat, addAllStat, trainCharacter, uploadAvatar;
         let exportSaveData, importSaveData, transform, useInventoryItem, buyShopItem;
         let startCombat, executeCombatTurn, sendChatMessage, switchTab, startHomeResting;
         let enterAfkRoom, leaveAfkRoom;
@@ -639,7 +663,7 @@
                 { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
                 { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
                 { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
-                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos osatributos base.', effect: 'stat_all' },
+                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
                 { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
             ];
 
@@ -805,7 +829,7 @@
                         zeni: 300,
                         transformation: 'Base',
                         inventory: [],
-                        afkState: null, // { roomId: number, startTime: timestamp, gainedExp: 0, gainedZeni: 0 }
+                        afkState: null,
                         avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
                     };
                     newUser.combatPower = calculateCombatPower(newUser);
@@ -882,10 +906,11 @@
                 document.getElementById('dashAttrPoints').innerText = `Pontos: ${_currentUser.statPoints}`;
                 document.getElementById('shopUserZeni').innerText = _currentUser.zeni;
 
-                const statBtns = document.querySelectorAll('.add-stat-btn');
-                statBtns.forEach(btn => {
-                    if (_currentUser.statPoints > 0) btn.classList.remove('hidden');
-                    else btn.classList.add('hidden');
+                // Controlo de visibilidade da distribuição de pontos
+                const statControls = document.querySelectorAll('.stat-controls');
+                statControls.forEach(ctrl => {
+                    if (_currentUser.statPoints > 0) ctrl.classList.remove('hidden'), ctrl.classList.add('flex');
+                    else ctrl.classList.add('hidden'), ctrl.classList.remove('flex');
                 });
 
                 renderTransformations();
@@ -894,19 +919,52 @@
                 renderCelestialRooms();
             }
 
-            addStat = function(stat) {
+            // Adiciona quantidade personalizada/digitada de pontos
+            addCustomStat = function(stat) {
                 if (!_currentUser || _currentUser.statPoints <= 0) return;
-                _currentUser.statPoints -= 1;
-                if (stat === 'str') _currentUser.str += 2;
-                if (stat === 'res') {
-                    _currentUser.res += 2;
-                    _currentUser.maxHp += 15;
-                    _currentUser.hp += 15;
-                }
-                if (stat === 'speed') _currentUser.speed += 2;
 
+                let inputId = 'inputStr';
+                if (stat === 'res') inputId = 'inputRes';
+                if (stat === 'speed') inputId = 'inputSpeed';
+
+                const inputEl = document.getElementById(inputId);
+                let amount = parseInt(inputEl.value, 10);
+
+                if (isNaN(amount) || amount <= 0) {
+                    showToast("Por favor insira um valor de pontos válido!");
+                    return;
+                }
+
+                if (amount > _currentUser.statPoints) {
+                    amount = _currentUser.statPoints; // Limita aos pontos disponíveis
+                }
+
+                _currentUser.statPoints -= amount;
+                const pointsGained = amount * 2; // Cada ponto investido dá +2 no atributo
+
+                if (stat === 'str') _currentUser.str += pointsGained;
+                if (stat === 'res') {
+                    _currentUser.res += pointsGained;
+                    _currentUser.maxHp += (amount * 15);
+                    _currentUser.hp += (amount * 15);
+                }
+                if (stat === 'speed') _currentUser.speed += pointsGained;
+
+                inputEl.value = 1; // Reseta input para 1
                 saveCurrentUserData();
-                showToast(`+2 Pontos em ${stat.toUpperCase()}!`);
+                showToast(`+${pointsGained} Pontos em ${stat.toUpperCase()}!`);
+            };
+
+            // Distribui TODOS os pontos disponíveis de uma só vez
+            addAllStat = function(stat) {
+                if (!_currentUser || _currentUser.statPoints <= 0) return;
+                
+                let inputId = 'inputStr';
+                if (stat === 'res') inputId = 'inputRes';
+                if (stat === 'speed') inputId = 'inputSpeed';
+
+                document.getElementById(inputId).value = _currentUser.statPoints;
+                addCustomStat(stat);
             };
 
             startHomeResting = function() {
@@ -1106,13 +1164,11 @@
                     const room = CELESTIAL_ROOMS.find(r => r.id === _currentUser.afkState.roomId);
                     if (!room) return;
 
-                    // Adiciona recompensas a cada 5s
                     _currentUser.exp += room.expRate;
                     _currentUser.zeni += room.zeniRate;
                     _currentUser.afkState.gainedExp += room.expRate;
                     _currentUser.afkState.gainedZeni += room.zeniRate;
 
-                    // Verifica Level Up
                     if (_currentUser.exp >= _currentUser.maxExp) {
                         _currentUser.level += 1;
                         _currentUser.exp -= _currentUser.maxExp;
@@ -1127,7 +1183,6 @@
 
                     saveCurrentUserData();
 
-                    // Atualiza displays AFK
                     const elapsedMs = Date.now() - _currentUser.afkState.startTime;
                     const elapsedSecs = Math.floor(elapsedMs / 1000);
                     const hrs = Math.floor(elapsedSecs / 3600).toString().padStart(2, '0');
