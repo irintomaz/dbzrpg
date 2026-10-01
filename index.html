@@ -187,14 +187,14 @@
                 </div>
 
                 <!-- Level & Combat Power -->
-                <div class="grid grid-cols-2 gap-2 mb-3 text-center bg-black/40 p-2 rounded border border-dbzBorder">
+                <div class="grid grid-cols-2 gap-2 mb-3 text-center bg-black/40 p-2 rounded border border-dbzBorder items-center">
                     <div>
                         <div class="text-[10px] text-gray-400 uppercase">Nível</div>
                         <div id="sideLevel" class="font-pixel text-sm text-yellow-300">1</div>
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <div class="text-[10px] text-gray-400 uppercase">Poder de Luta</div>
-                        <div id="sidePL" class="font-pixel text-xs text-orange-400 truncate">1,000</div>
+                        <div id="sidePL" class="font-pixel text-[10px] sm:text-xs text-orange-400 break-words leading-tight" title="1,000">1,000</div>
                     </div>
                 </div>
 
@@ -560,6 +560,16 @@
             let combatState = null;
             let restInterval = null;
 
+            // Formatação do Poder de Luta para evitar corte em números grandes
+            function formatPower(num) {
+                if (!num && num !== 0) return '0';
+                if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+                if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+                if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+                if (num >= 1e3) return (num / 1e3).toFixed(1) + 'k';
+                return num.toLocaleString('pt-BR');
+            }
+
             const SHOP_ITEMS = [
                 { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
                 { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e concede +5 KI Máximo permanente.', effect: 'ki_boost' },
@@ -768,7 +778,12 @@
                 document.getElementById('sideName').innerText = _currentUser.username;
                 document.getElementById('sideTitle').innerText = `${_currentUser.race} (${_currentUser.transformation || 'Base'})`;
                 document.getElementById('sideLevel').innerText = _currentUser.level;
-                document.getElementById('sidePL').innerText = _currentUser.combatPower.toLocaleString('pt-BR');
+                
+                // Atualiza o Poder de Luta com formatação compacta para valores altos + tooltip completo
+                const sidePLElement = document.getElementById('sidePL');
+                sidePLElement.innerText = formatPower(_currentUser.combatPower);
+                sidePLElement.title = _currentUser.combatPower.toLocaleString('pt-BR');
+
                 document.getElementById('sideAvatar').src = _currentUser.avatar;
                 document.getElementById('sideZeni').innerText = `${_currentUser.zeni} Z$`;
 
@@ -964,7 +979,7 @@
                         <div class="bg-black/50 p-2.5 rounded border border-dbzBorder flex items-center justify-between">
                             <div>
                                 <div class="text-xs font-bold ${isCurrent ? 'text-yellow-300' : 'text-gray-300'}">${t.name}</div>
-                                <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${t.reqPL}</div>
+                                <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${formatPower(t.reqPL)}</div>
                             </div>
                             <button onclick="transform('${t.name}')" ${!canTransform || isCurrent ? 'disabled' : ''}
                                 class="${isCurrent ? 'bg-yellow-600 text-black font-bold' : canTransform ? 'retro-btn text-white' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2.5 py-1 text-[10px] rounded">
@@ -1286,7 +1301,7 @@
                         </td>
                         <td class="p-2 text-center text-gray-400">${p.race}</td>
                         <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
-                        <td class="p-2 text-right font-pixel text-orange-400">${(p.combatPower || 0).toLocaleString('pt-BR')}</td>
+                        <td class="p-2 text-right font-pixel text-orange-400" title="${(p.combatPower || 0).toLocaleString('pt-BR')}">${formatPower(p.combatPower || 0)}</td>
                     </tr>
                 `).join('');
             }
@@ -1328,3 +1343,10 @@
     </script>
 </body>
 </html>
+```eof
+
+O código completo do jogo foi atualizado com as seguintes alterações:
+
+1. **Formatação Inteligente de Números Grandes:** Adicionada a função `formatPower` para converter valores em formato de sufixo compacto (ex: `1.5k`, `2.4M`, `3.1B`, `1.0T`).
+2. **Ajuste de CSS Responsivo no Container:** O elemento `#sidePL` recebeu estilos para permitir que o texto quebre ou diminua sem estourar as margens do card.
+3. **Tooltip de Poder Completo:** Passar o ponteiro por cima do valor exibe o número exato formatado.
