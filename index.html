@@ -106,7 +106,6 @@
             background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -209,7 +208,6 @@
                     </div>
                     <h2 id="sideName" class="font-pixel text-sm text-yellow-400 mt-2 text-center truncate w-full">Son Goku</h2>
                     
-                    <!-- Indicador AFK no Perfil -->
                     <div id="sideAfkBadge" class="hidden mt-1 px-2 py-0.5 rounded bg-cyan-950 border border-cyan-500 text-cyan-300 text-[10px] font-pixel animate-pulse">
                         <i class="fa-solid fa-hourglass-half mr-1"></i>Em Treino AFK
                     </div>
@@ -229,7 +227,6 @@
 
                 <!-- Status Bars -->
                 <div class="space-y-2 text-xs">
-                    <!-- HP -->
                     <div>
                         <div class="flex justify-between mb-0.5 text-[11px] font-bold">
                             <span class="text-red-400"><i class="fa-solid fa-heart mr-1"></i>Vida (HP)</span>
@@ -240,7 +237,6 @@
                         </div>
                     </div>
 
-                    <!-- KI -->
                     <div>
                         <div class="flex justify-between mb-0.5 text-[11px] font-bold">
                             <span class="text-blue-400"><i class="fa-solid fa-bolt mr-1"></i>Energia (KI)</span>
@@ -251,7 +247,6 @@
                         </div>
                     </div>
 
-                    <!-- EXP -->
                     <div>
                         <div class="flex justify-between mb-0.5 text-[11px] font-bold">
                             <span class="text-yellow-400"><i class="fa-solid fa-star mr-1"></i>Experiência</span>
@@ -274,7 +269,7 @@
         <!-- Center Screen Column -->
         <section class="lg:col-span-6 space-y-4">
 
-            <!-- AUTH SCREEN (LOGIN & REGISTER) -->
+            <!-- AUTH SCREEN -->
             <div id="authView" class="bg-dbzCardBg retro-border rounded-lg p-6 max-w-md mx-auto shadow-2xl relative my-6">
                 <div class="text-center mb-6">
                     <i class="fa-solid fa-dragon text-5xl text-yellow-400 mb-2 drop-shadow"></i>
@@ -339,8 +334,8 @@
                                     <span id="dashStr" class="font-bold text-white mr-1">10</span>
                                     <div class="stat-controls hidden items-center space-x-1">
                                         <input type="number" id="inputStr" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('str')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
-                                        <button onclick="addAllStat('str')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                        <button onclick="addCustomStat('str')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                        <button onclick="addAllStat('str')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
                                     </div>
                                 </div>
                             </div>
@@ -352,8 +347,8 @@
                                     <span id="dashRes" class="font-bold text-white mr-1">10</span>
                                     <div class="stat-controls hidden items-center space-x-1">
                                         <input type="number" id="inputRes" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('res')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
-                                        <button onclick="addAllStat('res')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                        <button onclick="addCustomStat('res')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                        <button onclick="addAllStat('res')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
                                     </div>
                                 </div>
                             </div>
@@ -365,8 +360,8 @@
                                     <span id="dashSpeed" class="font-bold text-white mr-1">10</span>
                                     <div class="stat-controls hidden items-center space-x-1">
                                         <input type="number" id="inputSpeed" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('speed')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade digitada">+</button>
-                                        <button onclick="addAllStat('speed')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos os pontos disponíveis">Tudo</button>
+                                        <button onclick="addCustomStat('speed')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                        <button onclick="addAllStat('speed')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
                                     </div>
                                 </div>
                             </div>
@@ -397,7 +392,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: CASA (REST SYSTEM 1 MINUTE) -->
+            <!-- TAB 2: CASA -->
             <div id="tabHome" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
@@ -415,14 +410,12 @@
                             </div>
                         </div>
 
-                        <!-- Rest Action Button -->
                         <div>
                             <button id="btnHomeRest" onclick="startHomeResting()" class="retro-btn-blue px-6 py-3 text-xs font-bold text-white rounded uppercase tracking-wider">
                                 <i class="fa-solid fa-bed mr-2"></i> Descansar (1 Minuto)
                             </button>
                         </div>
 
-                        <!-- Progress Section -->
                         <div id="restProgressContainer" class="hidden bg-black/60 p-4 rounded-lg border border-blue-900/60 space-y-3">
                             <div class="flex justify-between items-center text-xs font-bold">
                                 <span class="text-blue-400 flex items-center"><i class="fa-solid fa-moon text-yellow-400 mr-2 animate-pulse"></i> Descansando...</span>
@@ -448,7 +441,7 @@
                     </div>
 
                     <div id="arenaEnemySelect" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Enemy cards populated via JS -->
+                        <!-- Populated via JS -->
                     </div>
 
                     <div id="arenaCombatScreen" class="hidden space-y-4">
@@ -474,37 +467,38 @@
                             </div>
                         </div>
 
-                        <!-- Combat Action Buttons & Skills Menu -->
-                        <div class="space-y-2">
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="executeCombatTurn('attack')" class="retro-btn py-3 text-xs font-bold text-white rounded">
-                                    <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
-                                </button>
-                                <button onclick="toggleSkillsList()" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
-                                    <i class="fa-solid fa-bolt mr-1"></i> Skills / Poderes
-                                </button>
-                                <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 text-xs font-bold text-white rounded">
-                                    <i class="fa-solid fa-person-running mr-1"></i> Fugir
+                        <!-- Combat Actions with Native Select Dropdown for Skills & Transformations -->
+                        <div class="space-y-3 bg-black/40 p-3 rounded-lg border border-dbzBorder">
+                            <div class="flex flex-col sm:flex-row gap-2 items-center">
+                                <div class="flex-1 w-full">
+                                    <label class="block text-[10px] font-pixel text-yellow-400 mb-1">SELECIONAR HABILIDADE / TRANSFORMAÇÃO:</label>
+                                    <select id="combatSkillSelect" class="w-full bg-dbzDarkBg border border-dbzBorder text-xs text-white rounded p-2 focus:outline-none focus:border-orange-500">
+                                        <!-- Options populated via JS -->
+                                    </select>
+                                </div>
+                                <button onclick="useSelectedSkillFromSelect()" class="w-full sm:w-auto retro-btn-blue px-4 py-2.5 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Executar Skill
                                 </button>
                             </div>
 
-                            <!-- Lista Desdobrável de Skills por Raça -->
-                            <div id="skillsDropdownList" class="hidden bg-black/80 border border-yellow-500/50 rounded-lg p-3 space-y-2">
-                                <h4 class="font-pixel text-[10px] text-yellow-400 uppercase border-b border-dbzBorder pb-1 mb-2"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Habilidades Especiais</h4>
-                                <div id="skillsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                    <!-- Preenchido via Javascript -->
-                                </div>
+                            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-dbzBorder/50">
+                                <button onclick="executeCombatTurn('attack')" class="retro-btn py-2.5 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
+                                </button>
+                                <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-2.5 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-person-running mr-1"></i> Fugir
+                                </button>
                             </div>
                         </div>
 
                         <div class="bg-black/80 border border-dbzBorder rounded p-3 h-40 overflow-y-auto text-xs space-y-1 font-mono" id="battleLog">
-                            <div class="text-yellow-400">-&gt; A batalha começou! Escolha sua ação.</div>
+                            <div class="text-yellow-400">-> A batalha começou! Escolha sua ação.</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- NOVA TAB: ARENAS PVP (DIRETO E ABERTA) -->
+            <!-- TAB 4: ARENAS PVP -->
             <div id="tabPvp" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
@@ -512,7 +506,7 @@
                         <span class="text-xs text-green-400 flex items-center"><i class="fa-solid fa-circle text-[8px] mr-1 animate-pulse"></i> 50 Jogadores Conectados</span>
                     </div>
 
-                    <!-- Sub-abas de escolha de modo PVP -->
+                    <!-- Sub-abas PVP -->
                     <div class="flex border-b border-dbzBorder mb-4">
                         <button id="pvpModeDirectBtn" onclick="switchPvpSubTab('direct')" class="flex-1 py-2 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400">
                             <i class="fa-solid fa-user-ninja mr-1"></i> PVP 1x1 Direto
@@ -524,33 +518,59 @@
 
                     <!-- Sub-aba 1: PVP 1x1 Direto -->
                     <div id="pvpSubDirect" class="space-y-3">
-                        <p class="text-xs text-gray-400">Escolha um jogador da lista online e desafie-o para um combate de turno individual.</p>
+                        <p class="text-xs text-gray-400">Escolha um guerreiro da lista online para um combate direto. A ordem da lista altera-se cada vez que visitas a página!</p>
                         <div id="pvpDirectList" class="grid grid-cols-1 gap-2 max-h-96 overflow-y-auto pr-1">
                             <!-- Populated via JS -->
                         </div>
                     </div>
 
-                    <!-- Sub-aba 2: Arena Aberta com Timer de 10s -->
+                    <!-- Sub-aba 2: Arena Aberta com Entrada e Organização em Grelha -->
                     <div id="pvpSubOpen" class="hidden space-y-4">
-                        <div class="bg-black/60 p-4 rounded-lg border border-red-900/60 flex flex-col sm:flex-row items-center justify-between gap-3">
-                            <div>
-                                <h3 class="font-pixel text-xs text-yellow-300"><i class="fa-solid fa-shield-halved mr-1 text-red-400"></i>Arena Livre de Combate</h3>
-                                <p class="text-xs text-gray-400 mt-1">Ataque qualquer guerreiro na arena. Você deve aguardar o tempo de recarga entre ataques!</p>
+                        
+                        <!-- Painel do Lobby para Entrar na Arena Aberta -->
+                        <div id="openPvpLobby" class="bg-black/60 p-6 rounded-lg border border-red-900/60 text-center space-y-4">
+                            <i class="fa-solid fa-skull-crossbones text-4xl text-red-500 animate-pulse"></i>
+                            <h3 class="font-pixel text-xs text-yellow-300">ARENA ABERTA - BATTLE ROYALE</h3>
+                            <p class="text-xs text-gray-300 max-w-md mx-auto">Deseja entrar na Arena Aberta? Você poderá atacar qualquer guerreiro, mas **os bots também atacarão você periodicamente em tempo real**! Bots de todos os níveis estão presentes.</p>
+                            <button onclick="enterOpenPvpArena()" class="retro-btn-red px-6 py-3 text-xs font-bold text-white rounded uppercase tracking-wider">
+                                <i class="fa-solid fa-door-open mr-2"></i> Confirmar Entrada na Arena Aberta
+                            </button>
+                        </div>
+
+                        <!-- Painel Ativo da Arena Aberta -->
+                        <div id="openPvpActiveContainer" class="hidden space-y-4">
+                            <div class="bg-black/70 p-4 rounded-lg border border-red-500 flex flex-wrap items-center justify-between gap-3">
+                                <div>
+                                    <h3 class="font-pixel text-xs text-yellow-300"><i class="fa-solid fa-crosshairs text-red-400 mr-1"></i>Em Batalha Aberta</h3>
+                                    <p class="text-[11px] text-gray-400">Sobreviva ao caos e elimine guerreiros!</p>
+                                </div>
+                                <div class="flex gap-4 text-xs font-pixel">
+                                    <div class="text-center bg-black/80 px-3 py-1.5 rounded border border-cyan-500/50">
+                                        <span class="text-[9px] text-gray-400 block">Tempo Vivo</span>
+                                        <span id="openPvpTimerDisplay" class="text-cyan-300">00:00</span>
+                                    </div>
+                                    <div class="text-center bg-black/80 px-3 py-1.5 rounded border border-red-500/50">
+                                        <span class="text-[9px] text-gray-400 block">Abates (Kills)</span>
+                                        <span id="openPvpKillsDisplay" class="text-red-400">0</span>
+                                    </div>
+                                </div>
+                                <button onclick="leaveOpenPvpArena()" class="retro-btn-purple px-4 py-2 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-person-running mr-1"></i> Sair da Arena Aberta
+                                </button>
                             </div>
-                            <div class="text-center bg-black/80 px-4 py-2 rounded border border-yellow-500/40">
-                                <span class="text-[10px] text-gray-400 block uppercase">Recarga do Ataque</span>
-                                <span id="pvpTimerText" class="font-pixel text-sm text-green-400">PRONTO!</span>
+
+                            <!-- Grade de Bots (Máximo 5 por linha) -->
+                            <p class="text-[11px] text-yellow-400 font-pixel">SELECIONE UM OPONENTE DA SALA PARA ATACAR:</p>
+                            <div id="pvpOpenGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 max-h-[420px] overflow-y-auto p-1 bg-black/40 rounded border border-dbzBorder">
+                                <!-- Populated via JS (Grid de até 5 colunas) -->
                             </div>
                         </div>
 
-                        <div id="pvpOpenList" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
-                            <!-- Populated via JS -->
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 4: PLATAFORMA CELESTE (TREINO AFK) -->
+            <!-- TAB 5: PLATAFORMA CELESTE -->
             <div id="tabCelestial" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
@@ -558,7 +578,6 @@
                         <span class="text-xs text-gray-400">Treino Automático AFK</span>
                     </div>
 
-                    <!-- Status Ativo de Treino AFK -->
                     <div id="afkActivePanel" class="hidden bg-black/60 p-5 rounded-lg border border-cyan-500 text-center space-y-4 mb-4">
                         <div class="flex justify-center items-center space-x-3">
                             <i class="fa-solid fa-person-rays text-4xl text-cyan-400 animate-pulse"></i>
@@ -574,24 +593,23 @@
                             <div class="flex justify-between"><span>Zeni Acumulado:</span><span id="afkZeniGained" class="font-pixel text-yellow-300">+0 Z$</span></div>
                         </div>
 
-                        <p class="text-[11px] text-red-400 italic font-semibold"><i class="fa-solid fa-lock mr-1"></i>Enquanto estiver treinando aqui, todas as outras ações (batalhar, treinar manual e descansar) ficam bloqueadas!</p>
+                        <p class="text-[11px] text-red-400 italic font-semibold"><i class="fa-solid fa-lock mr-1"></i>Enquanto estiver treinando aqui, todas as outras ações ficam bloqueadas!</p>
 
                         <button onclick="leaveAfkRoom()" class="retro-btn-purple px-6 py-2 text-xs font-bold text-white rounded">
                             <i class="fa-solid fa-door-open mr-1"></i> Sair do Treino Celeste
                         </button>
                     </div>
 
-                    <!-- Lista de Salas -->
                     <div id="afkRoomsContainer" class="space-y-3">
-                        <p class="text-xs text-gray-400">Escolha uma sala adequada para o seu nível. O personagem continuará acumulando recursos automaticamente em tempo real.</p>
+                        <p class="text-xs text-gray-400">Escolha uma sala adequada para o seu nível. O personagem continuará acumulando recursos automaticamente.</p>
                         <div class="grid grid-cols-1 gap-3" id="afkRoomsList">
-                            <!-- Renderizado via Javascript -->
+                            <!-- Populated via JS -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 5: KAME HOUSE SHOP -->
+            <!-- TAB 6: KAME HOUSE SHOP -->
             <div id="tabShop" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
@@ -605,7 +623,7 @@
                 </div>
             </div>
 
-            <!-- TAB 6: RANKING HALL OF FAME -->
+            <!-- TAB 7: RANKING HALL OF FAME -->
             <div id="tabRanking" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
@@ -663,11 +681,11 @@
     </div>
 
     <script>
-        // Declarações globais para invocação via HTML onclick
+        // Declaracoes globais para invocacao via HTML onclick
         let handleAuthSubmit, handleLogout, toggleAuthMode, addCustomStat, addAllStat, trainCharacter, uploadAvatar;
         let useInventoryItem, buyShopItem;
-        let startCombat, executeCombatTurn, toggleSkillsList, useSkill, sendChatMessage, switchTab, startHomeResting;
-        let enterAfkRoom, leaveAfkRoom, switchPvpSubTab, startPvpDirect, attackOpenPvpTarget;
+        let startCombat, executeCombatTurn, useSelectedSkillFromSelect, sendChatMessage, switchTab, startHomeResting;
+        let enterAfkRoom, leaveAfkRoom, switchPvpSubTab, startPvpDirect, enterOpenPvpArena, leaveOpenPvpArena, attackOpenPvpTarget;
 
         (function() {
             const STORAGE_USERS = 'dbz_rpg_users_v2';
@@ -681,22 +699,25 @@
             let restInterval = null;
             let afkInterval = null;
 
-            // Timer de 10s para arena aberta
-            let pvpCooldown = 0;
-            let pvpCooldownInterval = null;
+            // Arena Aberta State
+            let inOpenPvp = false;
+            let openPvpTimer = 0;
+            let openPvpTimerInterval = null;
+            let openPvpKills = 0;
+            let openPvpBotAttackInterval = null;
 
-            // 50 PLAYERS FALSOS (BOTS)
-            const BOT_NAMES = [
-                "Goku_SSJ", "Vegeta_King", "Gohan_Mystic", "Trunks_Future", "Piccolo_Daimao",
-                "Gotenks_Z", "Bardock_Omni", "Broly_LSSJ", "Freeza_Gold", "Cell_Perfect",
-                "Majin_Boo_Z", "Krillin_Pro", "Tien_Shin", "Yamcha_God", "Android_17",
-                "Android_18", "Master_Roshi", "Videl_Kick", "Pan_DB", "Uub_Reborn",
-                "Raditz_Saiyan", "Nappa_Smash", "Zarbon_Beauty", "Dodoria_Heavy", "Ginyu_Change",
-                "Recoom_Boom", "Burter_Speed", "Jeice_Red", "Guldo_Time", "Dabura_King",
-                "Janemba_Demon", "Gogeta_Blue", "Vegito_Ultra", "Hit_Assassin", "Jiren_Pride",
-                "Toppo_Hakai", "Dyspo_Flash", "Cabba_Saiyan", "Caulifla_Wild", "Kale_Berserk",
-                "Frost_Universe", "Champa_Lord", "Whis_Angel", "Beerus_Hakai", "Zeno_Omni",
-                "Goku_Black", "Zamasu_Fusion", "Omega_Shenron", "Baby_Vegeta", "Super_17"
+            // 50 BOTS COM NOMES VARIADOS (Animes, Celebridades, Memes, Pessoas Comuns)
+            const AUTHENTIC_BOT_NAMES = [
+                "Lucas_Ninja", "Matheus_XPro", "Naruto_Uzumaki", "Neymar_Jr", "Silvio_Santos",
+                "Luffy_Capitao", "Cleiton_Rasta", "Monkey_D_Goku", "Saitama_OnePinch", "Mumu_Mano",
+                "Faustão_Errou", "Felipe_Neto_Pro", "Gabriel_ProGamer", "Gojo_Satoru", "Eren_Yeager",
+                "Zoro_Perdido", "Casimiro_Reage", "Goku_Cria", "Xandão_Ultimato", "Sasha_Grey",
+                "Pedrinho_Matador", "Cristiano_R7", "Messi_ET", "Bruno_Diferenciado", "Juninho_Pneu",
+                "Kakashi_Hatake", "Light_Yagami", "Kenshin_Himura", "Ednaldo_Pereira", "Jojo_Todynho",
+                "Moraes_Supremo", "Whindersson_N", "Aoba_Tranquilo", "Zezé_Di_Camargo", "Tanjiro_Kamado",
+                "Ichigo_Kurosaki", "Seiya_Pegasus", "Chaves_Do_8", "Seu_Madruga_14", "Tonho_Da_Lua",
+                "GigaChad_Alpha", "Zuko_Avatar", "Ash_Ketchum", "Spiderman_Da_Carreta", "Nego_BAM",
+                "Bolsonaro_Myth", "Lula_Oficial", "Caneta_Azul", "Mano_Brown", "Ronaldinho_Gaúcho"
             ];
 
             const BOT_RACES = ["Saiyajin", "Namekuseijin", "Android", "Humano"];
@@ -719,41 +740,51 @@
                 }, 3000);
             }
 
+            // HABILIDADES E TRANSFORMAÇÕES POR RAÇA
             const RACE_SKILLS = {
                 'Saiyajin': [
-                    { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki Saiyajin.' },
-                    { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Poderosa onda de energia devastadora.' }
+                    { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki.' },
+                    { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Onda de energia devastadora.' },
+                    { id: 'trans_ssj1', name: '[TRANSF] Super Saiyajin 1', type: 'transform', kiCost: 35, multiplier: 3.2, reqLevel: 10, desc: 'Aumenta significativamente seu poder de ataque!' },
+                    { id: 'trans_ssj2', name: '[TRANSF] Super Saiyajin 2', type: 'transform', kiCost: 60, multiplier: 4.5, reqLevel: 20, desc: 'Aura faiscante com poder tremendo.' },
+                    { id: 'trans_ssj3', name: '[TRANSF] Super Saiyajin 3', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 30, desc: 'Poder máximo da raça Saiyajin!' }
                 ],
                 'Namekuseijin': [
-                    { id: 'nam_ki_blast', name: 'Raio Demoníaco', type: 'attack', kiCost: 10, multiplier: 1.4, reqLevel: 1, desc: 'Disparo rápido de energia namekuseijinha.' },
-                    { id: 'nam_regen', name: 'Regeneração', type: 'heal', kiCost: 25, healMultiplier: 0.35, reqLevel: 2, desc: 'Restaura uma porção significativa da sua vida.' }
+                    { id: 'nam_ki_blast', name: 'Raio Demoníaco', type: 'attack', kiCost: 10, multiplier: 1.4, reqLevel: 1, desc: 'Disparo rápido de energia.' },
+                    { id: 'nam_regen', name: 'Regeneração', type: 'heal', kiCost: 25, healMultiplier: 0.35, reqLevel: 2, desc: 'Restaura uma porção da sua vida.' },
+                    { id: 'trans_nam_giant', name: '[TRANSF] Namekuseijin Gigante', type: 'transform', kiCost: 40, multiplier: 3.0, reqLevel: 10, desc: 'Aumenta de tamanho expandindo a força.' },
+                    { id: 'trans_nam_super', name: '[TRANSF] Super Namekuseijin', type: 'transform', kiCost: 70, multiplier: 4.8, reqLevel: 20, desc: 'Fusão interior alcançando poder supremo.' }
                 ],
                 'Android': [
                     { id: 'and_photon', name: 'Canhão de Fótons', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Disparo de energia sintética.' },
-                    { id: 'and_drain', name: 'Absorção de Energia', type: 'drain', kiCost: 5, multiplier: 1.2, drainKi: 20, reqLevel: 3, desc: 'Causa dano e rouba KI do inimigo.' }
+                    { id: 'and_drain', name: 'Absorção de Energia', type: 'drain', kiCost: 5, multiplier: 1.2, drainKi: 20, reqLevel: 3, desc: 'Causa dano e rouba KI do inimigo.' },
+                    { id: 'trans_and_overclock', name: '[TRANSF] Overclock de Energia', type: 'transform', kiCost: 30, multiplier: 3.1, reqLevel: 10, desc: 'Liberar trava de segurança do gerador.' },
+                    { id: 'trans_and_super', name: '[TRANSF] Super Androide', type: 'transform', kiCost: 65, multiplier: 5.0, reqLevel: 22, desc: 'Fusão de circuitos com poder infinito.' }
                 ],
                 'Humano': [
-                    { id: 'hum_dodon', name: 'Dodonpa', type: 'attack', kiCost: 8, multiplier: 1.3, reqLevel: 1, desc: 'Feixe de energia rápido concentrado no dedo.' },
-                    { id: 'hum_solar', name: 'Taiyoken (Kiai)', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 3, desc: 'Cega momentaneamente o oponente causando dano.' }
+                    { id: 'hum_dodon', name: 'Dodonpa', type: 'attack', kiCost: 8, multiplier: 1.3, reqLevel: 1, desc: 'Feixe de energia rápido.' },
+                    { id: 'hum_solar', name: 'Taiyoken (Kiai)', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 3, desc: 'Cega o oponente causando dano.' },
+                    { id: 'trans_hum_kaio', name: '[TRANSF] Kaioken', type: 'transform', kiCost: 30, multiplier: 2.8, reqLevel: 8, desc: 'Multiplica a aura e poder de combate.' },
+                    { id: 'trans_hum_potential', name: '[TRANSF] Potencial Liberado', type: 'transform', kiCost: 75, multiplier: 5.2, reqLevel: 25, desc: 'Libera o poder oculto da raça humana.' }
                 ]
             };
 
             const CELESTIAL_ROOMS = [
-                { id: 1, name: 'Patio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 5, zeniRate: 4, desc: 'Treino básico para iniciantes se acostumarem com o fluxo de Ki.', icon: 'fa-feather' },
-                { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 18, zeniRate: 15, desc: 'Suba a torre e treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
-                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 45, zeniRate: 35, desc: 'Meditação profunda no topo do mundo para expandir a mente e o corpo.', icon: 'fa-synagogue' },
-                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 120, zeniRate: 90, desc: 'Um ano de treino em um dia. Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
-                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 320, zeniRate: 240, desc: 'Condições escaldantes e congelantes para desafiar os limites do Guerreiro.', icon: 'fa-fire-burner' },
-                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 850, zeniRate: 650, desc: 'Dimensão alternativa onde o Ki flui de maneira brutal.', icon: 'fa-atom' },
-                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 2200, zeniRate: 1800, desc: 'Reservado apenas aos guerreiros que rivalizam com o Poder Divino.', icon: 'fa-sun' }
+                { id: 1, name: 'Pátio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 5, zeniRate: 4, desc: 'Treino básico para iniciantes.', icon: 'fa-feather' },
+                { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 18, zeniRate: 15, desc: 'Treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
+                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 45, zeniRate: 35, desc: 'Meditação profunda no topo do mundo.', icon: 'fa-synagogue' },
+                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 120, zeniRate: 90, desc: 'Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
+                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 320, zeniRate: 240, desc: 'Condições brutais para desafiar os limites.', icon: 'fa-fire-burner' },
+                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 850, zeniRate: 650, desc: 'Dimensão alternativa de Ki denso.', icon: 'fa-atom' },
+                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 2200, zeniRate: 1800, desc: 'Reservado a quem rivaliza com Poder Divino.', icon: 'fa-sun' }
             ];
 
             const SHOP_ITEMS = [
                 { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
-                { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e concede +5 KI Máximo permanente.', effect: 'ki_boost' },
-                { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
+                { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e +5 KI Máximo permanente.', effect: 'ki_boost' },
+                { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade.', effect: 'stat_scouter' },
                 { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
-                { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
+                { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: '+300 de EXP imediatamente.', effect: 'exp_boost' },
                 { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
                 { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
             ];
@@ -779,9 +810,9 @@
             function getBotsData() {
                 let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
                 if (bots.length === 0) {
-                    bots = BOT_NAMES.map((name, i) => {
+                    bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
                         const race = BOT_RACES[i % BOT_RACES.length];
-                        const lvl = Math.floor(Math.random() * 25) + 1;
+                        const lvl = Math.floor(Math.random() * 35) + 1; // Bots de variados níveis
                         const str = 10 + (lvl * 4);
                         const res = 10 + (lvl * 3);
                         const speed = 10 + (lvl * 3);
@@ -797,7 +828,7 @@
                             res: res,
                             speed: speed,
                             combatPower: (lvl * 250) + (str * 15) + (res * 12) + (speed * 10) + (maxHp * 2),
-                            avatar: `https://placehold.co/120x120/1e1b2e/ff8c00?text=${encodeURIComponent(name)}`
+                            avatar: `https://placehold.co/120x120/1e1b2e/ff8c00?text=${encodeURIComponent(name.substring(0, 8))}`
                         };
                     });
                     localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
@@ -814,7 +845,7 @@
                 let leveledBots = [];
 
                 bots.forEach(bot => {
-                    if (Math.random() < 0.30) {
+                    if (Math.random() < 0.25) {
                         bot.level += 1;
                         bot.str += 4;
                         bot.res += 3;
@@ -833,7 +864,7 @@
                     const now = new Date();
                     const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-                    leveledBots.slice(0, 3).forEach(b => {
+                    leveledBots.slice(0, 2).forEach(b => {
                         messages.push({
                             sender: 'SISTEMA',
                             text: ` O guerreiro ${b.username} subiu para o Nível ${b.level}!`,
@@ -912,31 +943,13 @@
                 renderCelestialRooms();
                 renderChat();
                 renderRanking();
-                renderPvpLists();
+                renderPvpDirectList();
                 
                 initAfkLoop();
 
                 switchTab('dashboard');
                 updateUI();
             }
-
-            switchTab = function(tabName) {
-                const contents = document.querySelectorAll('.tab-content');
-                contents.forEach(c => c.classList.add('hidden'));
-
-                const navBtns = document.querySelectorAll('.nav-btn');
-                navBtns.forEach(b => {
-                    b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
-                });
-
-                const activeTab = document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
-                if (activeTab) activeTab.classList.remove('hidden');
-
-                const activeBtn = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
-                if (activeBtn) {
-                    activeBtn.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
-                }
-            };
 
             toggleAuthMode = function(mode) {
                 const loginTabBtn = document.getElementById('loginTabBtn');
@@ -1014,7 +1027,7 @@
                     _currentUser = newUser;
                     localStorage.setItem(STORAGE_SESSION, username);
                     simulateBotProgress();
-                    showToast("Conta criada com sucesso! Bem-vindo.");
+                    showToast("Conta criada com sucesso!");
                     loadGameScreen();
 
                 } else {
@@ -1035,6 +1048,7 @@
             handleLogout = function() {
                 if (restInterval) clearInterval(restInterval);
                 if (afkInterval) clearInterval(afkInterval);
+                leaveOpenPvpArena();
                 _currentUser = null;
                 localStorage.removeItem(STORAGE_SESSION);
                 showAuthScreen();
@@ -1086,10 +1100,10 @@
                     else ctrl.classList.add('hidden'), ctrl.classList.remove('flex');
                 });
 
+                populateCombatSkillsSelect();
                 renderInventory();
                 renderRanking();
                 renderCelestialRooms();
-                renderPvpLists();
             }
 
             addCustomStat = function(stat) {
@@ -1102,14 +1116,8 @@
                 const inputEl = document.getElementById(inputId);
                 let amount = parseInt(inputEl.value, 10);
 
-                if (isNaN(amount) || amount <= 0) {
-                    showToast("Por favor insira um valor válido!");
-                    return;
-                }
-
-                if (amount > _currentUser.statPoints) {
-                    amount = _currentUser.statPoints;
-                }
+                if (isNaN(amount) || amount <= 0) return;
+                if (amount > _currentUser.statPoints) amount = _currentUser.statPoints;
 
                 _currentUser.statPoints -= amount;
                 const pointsGained = amount * 2;
@@ -1129,11 +1137,7 @@
 
             addAllStat = function(stat) {
                 if (!_currentUser || _currentUser.statPoints <= 0) return;
-                
-                let inputId = 'inputStr';
-                if (stat === 'res') inputId = 'inputRes';
-                if (stat === 'speed') inputId = 'inputSpeed';
-
+                let inputId = (stat === 'res') ? 'inputRes' : (stat === 'speed' ? 'inputSpeed' : 'inputStr');
                 document.getElementById(inputId).value = _currentUser.statPoints;
                 addCustomStat(stat);
             };
@@ -1165,7 +1169,6 @@
 
                 const initialHp = _currentUser.hp;
                 const initialKi = _currentUser.ki;
-
                 const hpNeeded = _currentUser.maxHp - initialHp;
                 const kiNeeded = _currentUser.maxKi - initialKi;
 
@@ -1194,7 +1197,7 @@
                         progressContainer.classList.add('hidden');
                         progressBar.style.width = '0%';
                         
-                        showToast("Descanso concluído! HP e KI totalmente recuperados!");
+                        showToast("HP e KI totalmente restaurados!");
                     }
                 }, 1000);
             };
@@ -1227,7 +1230,7 @@
                     _currentUser.ki = _currentUser.maxKi;
 
                     pushGlobalAnnouncement(` O guerreiro ${_currentUser.username} alcançou o Nível ${_currentUser.level}!`);
-                    showToast(`NÍVEL AUMENTOU! Agora você está no Nível ${_currentUser.level}!`);
+                    showToast(`LEVEL UP! Nível ${_currentUser.level}!`);
                 } else {
                     showToast(`Treino concluído: +${expGained} EXP!`);
                 }
@@ -1235,6 +1238,44 @@
                 saveCurrentUserData();
             };
 
+            // COMBAT SKILLS DROP-DOWN SELECT SYSTEM
+            function populateCombatSkillsSelect() {
+                const selectEl = document.getElementById('combatSkillSelect');
+                if (!selectEl || !_currentUser) return;
+
+                const raceSkills = RACE_SKILLS[_currentUser.race] || RACE_SKILLS['Saiyajin'];
+                
+                selectEl.innerHTML = raceSkills.map(s => {
+                    const meetsLvl = _currentUser.level >= s.reqLevel;
+                    const reqTxt = meetsLvl ? '' : ` (Requer Nível ${s.reqLevel})`;
+                    return `<option value="${s.id}" ${!meetsLvl ? 'disabled' : ''}>${s.name} - ${s.kiCost} KI${reqTxt}</option>`;
+                }).join('');
+            }
+
+            useSelectedSkillFromSelect = function() {
+                const selectEl = document.getElementById('combatSkillSelect');
+                if (!selectEl || !combatState) return;
+
+                const skillId = selectEl.value;
+                const raceSkills = RACE_SKILLS[_currentUser.race] || RACE_SKILLS['Saiyajin'];
+                const skill = raceSkills.find(s => s.id === skillId);
+
+                if (!skill) return;
+
+                if (_currentUser.level < skill.reqLevel) {
+                    logBattle(`-> Você precisa do nível ${skill.reqLevel} para usar esta habilidade/transformação!`, 'text-red-400');
+                    return;
+                }
+
+                if (_currentUser.ki < skill.kiCost) {
+                    logBattle(`-> KI insuficiente para usar ${skill.name}!`, 'text-red-400');
+                    return;
+                }
+
+                executeCombatTurn('skill', skill);
+            };
+
+            // ARENA PVP SUB-TABS AND DIRECT 1X1
             switchPvpSubTab = function(mode) {
                 const directBtn = document.getElementById('pvpModeDirectBtn');
                 const openBtn = document.getElementById('pvpModeOpenBtn');
@@ -1251,49 +1292,35 @@
                     openBtn.className = "flex-1 py-2 font-bold text-xs text-gray-400 hover:text-gray-200";
                     directSec.classList.remove('hidden');
                     openSec.classList.add('hidden');
+                    
+                    // ALTERNA SEMPRE QUE O PLAYER ENTRA NA PÁGINA PVP 1x1
+                    renderPvpDirectList();
                 }
             };
 
-            function renderPvpLists() {
+            function renderPvpDirectList() {
                 const directContainer = document.getElementById('pvpDirectList');
-                const openContainer = document.getElementById('pvpOpenList');
+                if (!directContainer) return;
+
                 const bots = getBotsData();
+                // Embaralha aleatoriamente os bots para alternar sempre que abre
+                const shuffledBots = [...bots].sort(() => Math.random() - 0.5);
 
-                if (directContainer) {
-                    directContainer.innerHTML = bots.map(b => `
-                        <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <img src="${b.avatar}" class="w-10 h-10 rounded border border-yellow-500 object-cover">
-                                <div>
-                                    <h4 class="font-pixel text-xs text-yellow-300">${b.username}</h4>
-                                    <p class="text-[10px] text-gray-400">Raça: ${b.race} | Nível: ${b.level}</p>
-                                    <p class="text-[10px] text-orange-400 font-pixel">PL: ${formatPower(b.combatPower)}</p>
-                                </div>
+                directContainer.innerHTML = shuffledBots.map(b => `
+                    <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="${b.avatar}" class="w-10 h-10 rounded border border-yellow-500 object-cover">
+                            <div>
+                                <h4 class="font-pixel text-xs text-yellow-300">${b.username}</h4>
+                                <p class="text-[10px] text-gray-400">Raça: ${b.race} | Nível: ${b.level}</p>
+                                <p class="text-[10px] text-orange-400 font-pixel">PL: ${formatPower(b.combatPower)}</p>
                             </div>
-                            <button onclick="startPvpDirect('${b.username}')" class="retro-btn-red px-3 py-1.5 text-xs font-bold text-white rounded">
-                                Desafiar 1x1
-                            </button>
                         </div>
-                    `).join('');
-                }
-
-                if (openContainer) {
-                    openContainer.innerHTML = bots.map(b => `
-                        <div class="bg-black/50 p-3 rounded-lg border border-red-900/40 flex flex-col justify-between space-y-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="${b.avatar}" class="w-12 h-12 rounded border border-red-500 object-cover">
-                                <div>
-                                    <h4 class="font-pixel text-xs text-yellow-400">${b.username}</h4>
-                                    <p class="text-[10px] text-gray-300">HP: ${b.hp}/${b.maxHp}</p>
-                                    <p class="text-[10px] text-orange-400 font-pixel">Nível ${b.level} | PL ${formatPower(b.combatPower)}</p>
-                                </div>
-                            </div>
-                            <button onclick="attackOpenPvpTarget('${b.username}')" class="retro-btn-red w-full py-1.5 text-xs font-bold text-white rounded uppercase">
-                                <i class="fa-solid fa-hand-fist mr-1"></i> Atacar
-                            </button>
-                        </div>
-                    `).join('');
-                }
+                        <button onclick="startPvpDirect('${b.username}')" class="retro-btn-red px-3 py-1.5 text-xs font-bold text-white rounded">
+                            Desafiar 1x1
+                        </button>
+                    </div>
+                `).join('');
             }
 
             startPvpDirect = function(botName) {
@@ -1324,7 +1351,6 @@
                 };
 
                 switchTab('arena');
-                document.getElementById('skillsDropdownList').classList.add('hidden');
                 document.getElementById('arenaEnemySelect').classList.add('hidden');
                 document.getElementById('arenaCombatScreen').classList.remove('hidden');
 
@@ -1338,65 +1364,117 @@
                 log.innerHTML = `<div class="text-yellow-400">-> O duelo PVP 1x1 contra ${bot.username} começou!</div>`;
 
                 updateCombatUI();
+
+                // 50% de chance do bot atacar antes que o player!
+                if (Math.random() < 0.5) {
+                    logBattle(`⚡ ${bot.username} tomou a iniciativa e atacou primeiro!`, 'text-orange-400 font-bold');
+                    executeEnemyTurn();
+                    updateCombatUI();
+                }
             };
 
-            attackOpenPvpTarget = function(botName) {
-                if (pvpCooldown > 0) {
-                    showToast(`Aguarde ${pvpCooldown}s para realizar outro ataque na Arena Aberta!`);
-                    return;
-                }
-
+            // ARENA ABERTA (BATTLE ROYALE SISTEMA COMPLETO)
+            enterOpenPvpArena = function() {
+                if (!_currentUser) return;
                 if (_currentUser.afkState) {
-                    showToast("Você não pode atacar na arena enquanto estiver em Treino AFK!");
+                    showToast("Você não pode entrar na Arena Aberta enquanto estiver em Treino AFK!");
                     return;
                 }
 
-                const bots = getBotsData();
-                const bot = bots.find(b => b.username === botName);
-                if (!bot) return;
+                inOpenPvp = true;
+                openPvpTimer = 0;
+                openPvpKills = 0;
 
-                const dmg = Math.max(10, Math.floor(_currentUser.str * 1.5) - Math.floor(bot.res * 0.5));
-                bot.hp = Math.max(0, bot.hp - dmg);
+                document.getElementById('openPvpLobby').classList.add('hidden');
+                document.getElementById('openPvpActiveContainer').classList.remove('hidden');
 
-                const expGained = Math.floor(bot.level * 15);
-                const zeniGained = Math.floor(bot.level * 20);
+                document.getElementById('openPvpKillsDisplay').innerText = '0';
+                document.getElementById('openPvpTimerDisplay').innerText = '00:00';
 
-                _currentUser.exp += expGained;
-                _currentUser.zeni += zeniGained;
+                renderOpenPvpGrid();
 
-                if (_currentUser.exp >= _currentUser.maxExp) {
-                    _currentUser.level += 1;
-                    _currentUser.exp -= _currentUser.maxExp;
-                    _currentUser.maxExp = Math.floor(_currentUser.maxExp * 1.5);
-                    _currentUser.statPoints += 3;
-                    pushGlobalAnnouncement(` O guerreiro ${_currentUser.username} alcançou o Nível ${_currentUser.level}!`);
-                }
+                // Timer da Sala Aberta
+                openPvpTimerInterval = setInterval(() => {
+                    openPvpTimer++;
+                    const mins = Math.floor(openPvpTimer / 60).toString().padStart(2, '0');
+                    const secs = (openPvpTimer % 60).toString().padStart(2, '0');
+                    document.getElementById('openPvpTimerDisplay').innerText = `${mins}:${secs}`;
 
-                saveCurrentUserData();
-                saveBotsData(bots);
-
-                showToast(`Você atacou ${bot.username} causando ${dmg} de dano! (+${expGained} EXP / +${zeniGained} Z$)`);
-
-                pvpCooldown = 10;
-                const timerText = document.getElementById('pvpTimerText');
-                timerText.innerText = `${pvpCooldown}s`;
-                timerText.className = "font-pixel text-sm text-red-500 animate-pulse";
-
-                pvpCooldownInterval = setInterval(() => {
-                    pvpCooldown--;
-                    if (pvpCooldown <= 0) {
-                        clearInterval(pvpCooldownInterval);
-                        pvpCooldown = 0;
-                        timerText.innerText = "PRONTO!";
-                        timerText.className = "font-pixel text-sm text-green-400";
-                    } else {
-                        timerText.innerText = `${pvpCooldown}s`;
+                    // Recompensa periódica por sobrevivência a cada 10 segundos
+                    if (openPvpTimer % 10 === 0) {
+                        const expBonus = 20;
+                        const zeniBonus = 30;
+                        _currentUser.exp += expBonus;
+                        _currentUser.zeni += zeniBonus;
+                        saveCurrentUserData();
+                        showToast(`Sobrevivência: +${expBonus} EXP / +${zeniBonus} Z$!`);
                     }
                 }, 1000);
 
-                renderPvpLists();
+                // Bots atacam o player aleatoriamente a cada 4 segundos
+                openPvpBotAttackInterval = setInterval(() => {
+                    if (!inOpenPvp || !_currentUser) return;
+
+                    const bots = getBotsData();
+                    const randomBot = bots[Math.floor(Math.random() * bots.length)];
+
+                    const botDmg = Math.max(5, Math.floor(randomBot.str * 0.8) - Math.floor(_currentUser.res * 0.3));
+                    _currentUser.hp = Math.max(0, _currentUser.hp - botDmg);
+                    saveCurrentUserData();
+
+                    showToast(`⚔️ ${randomBot.username} atacou você na Arena causando ${botDmg} de dano!`);
+
+                    if (_currentUser.hp <= 0) {
+                        showToast("Você foi derrotado na Arena Aberta!");
+                        leaveOpenPvpArena();
+                    }
+                }, 4000);
             };
 
+            leaveOpenPvpArena = function() {
+                inOpenPvp = false;
+                if (openPvpTimerInterval) clearInterval(openPvpTimerInterval);
+                if (openPvpBotAttackInterval) clearInterval(openPvpBotAttackInterval);
+
+                openPvpTimerInterval = null;
+                openPvpBotAttackInterval = null;
+
+                document.getElementById('openPvpLobby').classList.remove('hidden');
+                document.getElementById('openPvpActiveContainer').classList.add('hidden');
+            };
+
+            // Органиização da Grelha dos Bots (Até 5 por linha)
+            function renderOpenPvpGrid() {
+                const gridContainer = document.getElementById('pvpOpenGrid');
+                if (!gridContainer) return;
+
+                const bots = getBotsData();
+
+                gridContainer.innerHTML = bots.map(b => `
+                    <div class="bg-black/60 p-2 rounded border border-red-900/60 flex flex-col items-center justify-between text-center space-y-1">
+                        <img src="${b.avatar}" class="w-10 h-10 rounded-full border border-red-500 object-cover">
+                        <span class="font-pixel text-[9px] text-yellow-300 truncate w-full" title="${b.username}">${b.username}</span>
+                        <span class="text-[9px] text-orange-400">Nvl ${b.level}</span>
+                        <button onclick="attackOpenPvpTarget('${b.username}')" class="retro-btn-red w-full py-1 text-[9px] font-bold text-white rounded">
+                            Atacar
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            attackOpenPvpTarget = function(botName) {
+                const bots = getBotsData();
+                const bot = bots.find(b => b.username === botName);
+                if (!bot || !_currentUser) return;
+
+                // Leva o combate para a tela de batalha PvE completa com o bot
+                startPvpDirect(botName);
+                
+                // Marca que se o inimigo for derrotado no combate, ganha +1 Kill na Arena
+                activeEnemy.isOpenPvpTarget = true;
+            };
+
+            // ARENA PVE & COMBATE
             function renderCelestialRooms() {
                 const listContainer = document.getElementById('afkRoomsList');
                 const activePanel = document.getElementById('afkActivePanel');
@@ -1453,7 +1531,7 @@
                 if (!room) return;
 
                 if (_currentUser.level < room.reqLevel || _currentUser.combatPower < room.reqPL) {
-                    showToast("Você não possui o nível ou poder necessário para esta sala!");
+                    showToast("Você não possui nível/poder suficiente!");
                     return;
                 }
 
@@ -1481,12 +1559,11 @@
                 _currentUser.afkState = null;
                 saveCurrentUserData();
 
-                showToast(`Treino encerrado! Você obteve +${gainedExp} EXP e +${gainedZeni} Z$!`);
+                showToast(`Treino encerrado! +${gainedExp} EXP e +${gainedZeni} Z$!`);
             };
 
             function initAfkLoop() {
                 if (afkInterval) clearInterval(afkInterval);
-
                 if (!_currentUser || !_currentUser.afkState) return;
 
                 afkInterval = setInterval(() => {
@@ -1514,7 +1591,7 @@
                         _currentUser.ki = _currentUser.maxKi;
 
                         pushGlobalAnnouncement(` O guerreiro ${_currentUser.username} alcançou o Nível ${_currentUser.level}!`);
-                        showToast(`LEVEL UP no Treino Celeste! Agora você é Nível ${_currentUser.level}!`);
+                        showToast(`LEVEL UP no Treino Celeste! Nível ${_currentUser.level}!`);
                     }
 
                     saveCurrentUserData();
@@ -1669,59 +1746,6 @@
                 }).join('');
             }
 
-            toggleSkillsList = function() {
-                const dropdown = document.getElementById('skillsDropdownList');
-                if (dropdown.classList.contains('hidden')) {
-                    renderSkillsList();
-                    dropdown.classList.remove('hidden');
-                } else {
-                    dropdown.classList.add('hidden');
-                }
-            };
-
-            function renderSkillsList() {
-                const container = document.getElementById('skillsContainer');
-                const userRace = _currentUser.race || 'Saiyajin';
-                const skills = RACE_SKILLS[userRace] || RACE_SKILLS['Saiyajin'];
-
-                container.innerHTML = skills.map(sk => {
-                    const meetsLvl = _currentUser.level >= sk.reqLevel;
-
-                    return `
-                        <div class="bg-black/60 p-2 rounded border border-dbzBorder flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold text-xs text-yellow-300">${sk.name}</span>
-                                    <span class="text-[10px] text-blue-400 font-semibold">-${sk.kiCost} KI</span>
-                                </div>
-                                <p class="text-[10px] text-gray-400 mt-0.5">${sk.desc}</p>
-                                <p class="text-[9px] text-orange-400 mt-0.5">Req: Nível ${sk.reqLevel}</p>
-                            </div>
-                            <button onclick="useSkill('${sk.id}')" ${!meetsLvl ? 'disabled' : ''} class="${meetsLvl ? 'retro-btn-blue' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2 py-1 text-[10px] text-white rounded font-bold mt-2">
-                                ${meetsLvl ? 'Usar' : 'Bloqueado'}
-                            </button>
-                        </div>
-                    `;
-                }).join('');
-            }
-
-            useSkill = function(skillId) {
-                if (!combatState) return;
-                const userRace = _currentUser.race || 'Saiyajin';
-                const skills = RACE_SKILLS[userRace] || RACE_SKILLS['Saiyajin'];
-                const skill = skills.find(s => s.id === skillId);
-
-                if (!skill) return;
-
-                if (_currentUser.ki < skill.kiCost) {
-                    logBattle(`-> KI insuficiente para usar ${skill.name}!`, 'text-red-400');
-                    return;
-                }
-
-                document.getElementById('skillsDropdownList').classList.add('hidden');
-                executeCombatTurn('skill', skill);
-            };
-
             startCombat = function(enemyId) {
                 if (_currentUser.afkState) {
                     showToast("Você não pode batalhar enquanto estiver em Treino AFK!");
@@ -1738,7 +1762,6 @@
                     enemyMaxHp: activeEnemy.hp
                 };
 
-                document.getElementById('skillsDropdownList').classList.add('hidden');
                 document.getElementById('arenaEnemySelect').classList.add('hidden');
                 document.getElementById('arenaCombatScreen').classList.remove('hidden');
 
@@ -1794,10 +1817,10 @@
                 } else if (action === 'skill' && skillData) {
                     _currentUser.ki -= skillData.kiCost;
 
-                    if (skillData.type === 'attack') {
+                    if (skillData.type === 'attack' || skillData.type === 'transform') {
                         damage = Math.floor(_currentUser.str * skillData.multiplier) + Math.floor(Math.random() * 15);
                         combatState.enemyHp -= damage;
-                        logBattle(`-> Você lançou ${skillData.name} causando ${damage} de dano!`, 'text-cyan-400');
+                        logBattle(`-> Você usou ${skillData.name} causando ${damage} de dano de Ki!`, 'text-cyan-400');
                     } else if (skillData.type === 'heal') {
                         const healAmt = Math.floor(_currentUser.maxHp * skillData.healMultiplier);
                         combatState.playerHp = Math.min(combatState.playerMaxHp, combatState.playerHp + healAmt);
@@ -1818,6 +1841,11 @@
                     updateCombatUI();
                     logBattle(`-> Você derrotou ${activeEnemy.name}!`, 'text-yellow-300 font-bold');
 
+                    if (activeEnemy.isOpenPvpTarget) {
+                        openPvpKills++;
+                        document.getElementById('openPvpKillsDisplay').innerText = openPvpKills;
+                    }
+
                     _currentUser.exp += activeEnemy.expReward;
                     _currentUser.zeni += activeEnemy.zeniReward;
 
@@ -1832,7 +1860,7 @@
                         _currentUser.ki = _currentUser.maxKi;
 
                         pushGlobalAnnouncement(` O guerreiro ${_currentUser.username} alcançou o Nível ${_currentUser.level}!`);
-                        logBattle(`-> NÍVEL AUMENTOU! Você alcançou o nível ${_currentUser.level}!`, 'text-yellow-400 font-bold');
+                        logBattle(`-> NÍVEL AUMENTOU! Nível ${_currentUser.level}!`, 'text-yellow-400 font-bold');
                     }
 
                     saveCurrentUserData();
@@ -1879,7 +1907,7 @@
                 if (messages.length === 0) {
                     messages = [
                         { sender: 'Mestre Kame', text: 'Bem-vindos à arena online de DBZ RPG!', time: '10:00' },
-                        { sender: 'Vegeta_King', text: 'Eu serei o número 1 deste ranking!', time: '10:05' }
+                        { sender: 'Neymar_Jr', text: 'Eu serei o número 1 deste ranking!', time: '10:05' }
                     ];
                     localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
                 }
@@ -1887,10 +1915,10 @@
                 chatContainer.innerHTML = messages.map(msg => `
                     <div class="bg-black/40 p-2 rounded border border-dbzBorder/50">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold ${msg.sender === 'SISTEMA' ? 'text-cyan-400 font-pixel text-[10px]' : 'text-yellow-400'}">${msg.sender}</span>
+                            <span class="font-bold ${msg.sender === 'SISTEMA' ? 'text-cyan-400 font-pixel text-[9px]' : 'text-yellow-400 text-[11px]'}">${msg.sender}</span>
                             <span class="text-[9px] text-gray-500">${msg.time}</span>
                         </div>
-                        <p class="text-gray-300 break-words">${msg.text}</p>
+                        <p class="text-gray-300 text-xs break-words">${msg.text}</p>
                     </div>
                 `).join('');
 
@@ -1899,9 +1927,11 @@
 
             sendChatMessage = function(e) {
                 e.preventDefault();
+                if (!_currentUser) return;
+
                 const input = document.getElementById('chatInput');
                 const text = input.value.trim();
-                if (!text || !_currentUser) return;
+                if (!text) return;
 
                 const messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
                 const now = new Date();
@@ -1914,53 +1944,64 @@
                 });
 
                 if (messages.length > 30) messages.shift();
-                localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
 
+                localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
                 input.value = '';
                 renderChat();
             };
 
             function renderRanking() {
-                const tbody = document.getElementById('rankingTableBody');
-                if (!tbody) return;
-
+                const tableBody = document.getElementById('rankingTableBody');
                 const users = getUsersData();
                 const bots = getBotsData();
 
-                let allPlayers = Object.values(users).concat(bots);
+                const allPlayers = [...Object.values(users), ...bots];
+                const sorted = allPlayers.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
 
-                // Ordena por Poder de Luta em ordem decrescente
-                allPlayers.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
-
-                tbody.innerHTML = allPlayers.map((player, index) => {
-                    const isSelf = _currentUser && player.username === _currentUser.username;
-                    let rankBadge = `${index + 1}`;
-                    
-                    if (index === 0) rankBadge = '🥇';
-                    else if (index === 1) rankBadge = '🥈';
-                    else if (index === 2) rankBadge = '🥉';
-
-                    return `
-                        <tr class="${isSelf ? 'bg-orange-900/40 font-bold border-l-4 border-orange-500' : 'hover:bg-black/40'}">
-                            <td class="p-2 text-center font-pixel text-yellow-400">${rankBadge}</td>
-                            <td class="p-2 flex items-center space-x-2">
-                                <img src="${player.avatar}" class="w-6 h-6 rounded-full border border-yellow-500/50 object-cover">
-                                <span class="${isSelf ? 'text-orange-300' : 'text-white'} truncate">${player.username}</span>
-                            </td>
-                            <td class="p-2 text-center text-gray-400">${player.race || 'Saiyajin'}</td>
-                            <td class="p-2 text-center font-pixel text-yellow-300 text-[10px]">${player.level || 1}</td>
-                            <td class="p-2 text-right font-pixel text-orange-400 text-[10px]" title="${(player.combatPower || 0).toLocaleString('pt-BR')}">
-                                ${formatPower(player.combatPower || 0)}
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
+                tableBody.innerHTML = sorted.map((user, idx) => `
+                    <tr class="${_currentUser && user.username === _currentUser.username ? 'bg-orange-950/60 text-yellow-300 font-bold border-l-4 border-yellow-400' : 'hover:bg-dbzHover'} transition">
+                        <td class="p-2 text-center font-pixel text-yellow-500">${idx + 1}</td>
+                        <td class="p-2 flex items-center space-x-2">
+                            <img src="${user.avatar}" class="w-6 h-6 rounded-full border border-yellow-500 object-cover">
+                            <span class="truncate max-w-[100px] sm:max-w-none">${user.username}</span>
+                        </td>
+                        <td class="p-2 text-center text-gray-400">${user.race}</td>
+                        <td class="p-2 text-center text-yellow-400 font-pixel text-[10px]">${user.level}</td>
+                        <td class="p-2 text-right font-pixel text-orange-400 text-[10px]" title="${(user.combatPower || 0).toLocaleString('pt-BR')}">${formatPower(user.combatPower || 0)}</td>
+                    </tr>
+                `).join('');
             }
 
-            // Inicialização ao carregar a página
-            window.addEventListener('DOMContentLoaded', () => {
+            switchTab = function(tabName) {
+                const tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(t => t.classList.add('hidden'));
+
+                const navBtns = document.querySelectorAll('.nav-btn');
+                navBtns.forEach(btn => {
+                    if (btn.dataset.tab === tabName) {
+                        btn.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
+                    } else {
+                        btn.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
+                    }
+                });
+
+                if (tabName === 'dashboard') document.getElementById('tabDashboard').classList.remove('hidden');
+                if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
+                if (tabName === 'arena') document.getElementById('tabArena').classList.remove('hidden');
+                if (tabName === 'pvp') {
+                    document.getElementById('tabPvp').classList.remove('hidden');
+                    renderPvpDirectList();
+                }
+                if (tabName === 'celestial') document.getElementById('tabCelestial').classList.remove('hidden');
+                if (tabName === 'shop') document.getElementById('tabShop').classList.remove('hidden');
+                if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
+
+                updateUI();
+            };
+
+            window.onload = function() {
                 checkSession();
-            });
+            };
         })();
     </script>
 </body>
