@@ -790,94 +790,181 @@
             ];
 
            const ENEMIES = [
+
     // --- DRAGON BALL CLÁSSICO (Lv 1 - 25) ---
-    { id: 'yumcha_db', name: 'Yamcha (Clássico)', level: 1, hp: 100, str: 10, expReward: 15, zeniReward: 25, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/88/Yamcha_Bandit.png' },
-    { id: 'kuririn_db', name: 'Kuririn (Jovem)', level: 3, hp: 150, str: 15, expReward: 25, zeniReward: 35, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/KrillinYoungNV.png' },
-    { id: 'mestre_kami', name: 'Mestre Kami (Jackie Chun)', level: 5, hp: 250, str: 22, expReward: 40, zeniReward: 60, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/bd/JackieChunEps.png' },
-    { id: 'taopaipai', name: 'Tao Pai Pai', level: 8, hp: 380, str: 32, expReward: 55, zeniReward: 80, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/TaoPaiPaiNV.png' },
-    { id: 'vovo_gohan', name: 'Vovô Gohan', level: 11, hp: 500, str: 40, expReward: 70, zeniReward: 100, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/GrandpaGohanEps.png' },
-    { id: 'tenshinhan_db', name: 'Tenshinhan (22º Torneio)', level: 14, hp: 650, str: 50, expReward: 90, zeniReward: 130, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/6/63/Tien_Dragon_Ball.png' },
-    { id: 'tambourine', name: 'Tambourine', level: 17, hp: 800, str: 62, expReward: 110, zeniReward: 160, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4b/Tambourine.png' },
-    { id: 'king_piccolo', name: 'Piccolo Daimaoh', level: 21, hp: 1100, str: 80, expReward: 140, zeniReward: 200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b5/KingPiccoloOld.png' },
-    { id: 'piccolo_jr', name: 'Piccolo Jr.', level: 25, hp: 1400, str: 100, expReward: 180, zeniReward: 250, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/Piccolo_Jr_23rd_BT.png' },
+
+    { id: 'yumcha_db', name: 'Yamcha (Clássico)', hp: 100, str: 10, expReward: 15, zeniReward: 25, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/88/Yamcha_Bandit.png' },
+
+    { id: 'kuririn_db', name: 'Kuririn (Jovem)', hp: 150, str: 15, expReward: 25, zeniReward: 35, levelReq: 3, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/KrillinYoungNV.png' },
+
+    { id: 'mestre_kami', name: 'Mestre Kami (Jackie Chun)', hp: 250, str: 22, expReward: 40, zeniReward: 60, levelReq: 5, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/bd/JackieChunEps.png' },
+
+    { id: 'taopaipai', name: 'Tao Pai Pai', hp: 380, str: 32, expReward: 55, zeniReward: 80, levelReq: 8, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/TaoPaiPaiNV.png' },
+
+    { id: 'vovo_gohan', name: 'Vovô Gohan', hp: 500, str: 40, expReward: 70, zeniReward: 100, levelReq: 11, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/GrandpaGohanEps.png' },
+
+    { id: 'tenshinhan_db', name: 'Tenshinhan (22º Torneio)', hp: 650, str: 50, expReward: 90, zeniReward: 130, levelReq: 14, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/6/63/Tien_Dragon_Ball.png' },
+
+    { id: 'tambourine', name: 'Tambourine', hp: 800, str: 62, expReward: 110, zeniReward: 160, levelReq: 17, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4b/Tambourine.png' },
+
+    { id: 'king_piccolo', name: 'Piccolo Daimaoh', hp: 1100, str: 80, expReward: 140, zeniReward: 200, levelReq: 21, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b5/KingPiccoloOld.png' },
+
+    { id: 'piccolo_jr', name: 'Piccolo Jr.', hp: 1400, str: 100, expReward: 180, zeniReward: 250, levelReq: 25, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/Piccolo_Jr_23rd_BT.png' },
+
+
 
     // --- SAGA SAIYAJIN (Lv 28 - 42) ---
-    { id: 'saibaman', name: 'Saibaman', level: 28, hp: 1800, str: 125, expReward: 230, zeniReward: 320, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
-    { id: 'raditz', name: 'Raditz', level: 32, hp: 2400, str: 160, expReward: 300, zeniReward: 400, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
-    { id: 'nappa', name: 'Nappa', level: 36, hp: 3200, str: 210, expReward: 380, zeniReward: 520, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
-    { id: 'vegeta_scouter', name: 'Vegeta (Scouter)', level: 39, hp: 4200, str: 270, expReward: 480, zeniReward: 650, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
-    { id: 'vegeta_great_ape', name: 'Vegeta (Oozaru)', level: 42, hp: 5500, str: 340, expReward: 600, zeniReward: 800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8a/GreatApeVegetaNV.png' },
+
+    { id: 'saibaman', name: 'Saibaman', hp: 1800, str: 125, expReward: 230, zeniReward: 320, levelReq: 28, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
+
+    { id: 'raditz', name: 'Raditz', hp: 2400, str: 160, expReward: 300, zeniReward: 400, levelReq: 32, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
+
+    { id: 'nappa', name: 'Nappa', hp: 3200, str: 210, expReward: 380, zeniReward: 520, levelReq: 36, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
+
+    { id: 'vegeta_scouter', name: 'Vegeta (Scouter)', hp: 4200, str: 270, expReward: 480, zeniReward: 650, levelReq: 39, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
+
+    { id: 'vegeta_great_ape', name: 'Vegeta (Oozaru)', hp: 5500, str: 340, expReward: 600, zeniReward: 800, levelReq: 42, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8a/GreatApeVegetaNV.png' },
+
+
 
     // --- SAGA FREEZA (Lv 46 - 65) ---
-    { id: 'dodoria', name: 'Dodoria', level: 46, hp: 7000, str: 420, expReward: 750, zeniReward: 1000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/46/DodoriaNV.png' },
-    { id: 'zarbon', name: 'Zarbon (Transformado)', level: 49, hp: 8800, str: 510, expReward: 920, zeniReward: 1250, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonMonsterNV.png' },
-    { id: 'guldo', name: 'Guldo', level: 52, hp: 10500, str: 600, expReward: 1100, zeniReward: 1500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/GuldoNV.png' },
-    { id: 'recoome', name: 'Recoome', level: 55, hp: 12500, str: 700, expReward: 1300, zeniReward: 1800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/77/RecoomeNV.png' },
-    { id: 'burter_jeice', name: 'Burter & Jeice', level: 58, hp: 15000, str: 820, expReward: 1550, zeniReward: 2100, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e9/BurterJeiceNV.png' },
-    { id: 'ginyu', name: 'Capitão Ginyu', level: 60, hp: 18000, str: 950, expReward: 1800, zeniReward: 2500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e5/Ginyu_DBFZ.png' },
-    { id: 'freeza_1', name: 'Freeza (1ª Forma)', level: 62, hp: 22000, str: 1100, expReward: 2100, zeniReward: 2900, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/FriezaFirstFormNV.png' },
-    { id: 'freeza_final', name: 'Freeza (Forma Final 100%)', level: 65, hp: 27000, str: 1300, expReward: 2500, zeniReward: 3500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
+
+    { id: 'dodoria', name: 'Dodoria', hp: 7000, str: 420, expReward: 750, zeniReward: 1000, levelReq: 46, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/46/DodoriaNV.png' },
+
+    { id: 'zarbon', name: 'Zarbon (Transformado)', hp: 8800, str: 510, expReward: 920, zeniReward: 1250, levelReq: 49, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonMonsterNV.png' },
+
+    { id: 'guldo', name: 'Guldo', hp: 10500, str: 600, expReward: 1100, zeniReward: 1500, levelReq: 52, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/GuldoNV.png' },
+
+    { id: 'recoome', name: 'Recoome', hp: 12500, str: 700, expReward: 1300, zeniReward: 1800, levelReq: 55, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/77/RecoomeNV.png' },
+
+    { id: 'burter_jeice', name: 'Burter & Jeice', hp: 15000, str: 820, expReward: 1550, zeniReward: 2100, levelReq: 58, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e9/BurterJeiceNV.png' },
+
+    { id: 'ginyu', name: 'Capitão Ginyu', hp: 18000, str: 950, expReward: 1800, zeniReward: 2500, levelReq: 60, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e5/Ginyu_DBFZ.png' },
+
+    { id: 'freeza_1', name: 'Freeza (1ª Forma)', hp: 22000, str: 1100, expReward: 2100, zeniReward: 2900, levelReq: 62, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/FriezaFirstFormNV.png' },
+
+    { id: 'freeza_final', name: 'Freeza (Forma Final 100%)', hp: 27000, str: 1300, expReward: 2500, zeniReward: 3500, levelReq: 65, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
+
+
 
     // --- SAGA DOS ANDROIDES E CELL (Lv 68 - 95) ---
-    { id: 'king_cold', name: 'King Cold', level: 68, hp: 33000, str: 1500, expReward: 2900, zeniReward: 4000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/KingColdNV.png' },
-    { id: 'mecha_freeza', name: 'Mecha Freeza', level: 71, hp: 40000, str: 1750, expReward: 3400, zeniReward: 4700, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c3/MechaFriezaNV.png' },
-    { id: 'android_19', name: 'Androide 19', level: 74, hp: 48000, str: 2000, expReward: 4000, zeniReward: 5500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/72/Android19NV.png' },
-    { id: 'dr_gero', name: 'Dr. Gero (Androide 20)', level: 77, hp: 57000, str: 2300, expReward: 4600, zeniReward: 6300, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/Android20NV.png' },
-    { id: 'android_18', name: 'Androide 18', level: 80, hp: 68000, str: 2650, expReward: 5300, zeniReward: 7200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e8/Android18DBFZ.png' },
-    { id: 'android_17', name: 'Androide 17', level: 83, hp: 80000, str: 3000, expReward: 6000, zeniReward: 8200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/Android17DBFZ.png' },
-    { id: 'cell_imperfect', name: 'Cell Imparfeito', level: 86, hp: 95000, str: 3400, expReward: 6800, zeniReward: 9300, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/06/CellImperfectNV.png' },
-    { id: 'android_16', name: 'Androide 16', level: 89, hp: 110000, str: 3900, expReward: 7700, zeniReward: 10500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Android16DBFZ.png' },
-    { id: 'cell_jr', name: 'Cell Jr.', level: 92, hp: 128000, str: 4400, expReward: 8700, zeniReward: 11800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/ab/CellJrNV.png' },
-    { id: 'cell_perfect', name: 'Cell Perfeito', level: 95, hp: 150000, str: 5000, expReward: 9800, zeniReward: 13200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
+
+    { id: 'king_cold', name: 'King Cold', hp: 33000, str: 1500, expReward: 2900, zeniReward: 4000, levelReq: 68, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/KingColdNV.png' },
+
+    { id: 'mecha_freeza', name: 'Mecha Freeza', hp: 40000, str: 1750, expReward: 3400, zeniReward: 4700, levelReq: 71, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c3/MechaFriezaNV.png' },
+
+    { id: 'android_19', name: 'Androide 19', hp: 48000, str: 2000, expReward: 4000, zeniReward: 5500, levelReq: 74, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/72/Android19NV.png' },
+
+    { id: 'dr_gero', name: 'Dr. Gero (Androide 20)', hp: 57000, str: 2300, expReward: 4600, zeniReward: 6300, levelReq: 77, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/Android20NV.png' },
+
+    { id: 'android_18', name: 'Androide 18', hp: 68000, str: 2650, expReward: 5300, zeniReward: 7200, levelReq: 80, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e8/Android18DBFZ.png' },
+
+    { id: 'android_17', name: 'Androide 17', hp: 80000, str: 3000, expReward: 6000, zeniReward: 8200, levelReq: 83, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/Android17DBFZ.png' },
+
+    { id: 'cell_imperfect', name: 'Cell Imparfeito', hp: 95000, str: 3400, expReward: 6800, zeniReward: 9300, levelReq: 86, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/06/CellImperfectNV.png' },
+
+    { id: 'android_16', name: 'Androide 16', hp: 110000, str: 3900, expReward: 7700, zeniReward: 10500, levelReq: 89, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Android16DBFZ.png' },
+
+    { id: 'cell_jr', name: 'Cell Jr.', hp: 128000, str: 4400, expReward: 8700, zeniReward: 11800, levelReq: 92, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/ab/CellJrNV.png' },
+
+    { id: 'cell_perfect', name: 'Cell Perfeito', hp: 150000, str: 5000, expReward: 9800, zeniReward: 13200, levelReq: 95, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
+
+
 
     // --- SAGA MAJIN BOO (Lv 98 - 128) ---
-    { id: 'pui_pui', name: 'Pui Pui', level: 98, hp: 175000, str: 5600, expReward: 11000, zeniReward: 14800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/PuiPuiNV.png' },
-    { id: 'yakon', name: 'Yakon', level: 101, hp: 205000, str: 6300, expReward: 12300, zeniReward: 16500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b8/YakonNV.png' },
-    { id: 'dabura', name: 'Dabura', level: 104, hp: 240000, str: 7100, expReward: 13700, zeniReward: 18300, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/DaburaNV.png' },
-    { id: 'majin_vegeta', name: 'Majin Vegeta', level: 107, hp: 280000, str: 8000, expReward: 15200, zeniReward: 20300, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/18/MajinVegetaNV.png' },
-    { id: 'majin_boo', name: 'Majin Boo (Gordo)', level: 110, hp: 325000, str: 9000, expReward: 16800, zeniReward: 22500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
-    { id: 'evil_boo', name: 'Evil Boo', level: 113, hp: 375000, str: 10100, expReward: 18500, zeniReward: 24800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d4/EvilBuuNV.png' },
-    { id: 'super_boo', name: 'Super Boo', level: 117, hp: 430000, str: 11300, expReward: 20300, zeniReward: 27200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a0/SuperBuuNV.png' },
-    { id: 'buutenks', name: 'Super Boo (Gotenks Absorbido)', level: 121, hp: 495000, str: 12600, expReward: 22300, zeniReward: 29800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7f/BuutenksNV.png' },
-    { id: 'buuhan', name: 'Super Boo (Gohan Absorbido)', level: 124, hp: 570000, str: 14000, expReward: 24500, zeniReward: 32600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/BuuhanNV.png' },
-    { id: 'kid_boo', name: 'Kid Boo', level: 128, hp: 650000, str: 15500, expReward: 26800, zeniReward: 35600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e1/Kid_Buu_DBFZ.png' },
+
+    { id: 'pui_pui', name: 'Pui Pui', hp: 175000, str: 5600, expReward: 11000, zeniReward: 14800, levelReq: 98, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/PuiPuiNV.png' },
+
+    { id: 'yakon', name: 'Yakon', hp: 205000, str: 6300, expReward: 12300, zeniReward: 16500, levelReq: 101, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b8/YakonNV.png' },
+
+    { id: 'dabura', name: 'Dabura', hp: 240000, str: 7100, expReward: 13700, zeniReward: 18300, levelReq: 104, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/DaburaNV.png' },
+
+    { id: 'majin_vegeta', name: 'Majin Vegeta', hp: 280000, str: 8000, expReward: 15200, zeniReward: 20300, levelReq: 107, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/18/MajinVegetaNV.png' },
+
+    { id: 'majin_boo', name: 'Majin Boo (Gordo)', hp: 325000, str: 9000, expReward: 16800, zeniReward: 22500, levelReq: 110, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
+
+    { id: 'evil_boo', name: 'Evil Boo', hp: 375000, str: 10100, expReward: 18500, zeniReward: 24800, levelReq: 113, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d4/EvilBuuNV.png' },
+
+    { id: 'super_boo', name: 'Super Boo', hp: 430000, str: 11300, expReward: 20300, zeniReward: 27200, levelReq: 117, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a0/SuperBuuNV.png' },
+
+    { id: 'buutenks', name: 'Super Boo (Gotenks Absorbido)', hp: 495000, str: 12600, expReward: 22300, zeniReward: 29800, levelReq: 121, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7f/BuutenksNV.png' },
+
+    { id: 'buuhan', name: 'Super Boo (Gohan Absorbido)', hp: 570000, str: 14000, expReward: 24500, zeniReward: 32600, levelReq: 124, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/BuuhanNV.png' },
+
+    { id: 'kid_boo', name: 'Kid Boo', hp: 650000, str: 15500, expReward: 26800, zeniReward: 35600, levelReq: 128, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e1/Kid_Buu_DBFZ.png' },
+
+
 
     // --- DB SUPER: DEUSES E RESSURREIÇÃO (Lv 132 - 158) ---
-    { id: 'beerus_suppressed', name: 'Beerus (Contido)', level: 132, hp: 750000, str: 17200, expReward: 29300, zeniReward: 38800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d5/Beerus_DBFZ.png' },
-    { id: 'whis_test', name: 'Whis (Treinamento)', level: 136, hp: 860000, str: 19000, expReward: 32000, zeniReward: 42200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f2/WhisNV.png' },
-    { id: 'tagoma', name: 'Tagoma (Ginyu)', level: 140, hp: 980000, str: 21000, expReward: 34900, zeniReward: 45800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8d/TagomaNV.png' },
-    { id: 'golden_freeza', name: 'Golden Freeza', level: 145, hp: 1120000, str: 23200, expReward: 38000, zeniReward: 49600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f9/GoldenFriezaDBFZ.png' },
-    { id: 'botamo', name: 'Botamo', level: 149, hp: 1280000, str: 25500, expReward: 41300, zeniReward: 53600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/BotamoNV.png' },
-    { id: 'frost', name: 'Frost (Forma Final)', level: 153, hp: 1450000, str: 28000, expReward: 44800, zeniReward: 57800, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/ea/FrostFinalFormNV.png' },
-    { id: 'cabba_ssj', name: 'Cabba (SSJ)', level: 158, hp: 1640000, str: 30700, expReward: 48500, zeniReward: 62300, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/CabbaSSJ.png' },
+
+    { id: 'beerus_suppressed', name: 'Beerus (Contido)', hp: 750000, str: 17200, expReward: 29300, zeniReward: 38800, levelReq: 132, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d5/Beerus_DBFZ.png' },
+
+    { id: 'whis_test', name: 'Whis (Treinamento)', hp: 860000, str: 19000, expReward: 32000, zeniReward: 42200, levelReq: 136, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f2/WhisNV.png' },
+
+    { id: 'tagoma', name: 'Tagoma (Ginyu)', hp: 980000, str: 21000, expReward: 34900, zeniReward: 45800, levelReq: 140, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8d/TagomaNV.png' },
+
+    { id: 'golden_freeza', name: 'Golden Freeza', hp: 1120000, str: 23200, expReward: 38000, zeniReward: 49600, levelReq: 145, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f9/GoldenFriezaDBFZ.png' },
+
+    { id: 'botamo', name: 'Botamo', hp: 1280000, str: 25500, expReward: 41300, zeniReward: 53600, levelReq: 149, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/BotamoNV.png' },
+
+    { id: 'frost', name: 'Frost (Forma Final)', hp: 1450000, str: 28000, expReward: 44800, zeniReward: 57800, levelReq: 153, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/ea/FrostFinalFormNV.png' },
+
+    { id: 'cabba_ssj', name: 'Cabba (SSJ)', hp: 1640000, str: 30700, expReward: 48500, zeniReward: 62300, levelReq: 158, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/CabbaSSJ.png' },
+
+
 
     // --- DB SUPER: TORNEIO UNIVERSO 6 & ZAMASU (Lv 163 - 192) ---
-    { id: 'magetta', name: 'Auta Magetta', level: 163, hp: 1850000, str: 33600, expReward: 52400, zeniReward: 67000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/5f/MagettaNV.png' },
-    { id: 'hit', name: 'Hit (O Assassino)', level: 168, hp: 2100000, str: 36700, expReward: 56500, zeniReward: 72000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/78/Hit_DBFZ.png' },
-    { id: 'zamasu', name: 'Zamasu', level: 173, hp: 2380000, str: 40000, expReward: 60800, zeniReward: 77200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/ZamasuDBFZ.png' },
-    { id: 'goku_black', name: 'Goku Black', level: 178, hp: 2690000, str: 43500, expReward: 65300, zeniReward: 82700, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/GokuBlackDBFZ.png' },
-    { id: 'goku_black_rosed', name: 'Goku Black (SSJ Rosé)', level: 183, hp: 3030000, str: 47200, expReward: 70000, zeniReward: 88500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f6/GokuBlackRoseDBFZ.png' },
-    { id: 'fused_zamasu', name: 'Zamasu (Fusão)', level: 188, hp: 3400000, str: 51100, expReward: 75000, zeniReward: 94600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8f/FusedZamasuDBFZ.png' },
-    { id: 'corrupted_zamasu', name: 'Zamasu (Corrompido)', level: 192, hp: 3810000, str: 55200, expReward: 80200, zeniReward: 101000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/ZamasuCorrupted.png' },
+
+    { id: 'magetta', name: 'Auta Magetta', hp: 1850000, str: 33600, expReward: 52400, zeniReward: 67000, levelReq: 163, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/5f/MagettaNV.png' },
+
+    { id: 'hit', name: 'Hit (O Assassino)', hp: 2100000, str: 36700, expReward: 56500, zeniReward: 72000, levelReq: 168, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/78/Hit_DBFZ.png' },
+
+    { id: 'zamasu', name: 'Zamasu', hp: 2380000, str: 40000, expReward: 60800, zeniReward: 77200, levelReq: 173, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/ZamasuDBFZ.png' },
+
+    { id: 'goku_black', name: 'Goku Black', hp: 2690000, str: 43500, expReward: 65300, zeniReward: 82700, levelReq: 178, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/GokuBlackDBFZ.png' },
+
+    { id: 'goku_black_rosed', name: 'Goku Black (SSJ Rosé)', hp: 3030000, str: 47200, expReward: 70000, zeniReward: 88500, levelReq: 183, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f6/GokuBlackRoseDBFZ.png' },
+
+    { id: 'fused_zamasu', name: 'Zamasu (Fusão)', hp: 3400000, str: 51100, expReward: 75000, zeniReward: 94600, levelReq: 188, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8f/FusedZamasuDBFZ.png' },
+
+    { id: 'corrupted_zamasu', name: 'Zamasu (Corrompido)', hp: 3810000, str: 55200, expReward: 80200, zeniReward: 101000, levelReq: 192, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/ZamasuCorrupted.png' },
+
+
 
     // --- DB SUPER: TORNEIO DO PODER (Lv 197 - 232) ---
-    { id: 'trio_de_dangers', name: 'Bergamo (Trio de Dangers)', level: 197, hp: 4260000, str: 59500, expReward: 85600, zeniReward: 107700, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/BergamoNV.png' },
-    { id: 'ribrianne', name: 'Ribrianne', level: 202, hp: 4750000, str: 64000, expReward: 91200, zeniReward: 114700, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/RibrianneNV.png' },
-    { id: 'caulifla_ssj2', name: 'Caulifla (SSJ2)', level: 206, hp: 5280000, str: 68700, expReward: 97000, zeniReward: 122000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/CauliflaSSJ2.png' },
-    { id: 'kale_berserk', name: 'Kale (Berserk)', level: 210, hp: 5860000, str: 73600, expReward: 103000, zeniReward: 129600, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/KaleBerserk.png' },
-    { id: 'kefla_ssj2', name: 'Kefla (SSJ2)', level: 214, hp: 6490000, str: 78700, expReward: 109200, zeniReward: 137500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a1/KeflaDBFZ.png' },
-    { id: 'aniraza', name: 'Aniraza', level: 218, hp: 7170000, str: 84000, expReward: 115600, zeniReward: 145700, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c2/AnirazaNV.png' },
-    { id: 'dyspo', name: 'Dyspo (Super Máxima Velocidade)', level: 222, hp: 7900000, str: 89500, expReward: 122200, zeniReward: 154200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/DyspoNV.png' },
-    { id: 'toppo_god', name: 'Toppo (Deus da Destruição)', level: 227, hp: 8690000, str: 95200, expReward: 129000, zeniReward: 163000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/ToppoHakai.png' },
-    { id: 'jiren', name: 'Jiren', level: 232, hp: 9540000, str: 101100, expReward: 136000, zeniReward: 172100, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/JirenDBFZ.png' },
+
+    { id: 'trio_de_dangers', name: 'Bergamo (Trio de Dangers)', hp: 4260000, str: 59500, expReward: 85600, zeniReward: 107700, levelReq: 197, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/BergamoNV.png' },
+
+    { id: 'ribrianne', name: 'Ribrianne', hp: 4750000, str: 64000, expReward: 91200, zeniReward: 114700, levelReq: 202, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/RibrianneNV.png' },
+
+    { id: 'caulifla_ssj2', name: 'Caulifla (SSJ2)', hp: 5280000, str: 68700, expReward: 97000, zeniReward: 122000, levelReq: 206, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/CauliflaSSJ2.png' },
+
+    { id: 'kale_berserk', name: 'Kale (Berserk)', hp: 5860000, str: 73600, expReward: 103000, zeniReward: 129600, levelReq: 210, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/KaleBerserk.png' },
+
+    { id: 'kefla_ssj2', name: 'Kefla (SSJ2)', hp: 6490000, str: 78700, expReward: 109200, zeniReward: 137500, levelReq: 214, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a1/KeflaDBFZ.png' },
+
+    { id: 'aniraza', name: 'Aniraza', hp: 7170000, str: 84000, expReward: 115600, zeniReward: 145700, levelReq: 218, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c2/AnirazaNV.png' },
+
+    { id: 'dyspo', name: 'Dyspo (Super Máxima Velocidade)', hp: 7900000, str: 89500, expReward: 122200, zeniReward: 154200, levelReq: 222, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/DyspoNV.png' },
+
+    { id: 'toppo_god', name: 'Toppo (Deus da Destruição)', hp: 8690000, str: 95200, expReward: 129000, zeniReward: 163000, levelReq: 227, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/ToppoHakai.png' },
+
+    { id: 'jiren', name: 'Jiren', hp: 9540000, str: 101100, expReward: 136000, zeniReward: 172100, levelReq: 232, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/JirenDBFZ.png' },
+
+
 
     // --- ENDGAME / FILMES DB SUPER (Lv 237 - 250) ---
-    { id: 'jiren_full_power', name: 'Jiren (Poder Total)', level: 237, hp: 10450000, str: 107200, expReward: 143200, zeniReward: 181500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/25/JirenFullPower.png' },
-    { id: 'broly_wrath', name: 'Broly (Ira)', level: 241, hp: 11420000, str: 113500, expReward: 150600, zeniReward: 191200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4e/BrolyWrath.png' },
-    { id: 'broly_ssj_full', name: 'Broly (SSJ Poder Total)', level: 245, hp: 12450000, str: 120000, expReward: 158200, zeniReward: 201200, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/90/Broly_DBFZ.png' },
-    { id: 'moro_prime', name: 'Moro (Forma Final)', level: 248, hp: 13550000, str: 126700, expReward: 166000, zeniReward: 211500, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/75/MoroPrime.png' },
-    { id: 'cell_max', name: 'Cell Max', level: 250, hp: 15000000, str: 135000, expReward: 175000, zeniReward: 225000, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d2/CellMax.png' }
-];
+
+    { id: 'jiren_full_power', name: 'Jiren (Poder Total)', hp: 10450000, str: 107200, expReward: 143200, zeniReward: 181500, levelReq: 237, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/25/JirenFullPower.png' },
+
+    { id: 'broly_wrath', name: 'Broly (Ira)', hp: 11420000, str: 113500, expReward: 150600, zeniReward: 191200, levelReq: 241, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4e/BrolyWrath.png' },
+
+    { id: 'broly_ssj_full', name: 'Broly (SSJ Poder Total)', hp: 12450000, str: 120000, expReward: 158200, zeniReward: 201200, levelReq: 245, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/90/Broly_DBFZ.png' },
+
+    { id: 'moro_prime', name: 'Moro (Forma Final)', hp: 13550000, str: 126700, expReward: 166000, zeniReward: 211500, levelReq: 248, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/75/MoroPrime.png' },
+
+    { id: 'cell_max', name: 'Cell Max', hp: 15000000, str: 135000, expReward: 175000, zeniReward: 225000, levelReq: 250, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d2/CellMax.png' }
+    ];
 
             function getUsersData() {
                 return JSON.parse(localStorage.getItem(STORAGE_USERS) || '{}');
