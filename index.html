@@ -390,14 +390,6 @@
                         </div>
                     </div>
 
-                    <!-- Transformations System -->
-                    <div class="mt-5 pt-4 border-t border-dbzBorder">
-                        <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bolt mr-1"></i>Transformações Disponíveis</h3>
-                        <div id="dashTransformations" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-
                     <!-- Inventory -->
                     <div class="mt-5 pt-4 border-t border-dbzBorder">
                         <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bag-shopping mr-1"></i>Inventário de Itens</h3>
@@ -485,16 +477,27 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-2">
-                            <button onclick="executeCombatTurn('attack')" class="retro-btn py-3 text-xs font-bold text-white rounded">
-                                <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
-                            </button>
-                            <button onclick="executeCombatTurn('ki_blast')" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
-                                <i class="fa-solid fa-bolt mr-1"></i> Kamehameha (-10 KI)
-                            </button>
-                            <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 text-xs font-bold text-white rounded">
-                                <i class="fa-solid fa-person-running mr-1"></i> Fugir
-                            </button>
+                        <!-- Combat Action Buttons & Skills Menu -->
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="executeCombatTurn('attack')" class="retro-btn py-3 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
+                                </button>
+                                <button onclick="toggleSkillsList()" class="retro-btn-blue py-3 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-bolt mr-1"></i> Skills / Poderes
+                                </button>
+                                <button onclick="executeCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-3 text-xs font-bold text-white rounded">
+                                    <i class="fa-solid fa-person-running mr-1"></i> Fugir
+                                </button>
+                            </div>
+
+                            <!-- Lista Desdobrável de Skills por Raça -->
+                            <div id="skillsDropdownList" class="hidden bg-black/80 border border-yellow-500/50 rounded-lg p-3 space-y-2">
+                                <h4 class="font-pixel text-[10px] text-yellow-400 uppercase border-b border-dbzBorder pb-1 mb-2"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Habilidades & Transformações</h4>
+                                <div id="skillsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <!-- Preenchido via Javascript baseado na Raça -->
+                                </div>
+                            </div>
                         </div>
 
                         <div class="bg-black/80 border border-dbzBorder rounded p-3 h-40 overflow-y-auto text-xs space-y-1 font-mono" id="battleLog">
@@ -619,8 +622,8 @@
     <script>
         // Declarações globais para invocação via HTML onclick
         let handleAuthSubmit, handleLogout, toggleAuthMode, addCustomStat, addAllStat, trainCharacter, uploadAvatar;
-        let exportSaveData, importSaveData, transform, useInventoryItem, buyShopItem;
-        let startCombat, executeCombatTurn, sendChatMessage, switchTab, startHomeResting;
+        let exportSaveData, importSaveData, useInventoryItem, buyShopItem;
+        let startCombat, executeCombatTurn, toggleSkillsList, useSkill, sendChatMessage, switchTab, startHomeResting;
         let enterAfkRoom, leaveAfkRoom;
 
         // IIFE / Closure Proteção Anti-Cheat
@@ -646,13 +649,47 @@
                 return num.toLocaleString('pt-BR');
             }
 
+            // HABILIDADES E TRANSFORMAÇÕES ESPECÍFICAS POR RAÇA
+            const RACE_SKILLS = {
+                'Saiyajin': [
+                    { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki Saiyajin.' },
+                    { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Poderosa onda de energia devastadora.' },
+                    { id: 'ssj1', name: 'Super Saiyajin 1', type: 'transform', kiCost: 25, formName: 'Super Saiyajin 1', strBonus: 25, speedBonus: 20, reqLevel: 5, reqPL: 2000, desc: 'Aumenta permanentemente o poder de combate.' },
+                    { id: 'ssj2', name: 'Super Saiyajin 2', type: 'transform', kiCost: 40, formName: 'Super Saiyajin 2', strBonus: 60, speedBonus: 50, reqLevel: 10, reqPL: 8000, desc: 'Raios elétricos envolvem seu corpo.' },
+                    { id: 'ssj3', name: 'Super Saiyajin 3', type: 'transform', kiCost: 60, formName: 'Super Saiyajin 3', strBonus: 150, speedBonus: 120, reqLevel: 15, reqPL: 25000, desc: 'Libera todo o potencial interno.' },
+                    { id: 'ssj4', name: 'Super Saiyajin 4', type: 'transform', kiCost: 80, formName: 'Super Saiyajin 4', strBonus: 300, speedBonus: 250, reqLevel: 20, reqPL: 60000, desc: 'Forma primal e avassaladora.' },
+                    { id: 'ssjblue', name: 'Super Saiyajin Blue', type: 'transform', kiCost: 100, formName: 'Super Saiyajin Blue', strBonus: 600, speedBonus: 500, reqLevel: 30, reqPL: 150000, desc: 'Poder divino dos deuses.' }
+                ],
+                'Namekuseijin': [
+                    { id: 'nam_ki_blast', name: 'Raio Demoníaco', type: 'attack', kiCost: 10, multiplier: 1.4, reqLevel: 1, desc: 'Disparo rápido de energia namekuseijinha.' },
+                    { id: 'nam_regen', name: 'Regeneração', type: 'heal', kiCost: 25, healMultiplier: 0.35, reqLevel: 2, desc: 'Restaura uma porção significativa da sua vida.' },
+                    { id: 'nam_makanko', name: 'Makankosappo', type: 'attack', kiCost: 30, multiplier: 2.8, reqLevel: 6, desc: 'Raio espiral perfurante de alto dano.' },
+                    { id: 'nam_giant', name: 'Forma Gigante', type: 'transform', kiCost: 40, formName: 'Namekuseijin Gigante', strBonus: 70, speedBonus: 30, reqLevel: 10, reqPL: 8000, desc: 'Expande seu corpo para esmagar os inimigos.' },
+                    { id: 'nam_super', name: 'Super Namekuseijin', type: 'transform', kiCost: 70, formName: 'Super Namekuseijin', strBonus: 220, speedBonus: 180, reqLevel: 20, reqPL: 60000, desc: 'Fusão interior de guerreiros namekuseijins.' }
+                ],
+                'Android': [
+                    { id: 'and_photon', name: 'Canhão de Fótons', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Disparo de energia sintética.' },
+                    { id: 'and_drain', name: 'Absorção de Energia', type: 'drain', kiCost: 5, multiplier: 1.2, drainKi: 20, reqLevel: 3, desc: 'Causa dano e rouba KI do inimigo.' },
+                    { id: 'and_barrier', name: 'Barreira de Energia', type: 'shield', kiCost: 15, reqLevel: 5, desc: 'Reduz severamente o próximo ataque sofrido.' },
+                    { id: 'and_overclock', name: 'Modo Sobrecarga', type: 'transform', kiCost: 30, formName: 'Androide Sobrecarregado', strBonus: 80, speedBonus: 90, reqLevel: 10, reqPL: 8000, desc: 'Remove limitadores de poder do circuito.' },
+                    { id: 'and_super', name: 'Super Androide', type: 'transform', kiCost: 75, formName: 'Super Androide', strBonus: 250, speedBonus: 230, reqLevel: 20, reqPL: 60000, desc: 'Fusão e aprimoramento robótico total.' }
+                ],
+                'Humano': [
+                    { id: 'hum_dodon', name: 'Dodonpa', type: 'attack', kiCost: 8, multiplier: 1.3, reqLevel: 1, desc: 'Feixe de energia rápido concentrado no dedo.' },
+                    { id: 'hum_solar', name: 'Taiyoken (Kiai)', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 3, desc: 'Cega momentaneamente o oponente causando dano.' },
+                    { id: 'hum_kikoho', name: 'Kikoho', type: 'attack', kiCost: 35, multiplier: 3.2, reqLevel: 8, desc: 'Ataque massivo que consome energia vital.' },
+                    { id: 'hum_kaioken', name: 'Técnica Kaioken', type: 'transform', kiCost: 35, formName: 'Humano (Kaioken)', strBonus: 90, speedBonus: 100, reqLevel: 10, reqPL: 8000, desc: 'Multiplica a aura e capacidade física.' },
+                    { id: 'hum_master', name: 'Potencial Liberado', type: 'transform', kiCost: 80, formName: 'Mestre Marcial Supremo', strBonus: 280, speedBonus: 260, reqLevel: 20, reqPL: 60000, desc: 'Domínio místico completo das artes marciais.' }
+                ]
+            };
+
             // 7 SALAS DE TREINO CELESTE (AFK)
             const CELESTIAL_ROOMS = [
                 { id: 1, name: 'Patio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 5, zeniRate: 4, desc: 'Treino básico para iniciantes se acostumarem com o fluxo de Ki.', icon: 'fa-feather' },
                 { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 18, zeniRate: 15, desc: 'Suba a torre e treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
                 { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 45, zeniRate: 35, desc: 'Meditação profunda no topo do mundo para expandir a mente e o corpo.', icon: 'fa-synagogue' },
                 { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 120, zeniRate: 90, desc: 'Um ano de treino em um dia. Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
-                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 320, zeniRate: 240, desc: 'Condições escaldantes e congelantes para desafiar os limites do Saiyajin.', icon: 'fa-fire-burner' },
+                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 320, zeniRate: 240, desc: 'Condições escaldantes e congelantes para desafiar os limites do Guerreiro.', icon: 'fa-fire-burner' },
                 { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 850, zeniRate: 650, desc: 'Dimensão alternativa onde o Ki flui de maneira brutal.', icon: 'fa-atom' },
                 { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 2200, zeniRate: 1800, desc: 'Reservado apenas aos guerreiros que rivalizam com o Poder Divino.', icon: 'fa-sun' }
             ];
@@ -665,14 +702,6 @@
                 { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
                 { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
                 { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
-            ];
-
-            const TRANSFORMATIONS = [
-                { id: 'ssj1', name: 'Super Saiyajin 1', reqLevel: 5, reqPL: 2000, strBonus: 25, speedBonus: 20 },
-                { id: 'ssj2', name: 'Super Saiyajin 2', reqLevel: 10, reqPL: 8000, strBonus: 60, speedBonus: 50 },
-                { id: 'ssj3', name: 'Super Saiyajin 3', reqLevel: 15, reqPL: 25000, strBonus: 150, speedBonus: 120 },
-                { id: 'ssj4', name: 'Super Saiyajin 4', reqLevel: 20, reqPL: 60000, strBonus: 300, speedBonus: 250 },
-                { id: 'ssjblue', name: 'Super Saiyajin Blue', reqLevel: 30, reqPL: 150000, strBonus: 600, speedBonus: 500 }
             ];
 
             const ENEMIES = [
@@ -913,7 +942,6 @@
                     else ctrl.classList.add('hidden'), ctrl.classList.remove('flex');
                 });
 
-                renderTransformations();
                 renderInventory();
                 renderRanking();
                 renderCelestialRooms();
@@ -1253,38 +1281,6 @@
                 reader.readAsText(file);
             };
 
-            function renderTransformations() {
-                const container = document.getElementById('dashTransformations');
-                container.innerHTML = TRANSFORMATIONS.map(t => {
-                    const canTransform = _currentUser.level >= t.reqLevel && _currentUser.combatPower >= t.reqPL;
-                    const isCurrent = _currentUser.transformation === t.name;
-
-                    return `
-                        <div class="bg-black/50 p-2.5 rounded border border-dbzBorder flex items-center justify-between">
-                            <div>
-                                <div class="text-xs font-bold ${isCurrent ? 'text-yellow-300' : 'text-gray-300'}">${t.name}</div>
-                                <div class="text-[10px] text-gray-400">Req: Nível ${t.reqLevel} | PL ${formatPower(t.reqPL)}</div>
-                            </div>
-                            <button onclick="transform('${t.name}')" ${!canTransform || isCurrent ? 'disabled' : ''}
-                                class="${isCurrent ? 'bg-yellow-600 text-black font-bold' : canTransform ? 'retro-btn text-white' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-2.5 py-1 text-[10px] rounded">
-                                ${isCurrent ? 'Ativo' : 'Transformar'}
-                            </button>
-                        </div>
-                    `;
-                }).join('');
-            }
-
-            transform = function(name) {
-                const t = TRANSFORMATIONS.find(tr => tr.name === name);
-                if (!t || !_currentUser) return;
-
-                _currentUser.transformation = t.name;
-                _currentUser.str += t.strBonus;
-                _currentUser.speed += t.speedBonus;
-                saveCurrentUserData();
-                showToast(`Você se transformou em ${t.name}! Poder aumentado!`);
-            };
-
             function renderInventory() {
                 const container = document.getElementById('dashInventory');
                 if (_currentUser.inventory && _currentUser.inventory.length > 0) {
@@ -1391,21 +1387,113 @@
                                 <img src="${enemy.avatar}" class="w-12 h-12 rounded border border-yellow-500 object-cover bg-black">
                                 <div>
                                     <h4 class="font-pixel text-xs text-yellow-400">${enemy.name}</h4>
-                                    <p class="text-[10px] text-gray-400">Req: Nível ${enemy.levelReq} | Ganho: ${enemy.expReward} EXP / ${enemy.zeniReward} Z$</p>
+                                    <p class="text-[10px] text-gray-400">HP: ${enemy.hp} | Requisito: Nível ${enemy.levelReq}</p>
+                                    <p class="text-[10px] text-green-400">+${enemy.expReward} EXP | +${enemy.zeniReward} Z$</p>
                                 </div>
                             </div>
                             <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} 
                                 class="${canFight ? 'retro-btn' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-3 py-1.5 text-xs text-white font-bold rounded">
-                                ${canFight ? 'Lutar' : _currentUser?.afkState ? 'AFK Ativo' : 'Bloqueado'}
+                                Batalhar
                             </button>
                         </div>
                     `;
                 }).join('');
             }
 
+            toggleSkillsList = function() {
+                const dropdown = document.getElementById('skillsDropdownList');
+                if (dropdown.classList.contains('hidden')) {
+                    renderSkillsList();
+                    dropdown.classList.remove('hidden');
+                } else {
+                    dropdown.classList.add('hidden');
+                }
+            };
+
+            function renderSkillsList() {
+                const container = document.getElementById('skillsContainer');
+                const userRace = _currentUser.race || 'Saiyajin';
+                const skills = RACE_SKILLS[userRace] || RACE_SKILLS['Saiyajin'];
+
+                container.innerHTML = skills.map(sk => {
+                    const meetsLvl = _currentUser.level >= sk.reqLevel;
+                    const meetsPL = !sk.reqPL || _currentUser.combatPower >= sk.reqPL;
+                    const isTrans = sk.type === 'transform';
+                    const isCurrentForm = isTrans && _currentUser.transformation === sk.formName;
+
+                    let canUse = meetsLvl && meetsPL;
+                    let btnText = "Usar";
+                    let btnClass = "retro-btn-blue";
+
+                    if (isTrans) {
+                        if (isCurrentForm) {
+                            canUse = false;
+                            btnText = "Ativo";
+                            btnClass = "bg-yellow-600 text-black font-bold";
+                        } else {
+                            btnText = "Transformar";
+                            btnClass = "retro-btn-purple";
+                        }
+                    }
+
+                    if (!meetsLvl || !meetsPL) {
+                        canUse = false;
+                        btnText = "Bloqueado";
+                        btnClass = "bg-gray-700 opacity-50 cursor-not-allowed";
+                    }
+
+                    return `
+                        <div class="bg-black/60 p-2 rounded border border-dbzBorder flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-xs text-yellow-300">${sk.name}</span>
+                                    <span class="text-[10px] text-blue-400 font-semibold">-${sk.kiCost} KI</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-0.5">${sk.desc}</p>
+                                <p class="text-[9px] text-orange-400 mt-0.5">Req: Nível ${sk.reqLevel}${sk.reqPL ? ' | PL ' + formatPower(sk.reqPL) : ''}</p>
+                            </div>
+                            <button onclick="useSkill('${sk.id}')" ${!canUse ? 'disabled' : ''} class="${btnClass} px-2 py-1 text-[10px] text-white rounded font-bold mt-2">
+                                ${btnText}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            useSkill = function(skillId) {
+                if (!combatState) return;
+                const userRace = _currentUser.race || 'Saiyajin';
+                const skills = RACE_SKILLS[userRace] || RACE_SKILLS['Saiyajin'];
+                const skill = skills.find(s => s.id === skillId);
+
+                if (!skill) return;
+
+                if (_currentUser.ki < skill.kiCost) {
+                    logBattle(`-> KI insuficiente para usar ${skill.name}!`, 'text-red-400');
+                    return;
+                }
+
+                document.getElementById('skillsDropdownList').classList.add('hidden');
+
+                if (skill.type === 'transform') {
+                    _currentUser.ki -= skill.kiCost;
+                    _currentUser.transformation = skill.formName;
+                    _currentUser.str += skill.strBonus;
+                    _currentUser.speed += skill.speedBonus;
+                    saveCurrentUserData();
+
+                    logBattle(`-> Você usou KI e se transformou em ${skill.formName}! Força e velocidade aumentaram!`, 'text-purple-400');
+                    executeEnemyTurn();
+                    updateCombatUI();
+                    return;
+                }
+
+                executeCombatTurn('skill', skill);
+            };
+
             startCombat = function(enemyId) {
-                if (_currentUser && _currentUser.afkState) {
-                    showToast("Você não pode entrar em combate enquanto estiver em Treino AFK na Plataforma Celeste!");
+                if (_currentUser.afkState) {
+                    showToast("Você não pode batalhar enquanto estiver em Treino AFK na Plataforma Celeste!");
                     return;
                 }
 
@@ -1413,67 +1501,95 @@
                 if (!activeEnemy) return;
 
                 combatState = {
+                    playerHp: _currentUser.hp,
+                    playerMaxHp: _currentUser.maxHp,
                     enemyHp: activeEnemy.hp,
                     enemyMaxHp: activeEnemy.hp
                 };
 
+                document.getElementById('skillsDropdownList').classList.add('hidden');
                 document.getElementById('arenaEnemySelect').classList.add('hidden');
                 document.getElementById('arenaCombatScreen').classList.remove('hidden');
 
-                document.getElementById('battlePlayerAvatar').src = _currentUser.avatar;
                 document.getElementById('battlePlayerName').innerText = _currentUser.username;
-                document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
-                document.getElementById('battleEnemyName').innerText = activeEnemy.name;
+                document.getElementById('battlePlayerAvatar').src = _currentUser.avatar;
 
-                updateCombatBars();
-                document.getElementById('battleLog').innerHTML = `<div class="text-yellow-400">-> Você desafiou ${activeEnemy.name}! Escolha sua ação.</div>`;
+                document.getElementById('battleEnemyName').innerText = activeEnemy.name;
+                document.getElementById('battleEnemyAvatar').src = activeEnemy.avatar;
+
+                const log = document.getElementById('battleLog');
+                log.innerHTML = `<div class="text-yellow-400">-> A batalha contra ${activeEnemy.name} começou!</div>`;
+
+                updateCombatUI();
             };
 
-            function updateCombatBars() {
-                const playerHpPct = Math.max(0, (_currentUser.hp / _currentUser.maxHp) * 100);
-                const enemyHpPct = Math.max(0, (combatState.enemyHp / combatState.enemyMaxHp) * 100);
+            function updateCombatUI() {
+                if (!combatState) return;
 
-                document.getElementById('battlePlayerHpBar').style.width = `${playerHpPct}%`;
-                document.getElementById('battlePlayerHpText').innerText = `${_currentUser.hp}/${_currentUser.maxHp}`;
-                
-                document.getElementById('battleEnemyHpBar').style.width = `${enemyHpPct}%`;
+                const pPct = Math.max(0, (combatState.playerHp / combatState.playerMaxHp) * 100);
+                const ePct = Math.max(0, (combatState.enemyHp / combatState.enemyMaxHp) * 100);
+
+                document.getElementById('battlePlayerHpBar').style.width = `${pPct}%`;
+                document.getElementById('battlePlayerHpText').innerText = `${combatState.playerHp}/${combatState.playerMaxHp}`;
+
+                document.getElementById('battleEnemyHpBar').style.width = `${ePct}%`;
                 document.getElementById('battleEnemyHpText').innerText = `${combatState.enemyHp}/${combatState.enemyMaxHp}`;
             }
 
-            executeCombatTurn = function(action) {
+            function logBattle(msg, colorClass = 'text-gray-300') {
+                const log = document.getElementById('battleLog');
+                const line = document.createElement('div');
+                line.className = colorClass;
+                line.innerText = msg;
+                log.appendChild(line);
+                log.scrollTop = log.scrollHeight;
+            }
+
+            executeCombatTurn = function(action, skillData = null) {
                 if (!combatState || !activeEnemy) return;
 
-                const log = document.getElementById('battleLog');
-
                 if (action === 'flee') {
-                    log.innerHTML += `<div class="text-gray-400">-> Você fugiu da batalha!</div>`;
-                    setTimeout(() => {
-                        document.getElementById('arenaCombatScreen').classList.add('hidden');
-                        document.getElementById('arenaEnemySelect').classList.remove('hidden');
-                    }, 1000);
+                    logBattle('-> Você fugiu da batalha!', 'text-yellow-400');
+                    setTimeout(endCombat, 1000);
                     return;
                 }
 
-                let playerDamage = 0;
+                let damage = 0;
+
                 if (action === 'attack') {
-                    playerDamage = Math.floor(_currentUser.str * 1.5) + Math.floor(Math.random() * 8);
-                    combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
-                    log.innerHTML += `<div class="text-green-400">-> Você atacou ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
-                } else if (action === 'ki_blast') {
-                    if (_currentUser.ki < 10) {
-                        log.innerHTML += `<div class="text-yellow-500">-> KI insuficiente!</div>`;
-                        return;
+                    damage = Math.floor(_currentUser.str * 1.2) + Math.floor(Math.random() * 10);
+                    combatState.enemyHp -= damage;
+                    logBattle(`-> Você atacou ${activeEnemy.name} causando ${damage} de dano físico!`, 'text-green-400');
+                } else if (action === 'skill' && skillData) {
+                    _currentUser.ki -= skillData.kiCost;
+
+                    if (skillData.type === 'attack') {
+                        damage = Math.floor(_currentUser.str * skillData.multiplier) + Math.floor(Math.random() * 15);
+                        combatState.enemyHp -= damage;
+                        logBattle(`-> Você lançou ${skillData.name} causando ${damage} de dano!`, 'text-cyan-400');
+                    } else if (skillData.type === 'heal') {
+                        const healAmt = Math.floor(_currentUser.maxHp * skillData.healMultiplier);
+                        combatState.playerHp = Math.min(combatState.playerMaxHp, combatState.playerHp + healAmt);
+                        _currentUser.hp = combatState.playerHp;
+                        logBattle(`-> Você usou ${skillData.name} e recuperou ${healAmt} de HP!`, 'text-green-300');
+                    } else if (skillData.type === 'drain') {
+                        damage = Math.floor(_currentUser.str * skillData.multiplier);
+                        combatState.enemyHp -= damage;
+                        _currentUser.ki = Math.min(_currentUser.maxKi, _currentUser.ki + skillData.drainKi);
+                        logBattle(`-> Você usou ${skillData.name}, causou ${damage} de dano e absorveu ${skillData.drainKi} KI!`, 'text-blue-300');
+                    } else if (skillData.type === 'shield') {
+                        combatState.shieldActive = true;
+                        logBattle(`-> Você ativou ${skillData.name}! O próximo ataque sofrido será amortecido!`, 'text-purple-300');
                     }
-                    _currentUser.ki -= 10;
-                    playerDamage = Math.floor(_currentUser.str * 2.2) + Math.floor(Math.random() * 15);
-                    combatState.enemyHp = Math.max(0, combatState.enemyHp - playerDamage);
-                    log.innerHTML += `<div class="text-cyan-400">-> Kamehameha atingiu ${activeEnemy.name} causando ${playerDamage} de dano!</div>`;
+
+                    saveCurrentUserData();
                 }
 
-                updateCombatBars();
-
                 if (combatState.enemyHp <= 0) {
-                    log.innerHTML += `<div class="text-yellow-300 font-bold">-> VITÓRIA! Você derrotou ${activeEnemy.name}!</div>`;
+                    combatState.enemyHp = 0;
+                    updateCombatUI();
+                    logBattle(`-> Você derrotou ${activeEnemy.name}!`, 'text-yellow-300 font-bold');
+
                     _currentUser.exp += activeEnemy.expReward;
                     _currentUser.zeni += activeEnemy.zeniReward;
 
@@ -1484,127 +1600,139 @@
                         _currentUser.statPoints += 3;
                         _currentUser.maxHp += 20;
                         _currentUser.hp = _currentUser.maxHp;
-                        log.innerHTML += `<div class="text-yellow-400 font-pixel text-[10px]">-> LEVEL UP! Nível ${_currentUser.level}!</div>`;
+                        _currentUser.maxKi += 10;
+                        _currentUser.ki = _currentUser.maxKi;
+                        logBattle(`-> NÍVEL AUMENTOU! Você alcançou o nível ${_currentUser.level}!`, 'text-yellow-400 font-bold');
                     }
 
                     saveCurrentUserData();
-
-                    setTimeout(() => {
-                        document.getElementById('arenaCombatScreen').classList.add('hidden');
-                        document.getElementById('arenaEnemySelect').classList.remove('hidden');
-                    }, 1800);
+                    setTimeout(endCombat, 1800);
                     return;
                 }
 
-                // Enemy Attack
-                setTimeout(() => {
-                    const enemyDamage = Math.max(2, Math.floor(activeEnemy.str - (_currentUser.res * 0.4))) + Math.floor(Math.random() * 5);
-                    _currentUser.hp = Math.max(0, _currentUser.hp - enemyDamage);
-                    log.innerHTML += `<div class="text-red-400">-> ${activeEnemy.name} atacou e causou ${enemyDamage} de dano!</div>`;
-                    
-                    updateCombatBars();
-                    log.scrollTop = log.scrollHeight;
-
-                    if (_currentUser.hp <= 0) {
-                        log.innerHTML += `<div class="text-red-600 font-bold">-> DERROTADO! Vá até a Casa para descansar e se recuperar.</div>`;
-                        saveCurrentUserData();
-
-                        setTimeout(() => {
-                            document.getElementById('arenaCombatScreen').classList.add('hidden');
-                            document.getElementById('arenaEnemySelect').classList.remove('hidden');
-                        }, 1800);
-                    } else {
-                        saveCurrentUserData();
-                    }
-                }, 500);
+                executeEnemyTurn();
+                updateCombatUI();
             };
 
-            function initChatStorage() {
-                if (!localStorage.getItem(STORAGE_CHAT)) {
-                    const initialMsgs = [
-                        { sender: 'Mestre Roshi', text: 'Bem-vindos à nova versão do DBZ RPG Online!', time: '12:00' },
-                        { sender: 'Vegeta', text: 'Eu serei o guerreiro número 1 deste ranking!', time: '12:02' }
-                    ];
-                    localStorage.setItem(STORAGE_CHAT, JSON.stringify(initialMsgs));
+            function executeEnemyTurn() {
+                if (!combatState || combatState.enemyHp <= 0) return;
+
+                let enemyDamage = Math.floor(activeEnemy.str * (100 / (100 + _currentUser.res))) + Math.floor(Math.random() * 5);
+                enemyDamage = Math.max(2, enemyDamage);
+
+                if (combatState.shieldActive) {
+                    enemyDamage = Math.floor(enemyDamage * 0.3);
+                    combatState.shieldActive = false;
+                    logBattle(`-> Sua barreira reduziu o dano sofrido!`, 'text-purple-400');
+                }
+
+                combatState.playerHp -= enemyDamage;
+                _currentUser.hp = Math.max(0, combatState.playerHp);
+                saveCurrentUserData();
+
+                logBattle(`<- ${activeEnemy.name} contra-atacou causando ${enemyDamage} de dano!`, 'text-red-400');
+
+                if (combatState.playerHp <= 0) {
+                    combatState.playerHp = 0;
+                    updateCombatUI();
+                    logBattle('-> Você foi derrotado! Vá até sua casa descansar.', 'text-red-500 font-bold');
+                    setTimeout(endCombat, 2000);
                 }
             }
 
+            function endCombat() {
+                combatState = null;
+                activeEnemy = null;
+                document.getElementById('arenaCombatScreen').classList.add('hidden');
+                document.getElementById('arenaEnemySelect').classList.remove('hidden');
+                updateUI();
+            }
+
             function renderChat() {
-                const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
-                const chatBox = document.getElementById('chatMessages');
-                
-                chatBox.innerHTML = chatMsgs.map(m => `
-                    <div class="bg-black/40 p-2 rounded border border-dbzBorder/60">
-                        <div class="flex justify-between items-center text-[10px]">
-                            <span class="text-yellow-400 font-bold">${m.sender}</span>
-                            <span class="text-gray-500">${m.time}</span>
+                const chatContainer = document.getElementById('chatMessages');
+                let messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+
+                if (messages.length === 0) {
+                    messages = [
+                        { sender: 'Mestre Kame', text: 'Bem-vindos à nova versão offline de DBZ RPG!', time: '10:00' },
+                        { sender: 'Vegeta', text: 'Eu serei o guerreiro mais forte deste ranking!', time: '10:05' }
+                    ];
+                    localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
+                }
+
+                chatContainer.innerHTML = messages.map(msg => `
+                    <div class="bg-black/40 p-2 rounded border border-dbzBorder/50">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-yellow-400 text-[11px]">${msg.sender}</span>
+                            <span class="text-[9px] text-gray-500">${msg.time}</span>
                         </div>
-                        <p class="text-gray-300 text-xs mt-0.5 break-words">${m.text}</p>
+                        <p class="text-gray-300 text-xs break-words">${msg.text}</p>
                     </div>
                 `).join('');
 
-                chatBox.scrollTop = chatBox.scrollHeight;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
 
             sendChatMessage = function(e) {
                 e.preventDefault();
+                if (!_currentUser) return;
+
                 const input = document.getElementById('chatInput');
                 const text = input.value.trim();
-                if (!text || !_currentUser) return;
+                if (!text) return;
 
-                const chatMsgs = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+                const messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
                 const now = new Date();
                 const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-                chatMsgs.push({
+                messages.push({
                     sender: _currentUser.username,
                     text: text,
                     time: timeStr
                 });
 
-                if (chatMsgs.length > 30) chatMsgs.shift();
+                if (messages.length > 30) messages.shift();
 
-                localStorage.setItem(STORAGE_CHAT, JSON.stringify(chatMsgs));
+                localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
                 input.value = '';
                 renderChat();
             };
 
             function renderRanking() {
-                const usersObj = getUsersData();
-                const players = Object.values(usersObj);
+                const tableBody = document.getElementById('rankingTableBody');
+                const users = getUsersData();
 
-                players.sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
+                const sorted = Object.values(users).sort((a, b) => (b.combatPower || 0) - (a.combatPower || 0));
 
-                const tbody = document.getElementById('rankingTableBody');
-                if (players.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500 italic">Nenhum guerreiro registrado.</td></tr>`;
+                if (sorted.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="5" class="p-3 text-center text-gray-500">Nenhum guerreiro registrado.</td></tr>`;
                     return;
                 }
 
-                tbody.innerHTML = players.map((p, idx) => `
-                    <tr class="hover:bg-dbzHover transition ${p.username === _currentUser?.username ? 'bg-orange-950/40 border-l-2 border-orange-500' : ''}">
-                        <td class="p-2 text-center font-bold ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
+                tableBody.innerHTML = sorted.map((user, idx) => `
+                    <tr class="${_currentUser && user.username === _currentUser.username ? 'bg-orange-950/40 text-yellow-300 font-bold' : 'hover:bg-dbzHover'} transition">
+                        <td class="p-2 text-center font-pixel text-yellow-500">${idx + 1}</td>
                         <td class="p-2 flex items-center space-x-2">
-                            <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
-                            <span class="font-bold text-gray-200 truncate">${p.username}</span>
+                            <img src="${user.avatar}" class="w-6 h-6 rounded-full border border-yellow-500 object-cover">
+                            <span class="truncate max-w-[100px] sm:max-w-none">${user.username}</span>
                         </td>
-                        <td class="p-2 text-center text-gray-400">${p.race}</td>
-                        <td class="p-2 text-center text-yellow-300 font-pixel">${p.level}</td>
-                        <td class="p-2 text-right font-pixel text-orange-400" title="${(p.combatPower || 0).toLocaleString('pt-BR')}">${formatPower(p.combatPower || 0)}</td>
+                        <td class="p-2 text-center text-gray-400">${user.race}</td>
+                        <td class="p-2 text-center text-yellow-400 font-pixel text-[10px]">${user.level}</td>
+                        <td class="p-2 text-right font-pixel text-orange-400 text-[10px]" title="${(user.combatPower || 0).toLocaleString('pt-BR')}">${formatPower(user.combatPower || 0)}</td>
                     </tr>
                 `).join('');
             }
 
             switchTab = function(tabName) {
-                const contents = document.querySelectorAll('.tab-content');
-                contents.forEach(c => c.classList.add('hidden'));
+                const tabs = document.querySelectorAll('.tab-content');
+                tabs.forEach(t => t.classList.add('hidden'));
 
                 const navBtns = document.querySelectorAll('.nav-btn');
-                navBtns.forEach(b => {
-                    if (b.dataset.tab === tabName) {
-                        b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
+                navBtns.forEach(btn => {
+                    if (btn.dataset.tab === tabName) {
+                        btn.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition bg-orange-600 text-white";
                     } else {
-                        b.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
+                        btn.className = "nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300";
                     }
                 });
 
@@ -1616,19 +1744,16 @@
                 if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
             };
 
-            function showToast(text) {
+            function showToast(msg) {
                 const toast = document.getElementById('gameNotification');
-                document.getElementById('notificationText').innerText = text;
+                document.getElementById('notificationText').innerText = msg;
                 toast.classList.remove('hidden');
                 setTimeout(() => {
                     toast.classList.add('hidden');
-                }, 2500);
+                }, 3000);
             }
 
-            window.addEventListener('DOMContentLoaded', () => {
-                initChatStorage();
-                checkSession();
-            });
+            checkSession();
         })();
     </script>
 </body>
