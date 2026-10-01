@@ -146,6 +146,10 @@
                 <button onclick="switchTab('arena')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="arena">
                     <i class="fa-solid fa-khanda mr-1"></i> Batalha
                 </button>
+                <!-- NOVO BOTAO PLATAFORMA CELESTE -->
+                <button onclick="switchTab('celestial')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-cyan-300" data-tab="celestial">
+                    <i class="fa-solid fa-cloud-moon mr-1"></i> Plataforma Celeste
+                </button>
                 <button onclick="switchTab('shop')" class="nav-btn px-3 py-1.5 rounded text-xs font-bold uppercase transition hover:bg-dbzBorder text-gray-300" data-tab="shop">
                     <i class="fa-solid fa-store mr-1"></i> Kame House
                 </button>
@@ -184,6 +188,11 @@
                     </div>
                     <h2 id="sideName" class="font-pixel text-sm text-yellow-400 mt-2 text-center truncate w-full">Son Goku</h2>
                     <span id="sideTitle" class="text-xs text-orange-400 font-semibold">Saiyajin</span>
+                    
+                    <!-- Indicador AFK no Perfil -->
+                    <div id="sideAfkBadge" class="hidden mt-1 px-2 py-0.5 rounded bg-cyan-950 border border-cyan-500 text-cyan-300 text-[10px] font-pixel animate-pulse">
+                        <i class="fa-solid fa-hourglass-half mr-1"></i>Em Treino AFK
+                    </div>
                 </div>
 
                 <!-- Level & Combat Power -->
@@ -471,6 +480,47 @@
                 </div>
             </div>
 
+            <!-- NOVA TAB: PLATAFORMA CELESTE (TREINO AFK) -->
+            <div id="tabCelestial" class="tab-content hidden space-y-4">
+                <div class="bg-dbzCardBg retro-border rounded-lg p-5">
+                    <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
+                        <h2 class="font-pixel text-sm text-cyan-300"><i class="fa-solid fa-cloud-moon mr-2 text-cyan-400"></i>PLATAFORMA CELESTE (TEMPLO DE KAMI-SAMA)</h2>
+                        <span class="text-xs text-gray-400">Treino Automático AFK</span>
+                    </div>
+
+                    <!-- Status Ativo de Treino AFK -->
+                    <div id="afkActivePanel" class="hidden bg-black/60 p-5 rounded-lg border border-cyan-500 text-center space-y-4 mb-4">
+                        <div class="flex justify-center items-center space-x-3">
+                            <i class="fa-solid fa-person-rays text-4xl text-cyan-400 animate-pulse"></i>
+                            <div class="text-left">
+                                <h3 id="afkRoomTitle" class="font-pixel text-xs text-yellow-300">Treinando na Sala</h3>
+                                <p id="afkRoomRates" class="text-xs text-gray-300 mt-1">Ganhando EXP e Zeni a cada 5 segundos...</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/80 p-3 rounded border border-dbzBorder text-xs text-gray-300 space-y-1">
+                            <div class="flex justify-between"><span>Tempo em Treino:</span><span id="afkTimerDisplay" class="font-pixel text-cyan-300">00:00:00</span></div>
+                            <div class="flex justify-between"><span>EXP Acumulado:</span><span id="afkExpGained" class="font-pixel text-yellow-400">+0 EXP</span></div>
+                            <div class="flex justify-between"><span>Zeni Acumulado:</span><span id="afkZeniGained" class="font-pixel text-yellow-300">+0 Z$</span></div>
+                        </div>
+
+                        <p class="text-[11px] text-red-400 italic font-semibold"><i class="fa-solid fa-lock mr-1"></i>Enquanto estiver treinando aqui, todas as outras ações (batalhar, treinar manual e descansar) ficam bloqueadas!</p>
+
+                        <button onclick="leaveAfkRoom()" class="retro-btn-purple px-6 py-2 text-xs font-bold text-white rounded">
+                            <i class="fa-solid fa-door-open mr-1"></i> Sair do Treino Celeste
+                        </button>
+                    </div>
+
+                    <!-- Lista de Salas -->
+                    <div id="afkRoomsContainer" class="space-y-3">
+                        <p class="text-xs text-gray-400">Escolha uma sala adequada para o seu nível. O personagem continuará acumulando recursos automaticamente em tempo real.</p>
+                        <div class="grid grid-cols-1 gap-3" id="afkRoomsList">
+                            <!-- Renderizado via Javascript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB 4: KAME HOUSE SHOP -->
             <div id="tabShop" class="tab-content hidden space-y-4">
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
@@ -547,6 +597,7 @@
         let handleAuthSubmit, handleLogout, toggleAuthMode, addStat, trainCharacter, uploadAvatar;
         let exportSaveData, importSaveData, transform, useInventoryItem, buyShopItem;
         let startCombat, executeCombatTurn, sendChatMessage, switchTab, startHomeResting;
+        let enterAfkRoom, leaveAfkRoom;
 
         // IIFE / Closure Proteção Anti-Cheat
         (function() {
@@ -559,6 +610,7 @@
             let activeEnemy = null;
             let combatState = null;
             let restInterval = null;
+            let afkInterval = null;
 
             // Formatação do Poder de Luta para evitar corte em números grandes
             function formatPower(num) {
@@ -570,13 +622,24 @@
                 return num.toLocaleString('pt-BR');
             }
 
+            // 7 SALAS DE TREINO CELESTE (AFK)
+            const CELESTIAL_ROOMS = [
+                { id: 1, name: 'Patio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 5, zeniRate: 4, desc: 'Treino básico para iniciantes se acostumarem com o fluxo de Ki.', icon: 'fa-feather' },
+                { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 18, zeniRate: 15, desc: 'Suba a torre e treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
+                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 45, zeniRate: 35, desc: 'Meditação profunda no topo do mundo para expandir a mente e o corpo.', icon: 'fa-synagogue' },
+                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 120, zeniRate: 90, desc: 'Um ano de treino em um dia. Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
+                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 320, zeniRate: 240, desc: 'Condições escaldantes e congelantes para desafiar os limites do Saiyajin.', icon: 'fa-fire-burner' },
+                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 850, zeniRate: 650, desc: 'Dimensão alternativa onde o Ki flui de maneira brutal.', icon: 'fa-atom' },
+                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 2200, zeniRate: 1800, desc: 'Reservado apenas aos guerreiros que rivalizam com o Poder Divino.', icon: 'fa-sun' }
+            ];
+
             const SHOP_ITEMS = [
                 { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
                 { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e concede +5 KI Máximo permanente.', effect: 'ki_boost' },
                 { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade permanente.', effect: 'stat_scouter' },
                 { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
                 { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: 'Dá +300 de EXP imediatamente.', effect: 'exp_boost' },
-                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
+                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos osatributos base.', effect: 'stat_all' },
                 { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
             ];
 
@@ -665,13 +728,17 @@
 
                 renderShop();
                 renderArenaEnemies();
+                renderCelestialRooms();
                 renderChat();
                 renderRanking();
+                
+                // Processa o loop AFK se o personagem já estava treinando ao carregar
+                initAfkLoop();
+
                 switchTab('dashboard');
                 updateUI();
             }
 
-            // Alternar entre abas de Login e Cadastro
             toggleAuthMode = function(mode) {
                 const loginTabBtn = document.getElementById('loginTabBtn');
                 const registerTabBtn = document.getElementById('registerTabBtn');
@@ -738,6 +805,7 @@
                         zeni: 300,
                         transformation: 'Base',
                         inventory: [],
+                        afkState: null, // { roomId: number, startTime: timestamp, gainedExp: 0, gainedZeni: 0 }
                         avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
                     };
                     newUser.combatPower = calculateCombatPower(newUser);
@@ -766,6 +834,7 @@
 
             handleLogout = function() {
                 if (restInterval) clearInterval(restInterval);
+                if (afkInterval) clearInterval(afkInterval);
                 _currentUser = null;
                 localStorage.removeItem(STORAGE_SESSION);
                 showAuthScreen();
@@ -779,13 +848,20 @@
                 document.getElementById('sideTitle').innerText = `${_currentUser.race} (${_currentUser.transformation || 'Base'})`;
                 document.getElementById('sideLevel').innerText = _currentUser.level;
                 
-                // Atualiza o Poder de Luta com formatação compacta para valores altos + tooltip completo
                 const sidePLElement = document.getElementById('sidePL');
                 sidePLElement.innerText = formatPower(_currentUser.combatPower);
                 sidePLElement.title = _currentUser.combatPower.toLocaleString('pt-BR');
 
                 document.getElementById('sideAvatar').src = _currentUser.avatar;
                 document.getElementById('sideZeni').innerText = `${_currentUser.zeni} Z$`;
+
+                // Badge AFK Sidebar
+                const sideAfkBadge = document.getElementById('sideAfkBadge');
+                if (_currentUser.afkState) {
+                    sideAfkBadge.classList.remove('hidden');
+                } else {
+                    sideAfkBadge.classList.add('hidden');
+                }
 
                 const hpPct = Math.max(0, Math.min(100, (_currentUser.hp / _currentUser.maxHp) * 100));
                 const kiPct = Math.max(0, Math.min(100, (_currentUser.ki / _currentUser.maxKi) * 100));
@@ -815,6 +891,7 @@
                 renderTransformations();
                 renderInventory();
                 renderRanking();
+                renderCelestialRooms();
             }
 
             addStat = function(stat) {
@@ -834,6 +911,11 @@
 
             startHomeResting = function() {
                 if (!_currentUser || restInterval) return;
+
+                if (_currentUser.afkState) {
+                    showToast("Você não pode descansar enquanto estiver em Treino AFK na Plataforma Celeste!");
+                    return;
+                }
 
                 if (_currentUser.hp >= _currentUser.maxHp && _currentUser.ki >= _currentUser.maxKi) {
                     showToast("Você já está com Vida e Ki no máximo!");
@@ -890,6 +972,12 @@
 
             trainCharacter = function() {
                 if (!_currentUser) return;
+
+                if (_currentUser.afkState) {
+                    showToast("Você não pode treinar manualmente enquanto estiver em Treino AFK na Plataforma Celeste!");
+                    return;
+                }
+
                 if (_currentUser.ki < 5) {
                     showToast("KI insuficiente para treinar!");
                     return;
@@ -915,6 +1003,147 @@
 
                 saveCurrentUserData();
             };
+
+            // SISTEMA PLATAFORMA CELESTE - TREINO AFK
+            function renderCelestialRooms() {
+                const listContainer = document.getElementById('afkRoomsList');
+                const activePanel = document.getElementById('afkActivePanel');
+                const roomsContainer = document.getElementById('afkRoomsContainer');
+
+                if (_currentUser.afkState) {
+                    const room = CELESTIAL_ROOMS.find(r => r.id === _currentUser.afkState.roomId);
+                    activePanel.classList.remove('hidden');
+                    roomsContainer.classList.add('hidden');
+
+                    if (room) {
+                        document.getElementById('afkRoomTitle').innerText = room.name;
+                        document.getElementById('afkRoomRates').innerText = `Ganhando +${room.expRate} EXP e +${room.zeniRate} Z$ a cada 5 segundos.`;
+                    }
+                    return;
+                }
+
+                activePanel.classList.add('hidden');
+                roomsContainer.classList.remove('hidden');
+
+                listContainer.innerHTML = CELESTIAL_ROOMS.map(room => {
+                    const canEnter = _currentUser.level >= room.reqLevel && _currentUser.combatPower >= room.reqPL;
+
+                    return `
+                        <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex items-start space-x-3">
+                                <div class="p-2 bg-dbzDarkBg rounded border border-cyan-500/50 text-cyan-400 mt-0.5">
+                                    <i class="fa-solid ${room.icon} text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-pixel text-xs text-yellow-300">${room.name}</h4>
+                                    <p class="text-[11px] text-gray-400 mt-0.5">${room.desc}</p>
+                                    <div class="flex flex-wrap gap-2 text-[10px] text-gray-300 mt-1">
+                                        <span class="text-cyan-300 font-semibold"><i class="fa-solid fa-star mr-0.5"></i>+${room.expRate} EXP/5s</span>
+                                        <span class="text-yellow-400 font-semibold"><i class="fa-solid fa-coins mr-0.5"></i>+${room.zeniRate} Z$/5s</span>
+                                        <span class="text-orange-400 font-bold">Req: Nível ${room.reqLevel} | PL ${formatPower(room.reqPL)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sm:text-right">
+                                <button onclick="enterAfkRoom(${room.id})" ${!canEnter ? 'disabled' : ''} 
+                                    class="${canEnter ? 'retro-btn-blue' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-4 py-2 text-xs font-bold text-white rounded w-full sm:w-auto">
+                                    ${canEnter ? '<i class="fa-solid fa-person-running mr-1"></i> Entrar na Sala' : 'Requisitos Insuficientes'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            enterAfkRoom = function(roomId) {
+                if (!_currentUser) return;
+                const room = CELESTIAL_ROOMS.find(r => r.id === roomId);
+                if (!room) return;
+
+                if (_currentUser.level < room.reqLevel || _currentUser.combatPower < room.reqPL) {
+                    showToast("Você não possui o nível ou poder necessário para esta sala!");
+                    return;
+                }
+
+                _currentUser.afkState = {
+                    roomId: room.id,
+                    startTime: Date.now(),
+                    gainedExp: 0,
+                    gainedZeni: 0
+                };
+
+                saveCurrentUserData();
+                initAfkLoop();
+                showToast(`Você entrou na ${room.name}! Treino AFK iniciado.`);
+            };
+
+            leaveAfkRoom = function() {
+                if (!_currentUser || !_currentUser.afkState) return;
+
+                if (afkInterval) clearInterval(afkInterval);
+                afkInterval = null;
+
+                const gainedExp = _currentUser.afkState.gainedExp || 0;
+                const gainedZeni = _currentUser.afkState.gainedZeni || 0;
+
+                _currentUser.afkState = null;
+                saveCurrentUserData();
+
+                showToast(`Treino encerrado! Você obteve +${gainedExp} EXP e +${gainedZeni} Z$!`);
+            };
+
+            function initAfkLoop() {
+                if (afkInterval) clearInterval(afkInterval);
+
+                if (!_currentUser || !_currentUser.afkState) return;
+
+                afkInterval = setInterval(() => {
+                    if (!_currentUser || !_currentUser.afkState) {
+                        clearInterval(afkInterval);
+                        return;
+                    }
+
+                    const room = CELESTIAL_ROOMS.find(r => r.id === _currentUser.afkState.roomId);
+                    if (!room) return;
+
+                    // Adiciona recompensas a cada 5s
+                    _currentUser.exp += room.expRate;
+                    _currentUser.zeni += room.zeniRate;
+                    _currentUser.afkState.gainedExp += room.expRate;
+                    _currentUser.afkState.gainedZeni += room.zeniRate;
+
+                    // Verifica Level Up
+                    if (_currentUser.exp >= _currentUser.maxExp) {
+                        _currentUser.level += 1;
+                        _currentUser.exp -= _currentUser.maxExp;
+                        _currentUser.maxExp = Math.floor(_currentUser.maxExp * 1.5);
+                        _currentUser.statPoints += 3;
+                        _currentUser.maxHp += 20;
+                        _currentUser.hp = _currentUser.maxHp;
+                        _currentUser.maxKi += 10;
+                        _currentUser.ki = _currentUser.maxKi;
+                        showToast(`LEVEL UP no Treino Celeste! Agora você é Nível ${_currentUser.level}!`);
+                    }
+
+                    saveCurrentUserData();
+
+                    // Atualiza displays AFK
+                    const elapsedMs = Date.now() - _currentUser.afkState.startTime;
+                    const elapsedSecs = Math.floor(elapsedMs / 1000);
+                    const hrs = Math.floor(elapsedSecs / 3600).toString().padStart(2, '0');
+                    const mins = Math.floor((elapsedSecs % 3600) / 60).toString().padStart(2, '0');
+                    const secs = (elapsedSecs % 60).toString().padStart(2, '0');
+
+                    const timerDisp = document.getElementById('afkTimerDisplay');
+                    const expDisp = document.getElementById('afkExpGained');
+                    const zeniDisp = document.getElementById('afkZeniGained');
+
+                    if (timerDisp) timerDisp.innerText = `${hrs}:${mins}:${secs}`;
+                    if (expDisp) expDisp.innerText = `+${_currentUser.afkState.gainedExp} EXP`;
+                    if (zeniDisp) zeniDisp.innerText = `+${_currentUser.afkState.gainedZeni} Z$`;
+
+                }, 5000);
+            }
 
             uploadAvatar = function(event) {
                 const file = event.target.files[0];
@@ -1100,7 +1329,7 @@
             function renderArenaEnemies() {
                 const container = document.getElementById('arenaEnemySelect');
                 container.innerHTML = ENEMIES.map(enemy => {
-                    const canFight = _currentUser && _currentUser.level >= enemy.levelReq;
+                    const canFight = _currentUser && _currentUser.level >= enemy.levelReq && !_currentUser.afkState;
                     return `
                         <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex items-center justify-between">
                             <div class="flex items-center space-x-3">
@@ -1112,7 +1341,7 @@
                             </div>
                             <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} 
                                 class="${canFight ? 'retro-btn' : 'bg-gray-700 opacity-50 cursor-not-allowed'} px-3 py-1.5 text-xs text-white font-bold rounded">
-                                ${canFight ? 'Lutar' : 'Bloqueado'}
+                                ${canFight ? 'Lutar' : _currentUser?.afkState ? 'AFK Ativo' : 'Bloqueado'}
                             </button>
                         </div>
                     `;
@@ -1120,6 +1349,11 @@
             }
 
             startCombat = function(enemyId) {
+                if (_currentUser && _currentUser.afkState) {
+                    showToast("Você não pode entrar em combate enquanto estiver em Treino AFK na Plataforma Celeste!");
+                    return;
+                }
+
                 activeEnemy = ENEMIES.find(e => e.id === enemyId);
                 if (!activeEnemy) return;
 
@@ -1322,6 +1556,7 @@
                 if (tabName === 'dashboard') document.getElementById('tabDashboard').classList.remove('hidden');
                 if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
                 if (tabName === 'arena') document.getElementById('tabArena').classList.remove('hidden');
+                if (tabName === 'celestial') document.getElementById('tabCelestial').classList.remove('hidden');
                 if (tabName === 'shop') document.getElementById('tabShop').classList.remove('hidden');
                 if (tabName === 'ranking') document.getElementById('tabRanking').classList.remove('hidden');
             };
@@ -1343,10 +1578,3 @@
     </script>
 </body>
 </html>
-```eof
-
-O código completo do jogo foi atualizado com as seguintes alterações:
-
-1. **Formatação Inteligente de Números Grandes:** Adicionada a função `formatPower` para converter valores em formato de sufixo compacto (ex: `1.5k`, `2.4M`, `3.1B`, `1.0T`).
-2. **Ajuste de CSS Responsivo no Container:** O elemento `#sidePL` recebeu estilos para permitir que o texto quebre ou diminua sem estourar as margens do card.
-3. **Tooltip de Poder Completo:** Passar o ponteiro por cima do valor exibe o número exato formatado.
