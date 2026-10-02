@@ -319,76 +319,107 @@
                         <span id="dashRaceBadge" class="text-xs bg-orange-950 text-orange-300 px-2 py-0.5 rounded border border-orange-700 font-bold">Saiyajin</span>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Stats Distribution -->
-                        <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder space-y-3">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xs font-bold text-gray-300 uppercase">Atributos Base</h3>
-                                <span id="dashAttrPoints" class="text-xs font-pixel text-yellow-400">Pontos: 0</span>
-                            </div>
+                    <!-- Sub-abas do Perfil: Atributos & Treino vs Equipamentos de Set -->
+                    <div class="flex border-b border-dbzBorder mb-4">
+                        <button id="dashSubStatsBtn" onclick="switchDashSubTab('stats')" class="flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400">
+                            <i class="fa-solid fa-sliders mr-1"></i> Atributos & Treino
+                        </button>
+                        <button id="dashSubEquipBtn" onclick="switchDashSubTab('equip')" class="flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200">
+                            <i class="fa-solid fa-shield-cat mr-1"></i> Equipamentos de Set
+                        </button>
+                    </div>
 
-                            <!-- Força -->
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
-                                <div class="flex items-center space-x-1.5">
-                                    <span id="dashStr" class="font-bold text-white mr-1">10</span>
-                                    <div class="stat-controls hidden items-center space-x-1">
-                                        <input type="number" id="inputStr" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('str')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
-                                        <button onclick="addAllStat('str')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
+                    <!-- Conteúdo Sub-aba 1: Atributos & Treino -->
+                    <div id="dashSubStatsView" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Stats Distribution -->
+                            <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xs font-bold text-gray-300 uppercase">Atributos Base</h3>
+                                    <span id="dashAttrPoints" class="text-xs font-pixel text-yellow-400">Pontos: 0</span>
+                                </div>
+
+                                <!-- Força -->
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span id="dashStr" class="font-bold text-white mr-1">10</span>
+                                        <div class="stat-controls hidden items-center space-x-1">
+                                            <input type="number" id="inputStr" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                            <button onclick="addCustomStat('str')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                            <button onclick="addAllStat('str')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Resistência -->
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-green-400 font-bold flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span id="dashRes" class="font-bold text-white mr-1">10</span>
+                                        <div class="stat-controls hidden items-center space-x-1">
+                                            <input type="number" id="inputRes" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                            <button onclick="addCustomStat('res')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                            <button onclick="addAllStat('res')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Velocidade -->
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="text-cyan-400 font-bold flex items-center"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span id="dashSpeed" class="font-bold text-white mr-1">10</span>
+                                        <div class="stat-controls hidden items-center space-x-1">
+                                            <input type="number" id="inputSpeed" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
+                                            <button onclick="addCustomStat('speed')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
+                                            <button onclick="addAllStat('speed')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Resistência -->
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-green-400 font-bold flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
-                                <div class="flex items-center space-x-1.5">
-                                    <span id="dashRes" class="font-bold text-white mr-1">10</span>
-                                    <div class="stat-controls hidden items-center space-x-1">
-                                        <input type="number" id="inputRes" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('res')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
-                                        <button onclick="addAllStat('res')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
-                                    </div>
+                            <!-- Actions -->
+                            <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-3">
+                                <div>
+                                    <h3 class="text-xs font-bold text-gray-300 uppercase mb-2">Treino Intensivo</h3>
+                                    <p class="text-xs text-gray-400">Treine duro para aumentar sua experiência e elevar seu nível de poder.</p>
                                 </div>
-                            </div>
 
-                            <!-- Velocidade -->
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-cyan-400 font-bold flex items-center"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
-                                <div class="flex items-center space-x-1.5">
-                                    <span id="dashSpeed" class="font-bold text-white mr-1">10</span>
-                                    <div class="stat-controls hidden items-center space-x-1">
-                                        <input type="number" id="inputSpeed" min="1" value="1" class="w-12 bg-dbzDarkBg border border-dbzBorder text-center text-xs text-white rounded py-0.5 focus:outline-none focus:border-orange-500">
-                                        <button onclick="addCustomStat('speed')" class="w-6 h-6 bg-green-600 hover:bg-green-500 rounded text-white text-xs font-bold shadow flex items-center justify-center" title="Adicionar quantidade">+</button>
-                                        <button onclick="addAllStat('speed')" class="px-1.5 h-6 bg-yellow-600 hover:bg-yellow-500 rounded text-black font-bold text-[10px] shadow uppercase" title="Adicionar todos">Tudo</button>
-                                    </div>
+                                <div class="space-y-2">
+                                    <button onclick="trainCharacter()" class="w-full retro-btn-green py-2 text-xs font-bold text-white rounded">
+                                        <i class="fa-solid fa-fire-flame-curved mr-1"></i> Treinar (-5 KI / +EXP)
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Actions -->
-                        <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-3">
-                            <div>
-                                <h3 class="text-xs font-bold text-gray-300 uppercase mb-2">Treino Intensivo</h3>
-                                <p class="text-xs text-gray-400">Treine duro para aumentar sua experiência e elevar seu nível de poder.</p>
-                            </div>
-
-                            <div class="space-y-2">
-                                <button onclick="trainCharacter()" class="w-full retro-btn-green py-2 text-xs font-bold text-white rounded">
-                                    <i class="fa-solid fa-fire-flame-curved mr-1"></i> Treinar (-5 KI / +EXP)
-                                </button>
+                        <!-- Inventory -->
+                        <div class="mt-5 pt-4 border-t border-dbzBorder">
+                            <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bag-shopping mr-1"></i>Inventário de Consumíveis</h3>
+                            <div id="dashInventory" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Inventory -->
-                    <div class="mt-5 pt-4 border-t border-dbzBorder">
-                        <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bag-shopping mr-1"></i>Inventário de Itens</h3>
-                        <div id="dashInventory" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <div class="text-xs text-gray-500 col-span-full italic">Nenhum item no inventário.</div>
+                    <!-- Conteúdo Sub-aba 2: Equipamentos de Set -->
+                    <div id="dashSubEquipView" class="hidden space-y-4">
+                        <div class="bg-black/60 p-4 rounded-lg border border-yellow-500/50">
+                            <h3 class="text-xs font-pixel text-yellow-400 mb-2"><i class="fa-solid fa-shield-halved mr-2"></i>SET EQUIPADO ATUALMENTE</h3>
+                            <div id="equippedSetSlot" class="bg-black/80 p-3 rounded border border-dbzBorder flex items-center justify-between">
+                                <span class="text-xs text-gray-500 italic">Nenhum Set Equipado.</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-dbzBorder">
+                            <h3 class="text-xs font-bold text-cyan-300 uppercase mb-2"><i class="fa-solid fa-boxes-packing mr-1"></i>Seus Sets no Inventário</h3>
+                            <div id="dashSetInventory" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <div class="text-xs text-gray-500 col-span-full italic">Você não possui nenhum Set Reais no inventário.</div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -617,7 +648,23 @@
                         <span class="text-xs text-yellow-300 font-bold"><i class="fa-solid fa-coins mr-1"></i>Seu Zeni: <span id="shopUserZeni">0</span> Z$</span>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="shopItemsContainer">
+                    <!-- Filtros da Loja -->
+                    <div class="flex border-b border-dbzBorder mb-4">
+                        <button id="shopTabConsumablesBtn" onclick="switchShopSubTab('consumables')" class="flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400">
+                            <i class="fa-solid fa-flask mr-1"></i> Consumíveis Básicos
+                        </button>
+                        <button id="shopTabSetsBtn" onclick="switchShopSubTab('sets')" class="flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200">
+                            <i class="fa-solid fa-shield-cat mr-1"></i> Equipamentos
+                        </button>
+                    </div>
+
+                    <!-- Conteúdo 1: Consumíveis -->
+                    <div id="shopConsumablesContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Populated via JS -->
+                    </div>
+
+                    <!-- Conteúdo 2: 20 Sets Reais de Personagem -->
+                    <div id="shopSetsContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-1">
                         <!-- Populated via JS -->
                     </div>
                 </div>
@@ -683,7 +730,7 @@
     <script>
         // Declaracoes globais para invocacao via HTML onclick
         let handleAuthSubmit, handleLogout, toggleAuthMode, addCustomStat, addAllStat, trainCharacter, uploadAvatar;
-        let useInventoryItem, buyShopItem;
+        let useInventoryItem, buyShopItem, buySetItem, equipSetItem, unequipSetItem, switchDashSubTab, switchShopSubTab;
         let startCombat, executeCombatTurn, useSelectedSkillFromSelect, sendChatMessage, switchTab, startHomeResting;
         let enterAfkRoom, leaveAfkRoom, switchPvpSubTab, startPvpDirect, enterOpenPvpArena, leaveOpenPvpArena, attackOpenPvpTarget;
 
@@ -782,11 +829,31 @@
             const SHOP_ITEMS = [
                 { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
                 { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e +5 KI Máximo permanente.', effect: 'ki_boost' },
-                { id: 'scouter', name: 'Scouter Z', cost: 400, icon: 'fa-glasses', color: 'text-cyan-400', desc: '+15 Força e +15 Velocidade.', effect: 'stat_scouter' },
-                { id: 'gravity_suit', name: 'Traje 100x Gravidade', cost: 1000, icon: 'fa-vest-patches', color: 'text-purple-400', desc: '+40 Resistência e +300 HP Máximo.', effect: 'stat_gravity' },
                 { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: '+300 de EXP imediatamente.', effect: 'exp_boost' },
-                { id: 'dragon_radar', name: 'Radar do Dragão', cost: 2500, icon: 'fa-compass', color: 'text-orange-400', desc: '+50 em todos os atributos base.', effect: 'stat_all' },
-                { id: 'potara_earring', name: 'Brincos Potara', cost: 5000, icon: 'fa-gem', color: 'text-amber-300', desc: '+150 Força e +1000 HP Máximo.', effect: 'stat_potara' }
+            ];
+
+            // 20 SETS REAIS DOS PERSONAGENS (DO MAIS FRACO AO MAIS FORTE COM PREÇOS ELEVADOS)
+            const REAL_CHARACTER_SETS = [
+                { id: 'set_1_kami', name: 'Set Mestre Kami', cost: 12000, str: 25, res: 20, speed: 15, maxHp: 200, icon: 'fa-shirt', color: 'text-orange-400', desc: 'Kimono e óculos escuros lendários do Mestre das Artes Martiais.' },
+                { id: 'set_2_yamcha', name: 'Set Bandido Yamcha', cost: 25000, str: 45, res: 35, speed: 40, maxHp: 400, icon: 'fa-user-ninja', color: 'text-amber-400', desc: 'Traje verde clássico das estepes do deserto.' },
+                { id: 'set_3_krillin', name: 'Set Kimono de Treino Kuririn', cost: 50000, str: 80, res: 70, speed: 65, maxHp: 750, icon: 'fa-vest', color: 'text-yellow-500', desc: 'Uniforme da Escola Tartaruga gravado com o símbolo de treino.' },
+                { id: 'set_4_tien', name: 'Set Mestre Crane (Tenshinhan)', cost: 90000, str: 130, res: 110, speed: 120, maxHp: 1200, icon: 'fa-child-reaching', color: 'text-green-500', desc: 'Traje esmeralda de arte marcial pesada da Escola Garça.' },
+                { id: 'set_5_piccolo', name: 'Set Manto Pesado Piccolo', cost: 150000, str: 200, res: 220, speed: 150, maxHp: 2000, icon: 'fa-chess-king', color: 'text-purple-400', desc: 'Manto e turbante com peso especial para contenção de Ki.' },
+                { id: 'set_6_raditz', name: 'Set Armadura de Invasão Raditz', cost: 240000, str: 320, res: 290, speed: 250, maxHp: 3200, icon: 'fa-shield-halved', color: 'text-amber-600', desc: 'Armadura da força expedicionária dos Saiyajins.' },
+                { id: 'set_7_nappa', name: 'Set Armadura Pesada Nappa', cost: 380000, str: 480, res: 460, speed: 320, maxHp: 5000, icon: 'fa-shield-cat', color: 'text-yellow-600', desc: 'Armadura reforçada capaz de resistir a rajadas diretas.' },
+                { id: 'set_8_ginyu', name: 'Set Forças Especiais Ginyu', cost: 550000, str: 700, res: 650, speed: 600, maxHp: 7500, icon: 'fa-award', color: 'text-purple-500', desc: 'Uniforme oficial e elegante do esquadrão de elite de Freeza.' },
+                { id: 'set_9_freeza', name: 'Set Bio-Armadura Imperial Freeza', cost: 780000, str: 1000, res: 950, speed: 900, maxHp: 11000, icon: 'fa-skull', color: 'text-purple-300', desc: 'Placa biológica protetora usada pelo Imperador do Universo.' },
+                { id: 'set_10_trunks', name: 'Set Jaqueta do Futuro (Trunks)', cost: 1050000, str: 1400, res: 1300, speed: 1350, maxHp: 16000, icon: 'fa-vest-patches', color: 'text-blue-400', desc: 'Traje de combate com bainha de espada vindo do futuro pós-apocalíptico.' },
+                { id: 'set_11_android', name: 'Set Circuito Infinito (Androide 17/18)', cost: 1380000, str: 1900, res: 1850, speed: 1800, maxHp: 22000, icon: 'fa-microchip', color: 'text-cyan-400', desc: 'Tecnologia biológica modificada pelo Dr. Gero sem perda de energia.' },
+                { id: 'set_12_cell', name: 'Set Casca Perfeita (Cell)', cost: 1750000, str: 2500, res: 2400, speed: 2300, maxHp: 30000, icon: 'fa-bug', color: 'text-green-400', desc: 'Exosqueleto perfeito sintetizado das células dos maiores guerreiros.' },
+                { id: 'set_13_gohan', name: 'Set Traje Supremo (Gohan Adulto)', cost: 2200000, str: 3300, res: 3100, speed: 3000, maxHp: 40000, icon: 'fa-khanda', color: 'text-orange-500', desc: 'Uniforme de combate dado pelo Grande Senhor Kaioh.' },
+                { id: 'set_14_majin', name: 'Set Traje do Caos (Majin Boo)', cost: 2700000, str: 4200, res: 4000, speed: 3800, maxHp: 52000, icon: 'fa-ghost', color: 'text-pink-400', desc: 'Manto rosa impregnado de pura energia mística e regenerativa.' },
+                { id: 'set_15_yadrat', name: 'Set Traje do Planeta Yadrat', cost: 3200000, str: 5300, res: 5000, speed: 5200, maxHp: 65000, icon: 'fa-mask', color: 'text-indigo-400', desc: 'Traje tradicional dos mestres do Teletransporte e Controle de Espírito.' },
+                { id: 'set_16_vegeta', name: 'Set Traje de Batalha de Saiyajin (Vegeta)', cost: 3800000, str: 6800, res: 6500, speed: 6400, maxHp: 82000, icon: 'fa-shield', color: 'text-blue-500', desc: 'Armadura azul clássica do Príncipe de todos os Saiyajins.' },
+                { id: 'set_17_goku', name: 'Set Dogi do Instinto Superior (Goku)', cost: 4500000, str: 8800, res: 8300, speed: 8500, maxHp: 105000, icon: 'fa-dragon', color: 'text-yellow-400', desc: 'Dogi de combate desgastado que ressoa com o brilho da aura dos Deuses.' },
+                { id: 'set_18_broly', name: 'Set Fúria do Lendário Super Saiyajin (Broly)', cost: 5000000, str: 11500, res: 11000, speed: 9500, maxHp: 135000, icon: 'fa-fire-flame-curved', color: 'text-green-300', desc: 'Armadura e colar de contenção do lendário guerreiro de poder ilimitado.' },
+                { id: 'set_19_beerus', name: 'Set Túnica do Deus da Destruição (Beerus)', cost: 5000000, str: 15000, res: 14500, speed: 14000, maxHp: 175000, icon: 'fa-sun', color: 'text-purple-600', desc: 'Vestimenta egípcia sagrada banhada com o poder do Hakai.' },
+                { id: 'set_20_whis', name: 'Set Anjo Supremo (Whis)', cost: 5000000, str: 20000, res: 19000, speed: 19500, maxHp: 230000, icon: 'fa-wand-magic-sparkles', color: 'text-cyan-300', desc: 'Túnica angélica reservada aos guardiões e mestres dos Deuses.' }
             ];
 
            const ENEMIES = [
@@ -1080,6 +1147,8 @@
                     const users = getUsersData();
                     if (users[savedUsername]) {
                         _currentUser = users[savedUsername];
+                        _currentUser.setInventory = _currentUser.setInventory || [];
+                        _currentUser.equippedSet = _currentUser.equippedSet || null;
                         simulateBotProgress();
                         loadGameScreen();
                         return;
@@ -1183,6 +1252,8 @@
                         statPoints: 5,
                         zeni: 300,
                         inventory: [],
+                        setInventory: [],
+                        equippedSet: null,
                         afkState: null,
                         avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=' + encodeURIComponent(username)
                     };
@@ -1205,6 +1276,8 @@
                     }
 
                     _currentUser = users[username];
+                    _currentUser.setInventory = _currentUser.setInventory || [];
+                    _currentUser.equippedSet = _currentUser.equippedSet || null;
                     localStorage.setItem(STORAGE_SESSION, username);
                     simulateBotProgress();
                     showToast("Login efetuado com sucesso!");
@@ -1269,9 +1342,50 @@
 
                 populateCombatSkillsSelect();
                 renderInventory();
+                renderSetInventory();
                 renderRanking();
                 renderCelestialRooms();
             }
+
+            switchDashSubTab = function(mode) {
+                const statsBtn = document.getElementById('dashSubStatsBtn');
+                const equipBtn = document.getElementById('dashSubEquipBtn');
+                const statsView = document.getElementById('dashSubStatsView');
+                const equipView = document.getElementById('dashSubEquipView');
+
+                if (mode === 'equip') {
+                    statsBtn.className = "flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200";
+                    equipBtn.className = "flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400";
+                    statsView.classList.add('hidden');
+                    equipView.classList.remove('hidden');
+                    renderSetInventory();
+                } else {
+                    statsBtn.className = "flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400";
+                    equipBtn.className = "flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200";
+                    statsView.classList.remove('hidden');
+                    equipView.classList.add('hidden');
+                }
+            };
+
+            switchShopSubTab = function(mode) {
+                const consBtn = document.getElementById('shopTabConsumablesBtn');
+                const setsBtn = document.getElementById('shopTabSetsBtn');
+                const consContainer = document.getElementById('shopConsumablesContainer');
+                const setsContainer = document.getElementById('shopSetsContainer');
+
+                if (mode === 'sets') {
+                    consBtn.className = "flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200";
+                    setsBtn.className = "flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400";
+                    consContainer.classList.add('hidden');
+                    setsContainer.classList.remove('hidden');
+                    renderShopSets();
+                } else {
+                    consBtn.className = "flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400";
+                    setsBtn.className = "flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200";
+                    consContainer.classList.remove('hidden');
+                    setsContainer.classList.add('hidden');
+                }
+            };
 
             addCustomStat = function(stat) {
                 if (!_currentUser || _currentUser.statPoints <= 0) return;
@@ -1811,6 +1925,92 @@
                 }
             }
 
+            function renderSetInventory() {
+                const equippedSlot = document.getElementById('equippedSetSlot');
+                const setInvContainer = document.getElementById('dashSetInventory');
+
+                if (!equippedSlot || !setInvContainer) return;
+
+                if (_currentUser.equippedSet) {
+                    const s = _currentUser.equippedSet;
+                    equippedSlot.innerHTML = `
+                        <div class="flex items-center space-x-3 w-full justify-between">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid ${s.icon} ${s.color} text-xl"></i>
+                                <div>
+                                    <h4 class="font-pixel text-xs text-yellow-300">${s.name}</h4>
+                                    <p class="text-[10px] text-green-400 font-bold">+${s.str} STR | +${s.res} RES | +${s.speed} SPD | +${s.maxHp} HP</p>
+                                </div>
+                            </div>
+                            <button onclick="unequipSetItem()" class="retro-btn-red px-3 py-1 text-xs text-white font-bold rounded">
+                                Desequipar
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    equippedSlot.innerHTML = `<span class="text-xs text-gray-500 italic">Nenhum Set Equipado.</span>`;
+                }
+
+                if (_currentUser.setInventory && _currentUser.setInventory.length > 0) {
+                    setInvContainer.innerHTML = _currentUser.setInventory.map((item, idx) => `
+                        <div class="bg-black/60 p-2.5 rounded border border-dbzBorder flex flex-col justify-between space-y-2">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid ${item.icon} ${item.color} text-base"></i>
+                                    <h4 class="font-pixel text-[11px] text-yellow-400 truncate">${item.name}</h4>
+                                </div>
+                                <p class="text-[10px] text-green-400 font-semibold mt-1">+${item.str} STR | +${item.res} RES | +${item.speed} SPD | +${item.maxHp} HP</p>
+                            </div>
+                            <button onclick="equipSetItem(${idx})" class="retro-btn-green w-full py-1 text-xs text-white font-bold rounded">
+                                Equipar
+                            </button>
+                        </div>
+                    `).join('');
+                } else {
+                    setInvContainer.innerHTML = `<div class="text-xs text-gray-500 col-span-full italic">Você não possui nenhum Set Reais no inventário.</div>`;
+                }
+            }
+
+            equipSetItem = function(index) {
+                if (!_currentUser || !_currentUser.setInventory || !_currentUser.setInventory[index]) return;
+
+                if (_currentUser.equippedSet) {
+                    showToast("Você já tem um Set equipado! Desequipe o atual primeiro para trocar.");
+                    return;
+                }
+
+                const setItem = _currentUser.setInventory.splice(index, 1)[0];
+                _currentUser.equippedSet = setItem;
+
+                _currentUser.str += setItem.str;
+                _currentUser.res += setItem.res;
+                _currentUser.speed += setItem.speed;
+                _currentUser.maxHp += setItem.maxHp;
+                _currentUser.hp += setItem.maxHp;
+
+                saveCurrentUserData();
+                showToast(`Set "${setItem.name}" equipado com sucesso! Atributos aumentados!`);
+            };
+
+            unequipSetItem = function() {
+                if (!_currentUser || !_currentUser.equippedSet) return;
+
+                const setItem = _currentUser.equippedSet;
+
+                _currentUser.str = Math.max(10, _currentUser.str - setItem.str);
+                _currentUser.res = Math.max(10, _currentUser.res - setItem.res);
+                _currentUser.speed = Math.max(10, _currentUser.speed - setItem.speed);
+                _currentUser.maxHp = Math.max(100, _currentUser.maxHp - setItem.maxHp);
+                _currentUser.hp = Math.min(_currentUser.hp, _currentUser.maxHp);
+
+                _currentUser.setInventory = _currentUser.setInventory || [];
+                _currentUser.setInventory.push(setItem);
+                _currentUser.equippedSet = null;
+
+                saveCurrentUserData();
+                showToast(`Set "${setItem.name}" desequipado.`);
+            };
+
             useInventoryItem = function(index) {
                 if (!_currentUser || !_currentUser.inventory[index]) return;
                 const item = _currentUser.inventory[index];
@@ -1859,7 +2059,13 @@
             };
 
             function renderShop() {
-                const container = document.getElementById('shopItemsContainer');
+                renderShopConsumables();
+                renderShopSets();
+            }
+
+            function renderShopConsumables() {
+                const container = document.getElementById('shopConsumablesContainer');
+                if (!container) return;
                 container.innerHTML = SHOP_ITEMS.map(item => `
                     <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-2">
                         <div>
@@ -1870,11 +2076,41 @@
                             <p class="text-xs text-gray-400 mt-1">${item.desc}</p>
                         </div>
                         <div class="flex justify-between items-center pt-2 border-t border-dbzBorder/50">
-                            <span class="text-xs text-yellow-300 font-bold">${item.cost} Z$</span>
+                            <span class="text-xs text-yellow-300 font-bold">${item.cost.toLocaleString('pt-BR')} Z$</span>
                             <button onclick="buyShopItem('${item.id}')" class="retro-btn-green px-3 py-1 text-xs text-white font-bold rounded">Comprar</button>
                         </div>
                     </div>
                 `).join('');
+            }
+
+            function renderShopSets() {
+                const container = document.getElementById('shopSetsContainer');
+                if (!container) return;
+
+                container.innerHTML = REAL_CHARACTER_SETS.map(setItem => {
+                    const alreadyOwned = (_currentUser.equippedSet && _currentUser.equippedSet.id === setItem.id) ||
+                                         (_currentUser.setInventory && _currentUser.setInventory.some(s => s.id === setItem.id));
+
+                    return `
+                        <div class="bg-black/50 p-3 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-2">
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid ${setItem.icon} ${setItem.color} text-lg"></i>
+                                    <h4 class="font-pixel text-xs text-yellow-400">${setItem.name}</h4>
+                                </div>
+                                <p class="text-xs text-gray-300 mt-1">${setItem.desc}</p>
+                                <p class="text-[11px] text-green-400 font-semibold mt-1">+${setItem.str} STR | +${setItem.res} RES | +${setItem.speed} SPD | +${setItem.maxHp} HP</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-dbzBorder/50">
+                                <span class="text-xs text-yellow-300 font-bold">${setItem.cost.toLocaleString('pt-BR')} Z$</span>
+                                <button onclick="buySetItem('${setItem.id}')" ${alreadyOwned ? 'disabled' : ''} 
+                                    class="${alreadyOwned ? 'bg-gray-700 text-gray-400 cursor-not-allowed border border-gray-600' : 'retro-btn-purple'} px-3 py-1 text-xs font-bold text-white rounded">
+                                    ${alreadyOwned ? 'Adquirido' : 'Comprar Set'}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
 
             buyShopItem = function(itemId) {
@@ -1892,6 +2128,31 @@
 
                 saveCurrentUserData();
                 showToast(`Você comprou ${item.name}!`);
+            };
+
+            buySetItem = function(setId) {
+                const setItem = REAL_CHARACTER_SETS.find(s => s.id === setId);
+                if (!setItem || !_currentUser) return;
+
+                const alreadyOwned = (_currentUser.equippedSet && _currentUser.equippedSet.id === setItem.id) ||
+                                     (_currentUser.setInventory && _currentUser.setInventory.some(s => s.id === setItem.id));
+
+                if (alreadyOwned) {
+                    showToast("Você já possui este Set equipado ou no inventário!");
+                    return;
+                }
+
+                if (_currentUser.zeni < setItem.cost) {
+                    showToast("Zeni insuficiente para comprar este Set!");
+                    return;
+                }
+
+                _currentUser.zeni -= setItem.cost;
+                _currentUser.setInventory = _currentUser.setInventory || [];
+                _currentUser.setInventory.push(setItem);
+
+                saveCurrentUserData();
+                showToast(`Você comprou o ${setItem.name}! Acesse seu Perfil -> Equipamentos para equipá-lo.`);
             };
 
             function renderArenaEnemies() {
