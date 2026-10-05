@@ -206,7 +206,10 @@
                         </label>
                         <input type="file" id="avatarUploadInput" accept="image/*" class="hidden" onchange="uploadAvatar(event)">
                     </div>
-                    <h2 id="sideName" class="font-pixel text-sm text-yellow-400 mt-2 text-center truncate w-full">Son Goku</h2>
+                    <div class="flex items-center justify-center space-x-1.5 mt-2">
+                        <h2 id="sideName" class="font-pixel text-sm text-yellow-400 truncate">Son Goku</h2>
+                        <span id="sideVipBadge" class="hidden text-[10px] bg-gradient-to-r from-yellow-500 to-amber-300 text-black px-1.5 py-0.5 rounded font-pixel font-bold shadow animate-pulse">VIP 2x</span>
+                    </div>
                     
                     <div id="sideAfkBadge" class="hidden mt-1 px-2 py-0.5 rounded bg-cyan-950 border border-cyan-500 text-cyan-300 text-[10px] font-pixel animate-pulse">
                         <i class="fa-solid fa-hourglass-half mr-1"></i>Em Treino AFK
@@ -243,7 +246,7 @@
                             <span id="kiText" class="text-gray-300">50 / 50</span>
                         </div>
                         <div class="w-full bg-gray-900 rounded-full h-3 border border-blue-900/60 overflow-hidden">
-                            <div id="kiBar" class="bg-gradient-to-r from-blue-600 to-cyan-400 h-full transition-all duration-300" style="width: 100%"></div>
+                            <div id="kiBar" class="bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-400 h-full transition-all duration-300" style="width: 100%"></div>
                         </div>
                     </div>
 
@@ -258,10 +261,16 @@
                     </div>
                 </div>
 
-                <!-- Wallet -->
-                <div class="mt-4 pt-3 border-t border-dbzBorder flex justify-between items-center text-xs">
-                    <span class="text-gray-400"><i class="fa-solid fa-coins text-yellow-500 mr-1"></i>Zeni acumulado:</span>
-                    <span id="sideZeni" class="font-pixel text-yellow-400">300 Z$</span>
+                <!-- Wallet & Dragon Balls Currency -->
+                <div class="mt-4 pt-3 border-t border-dbzBorder space-y-1.5 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400"><i class="fa-solid fa-coins text-yellow-500 mr-1"></i>Zeni:</span>
+                        <span id="sideZeni" class="font-pixel text-yellow-400">300 Z$</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400"><i class="fa-solid fa-circle-dot text-orange-500 mr-1"></i>Esferas (DB Coins):</span>
+                        <span id="sideDbCoins" class="font-pixel text-orange-400">0 🐉</span>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -319,7 +328,6 @@
                         <span id="dashRaceBadge" class="text-xs bg-orange-950 text-orange-300 px-2 py-0.5 rounded border border-orange-700 font-bold">Saiyajin</span>
                     </div>
 
-                    <!-- Sub-abas do Perfil: Atributos & Treino vs Equipamentos de Set -->
                     <div class="flex border-b border-dbzBorder mb-4">
                         <button id="dashSubStatsBtn" onclick="switchDashSubTab('stats')" class="flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400">
                             <i class="fa-solid fa-sliders mr-1"></i> Atributos & Treino
@@ -329,17 +337,15 @@
                         </button>
                     </div>
 
-                    <!-- Conteúdo Sub-aba 1: Atributos & Treino -->
+                    <!-- Sub-aba 1: Atributos & Treino -->
                     <div id="dashSubStatsView" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Stats Distribution -->
                             <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder space-y-3">
                                 <div class="flex justify-between items-center">
                                     <h3 class="text-xs font-bold text-gray-300 uppercase">Atributos Base</h3>
                                     <span id="dashAttrPoints" class="text-xs font-pixel text-yellow-400">Pontos: 0</span>
                                 </div>
 
-                                <!-- Força -->
                                 <div class="flex justify-between items-center text-xs">
                                     <span class="text-red-400 font-bold flex items-center"><i class="fa-solid fa-dumbbell mr-1"></i>Força:</span>
                                     <div class="flex items-center space-x-1.5">
@@ -352,7 +358,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Resistência -->
                                 <div class="flex justify-between items-center text-xs">
                                     <span class="text-green-400 font-bold flex items-center"><i class="fa-solid fa-shield-halved mr-1"></i>Resistência:</span>
                                     <div class="flex items-center space-x-1.5">
@@ -365,7 +370,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Velocidade -->
                                 <div class="flex justify-between items-center text-xs">
                                     <span class="text-cyan-400 font-bold flex items-center"><i class="fa-solid fa-gauge-high mr-1"></i>Velocidade:</span>
                                     <div class="flex items-center space-x-1.5">
@@ -379,7 +383,6 @@
                                 </div>
                             </div>
 
-                            <!-- Actions -->
                             <div class="bg-black/40 p-4 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-3">
                                 <div>
                                     <h3 class="text-xs font-bold text-gray-300 uppercase mb-2">Treino Intensivo</h3>
@@ -394,7 +397,6 @@
                             </div>
                         </div>
 
-                        <!-- Inventory -->
                         <div class="mt-5 pt-4 border-t border-dbzBorder">
                             <h3 class="text-xs font-bold text-yellow-400 uppercase mb-2"><i class="fa-solid fa-bag-shopping mr-1"></i>Inventário de Consumíveis</h3>
                             <div id="dashInventory" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -403,7 +405,7 @@
                         </div>
                     </div>
 
-                    <!-- Conteúdo Sub-aba 2: Equipamentos de Set -->
+                    <!-- Sub-aba 2: Equipamentos de Set -->
                     <div id="dashSubEquipView" class="hidden space-y-4">
                         <div class="bg-black/60 p-4 rounded-lg border border-yellow-500/50">
                             <h3 class="text-xs font-pixel text-yellow-400 mb-2"><i class="fa-solid fa-shield-halved mr-2"></i>SET EQUIPADO ATUALMENTE</h3>
@@ -468,7 +470,7 @@
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
                         <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-khanda mr-2 text-orange-400"></i>ARENA DE COMBATE PVE</h2>
-                        <span class="text-xs text-gray-400">Batalhe contra Oponentes do Anime</span>
+                        <span class="text-xs text-gray-400">Batalhe contra Oponentes e ganhe DB Coins (🐉)</span>
                     </div>
 
                     <div id="arenaEnemySelect" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -498,7 +500,6 @@
                             </div>
                         </div>
 
-                        <!-- Combat Actions with Native Select Dropdown for Skills & Transformations -->
                         <div class="space-y-3 bg-black/40 p-3 rounded-lg border border-dbzBorder">
                             <div class="flex flex-col sm:flex-row gap-2 items-center">
                                 <div class="flex-1 w-full">
@@ -549,14 +550,12 @@
 
                     <!-- Sub-aba 1: PVP 1x1 Direto -->
                     <div id="pvpSubDirect" class="space-y-3">
-                        <p class="text-xs text-gray-400">Escolha um guerreiro para um duelo em tempo real! Os bots estão equipados com Sets potentes de acordo com o nível deles.</p>
+                        <p class="text-xs text-gray-400">Escolha um guerreiro para um duelo em tempo real!</p>
                         
-                        <!-- Lista de oponentes para seleção -->
                         <div id="pvpDirectList" class="grid grid-cols-1 gap-2 max-h-96 overflow-y-auto pr-1">
                             <!-- Populated via JS -->
                         </div>
 
-                        <!-- Tela de Confronto PVP Direct Em Tempo Real -->
                         <div id="pvpCombatScreen" class="hidden space-y-4 pt-2">
                             <div class="bg-black/60 p-4 rounded-lg border border-red-500 grid grid-cols-5 items-center text-center">
                                 <div class="col-span-2 flex flex-col items-center">
@@ -580,7 +579,6 @@
                                 </div>
                             </div>
 
-                            <!-- Seleção de Skills PvP -->
                             <div class="space-y-3 bg-black/40 p-3 rounded-lg border border-dbzBorder">
                                 <div class="flex flex-col sm:flex-row gap-2 items-center">
                                     <div class="flex-1 w-full">
@@ -610,14 +608,13 @@
                         </div>
                     </div>
 
-                    <!-- Sub-aba 2: Arena Aberta com Entrada e Organização em Grelha -->
+                    <!-- Sub-aba 2: Arena Aberta Dinâmica com Seletor de Skills & Cooldown -->
                     <div id="pvpSubOpen" class="hidden space-y-4">
                         
-                        <!-- Painel do Lobby para Entrar na Arena Aberta -->
                         <div id="openPvpLobby" class="bg-black/60 p-6 rounded-lg border border-red-900/60 text-center space-y-4">
                             <i class="fa-solid fa-skull-crossbones text-4xl text-red-500 animate-pulse"></i>
                             <h3 class="font-pixel text-xs text-yellow-300">ARENA ABERTA - BATTLE ROYALE</h3>
-                            <p class="text-xs text-gray-300 max-w-md mx-auto">Prepare-se para entrar numa zona de combate livre! Qualquer guerreiro presente pode desferir ataques a qualquer momento. Mantenha a guarda elevada e sobreviva o máximo de tempo possível para obter grandes recompensas.</p>
+                            <p class="text-xs text-gray-300 max-w-md mx-auto">Zona de combate em tempo real! Escolha sua habilidade e desfira ataques nos guerreiros da sala a cada 20 segundos.</p>
                             <button onclick="enterOpenPvpArena()" class="retro-btn-red px-6 py-3 text-xs font-bold text-white rounded uppercase tracking-wider">
                                 <i class="fa-solid fa-door-open mr-2"></i> Confirmar Entrada na Arena Aberta
                             </button>
@@ -628,7 +625,7 @@
                             <div class="bg-black/70 p-4 rounded-lg border border-red-500 flex flex-wrap items-center justify-between gap-3">
                                 <div>
                                     <h3 class="font-pixel text-xs text-yellow-300"><i class="fa-solid fa-crosshairs text-red-400 mr-1"></i>Em Batalha Aberta</h3>
-                                    <p class="text-[11px] text-gray-400">Sobreviva ao caos e elimine guerreiros!</p>
+                                    <p class="text-[11px] text-gray-400">Ataque alvos com a skill escolhida! Aguarde o cooldown de 20s entre golpes.</p>
                                 </div>
                                 <div class="flex gap-4 text-xs font-pixel">
                                     <div class="text-center bg-black/80 px-3 py-1.5 rounded border border-cyan-500/50">
@@ -641,14 +638,24 @@
                                     </div>
                                 </div>
                                 <button onclick="leaveOpenPvpArena()" class="retro-btn-purple px-4 py-2 text-xs font-bold text-white rounded">
-                                    <i class="fa-solid fa-person-running mr-1"></i> Sair da Arena Aberta
+                                    <i class="fa-solid fa-person-running mr-1"></i> Sair da Arena
                                 </button>
                             </div>
 
-                            <!-- Grade de Bots (Máximo 5 por linha) -->
-                            <p class="text-[11px] text-yellow-400 font-pixel">SELECIONE UM OPONENTE DA SALA PARA ATACAR:</p>
+                            <!-- Seleção Geral de Skill da Arena Aberta -->
+                            <div class="bg-black/80 p-3 rounded-lg border border-yellow-500/50 flex flex-col sm:flex-row gap-2 items-center">
+                                <div class="flex-1 w-full">
+                                    <label class="block text-[10px] font-pixel text-yellow-400 mb-1"><i class="fa-solid fa-bolt mr-1"></i>HABILIDADE ATIVA PARA ATAQUE:</label>
+                                    <select id="openPvpSkillSelect" class="w-full bg-dbzDarkBg border border-dbzBorder text-xs text-white rounded p-2 focus:outline-none focus:border-orange-500">
+                                        <!-- Populated via JS -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Grade de Bots com Ataque Direto por Skill -->
+                            <p class="text-[11px] text-yellow-400 font-pixel">ESCOLHA UM ALVO PARA ATACAR COM A SKILL SELECIONADA:</p>
                             <div id="pvpOpenGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 max-h-[420px] overflow-y-auto p-1 bg-black/40 rounded border border-dbzBorder">
-                                <!-- Populated via JS (Grid de até 5 colunas) -->
+                                <!-- Populated via JS -->
                             </div>
                         </div>
 
@@ -679,7 +686,7 @@
                             <div class="flex justify-between"><span>Zeni Acumulado:</span><span id="afkZeniGained" class="font-pixel text-yellow-300">+0 Z$</span></div>
                         </div>
 
-                        <p class="text-[11px] text-green-400 italic font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>Você pode navegar pelo Perfil, Casa, Loja e Ranking livremente enquanto treina!</p>
+                        <p class="text-[11px] text-green-400 italic font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>Navegue pelo Perfil, Casa, Loja e Ranking livremente durante o treino!</p>
 
                         <button onclick="leaveAfkRoom()" class="retro-btn-purple px-6 py-2 text-xs font-bold text-white rounded">
                             <i class="fa-solid fa-door-open mr-1"></i> Sair do Treino Celeste
@@ -700,25 +707,28 @@
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
                         <h2 class="font-pixel text-sm text-yellow-400"><i class="fa-solid fa-store mr-2 text-orange-400"></i>LOJA DA KAME HOUSE</h2>
-                        <span class="text-xs text-yellow-300 font-bold"><i class="fa-solid fa-coins mr-1"></i>Seu Zeni: <span id="shopUserZeni">0</span> Z$</span>
+                        <div class="flex flex-col text-right text-xs">
+                            <span class="text-yellow-300 font-bold"><i class="fa-solid fa-coins mr-1"></i>Zeni: <span id="shopUserZeni">0</span> Z$</span>
+                            <span class="text-orange-400 font-bold"><i class="fa-solid fa-circle-dot mr-1"></i>Esferas: <span id="shopUserDbCoins">0</span> 🐉</span>
+                        </div>
                     </div>
 
                     <!-- Filtros da Loja -->
                     <div class="flex border-b border-dbzBorder mb-4">
                         <button id="shopTabConsumablesBtn" onclick="switchShopSubTab('consumables')" class="flex-1 py-1.5 font-bold text-xs text-yellow-400 border-b-2 border-yellow-400">
-                            <i class="fa-solid fa-flask mr-1"></i> Consumíveis Básicos
+                            <i class="fa-solid fa-flask mr-1"></i> Consumíveis & VIP
                         </button>
                         <button id="shopTabSetsBtn" onclick="switchShopSubTab('sets')" class="flex-1 py-1.5 font-bold text-xs text-gray-400 hover:text-gray-200">
                             <i class="fa-solid fa-shield-cat mr-1"></i> Equipamentos
                         </button>
                     </div>
 
-                    <!-- Conteúdo 1: Consumíveis -->
+                    <!-- Conteúdo 1: Consumíveis & VIP -->
                     <div id="shopConsumablesContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <!-- Populated via JS -->
                     </div>
 
-                    <!-- Conteúdo 2: 30 Sets Reais de Personagem -->
+                    <!-- Conteúdo 2: Sets Reais de Personagem -->
                     <div id="shopSetsContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-1">
                         <!-- Populated via JS -->
                     </div>
@@ -783,7 +793,6 @@
     </div>
 
     <script>
-        // Declaracoes globais para invocacao via HTML onclick
         let handleAuthSubmit, handleLogout, toggleAuthMode, addCustomStat, addAllStat, trainCharacter, uploadAvatar;
         let useInventoryItem, buyShopItem, buySetItem, equipSetItem, unequipSetItem, switchDashSubTab, switchShopSubTab;
         let startCombat, executeCombatTurn, useSelectedSkillFromSelect, sendChatMessage, switchTab, startHomeResting;
@@ -804,14 +813,15 @@
             let restInterval = null;
             let afkInterval = null;
 
-            // Arena Aberta State
+            // Arena Aberta Cooldown e Estado
             let inOpenPvp = false;
             let openPvpTimer = 0;
             let openPvpTimerInterval = null;
             let openPvpKills = 0;
             let openPvpBotAttackTimeout = null;
+            let openPvpCooldownSeconds = 0;
+            let openPvpCooldownInterval = null;
 
-            // 50 BOTS COM NOMES VARIADOS
             const AUTHENTIC_BOT_NAMES = [
                 "Lucas_Ninja", "Matheus_XPro", "Naruto_Uzumaki", "Neymar_Jr", "Silvio_Santos",
                 "Luffy_Capitao", "Cleiton_Rasta", "Monkey_D_Goku", "Saitama_OnePinch", "Mumu_Mano",
@@ -845,12 +855,11 @@
                 }, 3000);
             }
 
-            // HABILIDADES E TRANSFORMAÇÕES POR RAÇA
             const RACE_SKILLS = {
                 'Saiyajin': [
                     { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki.' },
                     { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Onda de energia devastadora.' },
-                    { id: 'trans_ssj1', name: '[TRANSF] Super Saiyajin 1', type: 'transform', kiCost: 35, multiplier: 3.2, reqLevel: 10, desc: 'Aumenta significativamente seu poder de ataque!' },
+                    { id: 'trans_ssj1', name: '[TRANSF] Super Saiyajin 1', type: 'transform', kiCost: 35, multiplier: 3.2, reqLevel: 10, desc: 'Aumenta significativamente seu poder!' },
                     { id: 'trans_ssj2', name: '[TRANSF] Super Saiyajin 2', type: 'transform', kiCost: 60, multiplier: 4.5, reqLevel: 20, desc: 'Aura faiscante com poder tremendo.' },
                     { id: 'trans_ssj3', name: '[TRANSF] Super Saiyajin 3', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 30, desc: 'Poder máximo da raça Saiyajin!' }
                 ],
@@ -877,20 +886,20 @@
             const CELESTIAL_ROOMS = [
                 { id: 1, name: 'Pátio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 20, zeniRate: 4, desc: 'Treino básico para iniciantes.', icon: 'fa-feather' },
                 { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 42, zeniRate: 30, desc: 'Treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
-                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 150, zeniRate: 35, desc: 'Meditação profunda no topo do mundo.', icon: 'fa-synagogue' },
-                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 500, zeniRate: 90, desc: 'Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
-                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 1000, zeniRate: 240, desc: 'Condições brutais para desafiar os limites.', icon: 'fa-fire-burner' },
-                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 2000, zeniRate: 650, desc: 'Dimensão alternativa de Ki denso.', icon: 'fa-atom' },
-                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 2200, zeniRate: 5000, desc: 'Reservado a quem rivaliza com Poder Divino.', icon: 'fa-sun' }
+                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 350, zeniRate: 35, desc: 'Meditação profunda no topo do mundo.', icon: 'fa-synagogue' },
+                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 700, zeniRate: 90, desc: 'Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
+                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 1630, zeniRate: 240, desc: 'Condições brutais para desafiar os limites.', icon: 'fa-fire-burner' },
+                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 3300, zeniRate: 650, desc: 'Dimensão alternativa de Ki denso.', icon: 'fa-atom' },
+                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 7000, zeniRate: 5000, desc: 'Reservado a quem rivaliza com Poder Divino.', icon: 'fa-sun' }
             ];
 
             const SHOP_ITEMS = [
-                { id: 'senzu', name: 'Semente dos Deuses', cost: 100, icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
-                { id: 'ki_potion', name: 'Essência de Ki', cost: 150, icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e +5 KI Máximo permanente.', effect: 'ki_boost' },
-                { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: '+300 de EXP imediatamente.', effect: 'exp_boost' },
+                { id: 'senzu', name: 'Semente dos Deuses', cost: 100, currency: 'zeni', icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
+                { id: 'ki_potion', name: 'Essência de Ki', cost: 150, currency: 'zeni', icon: 'fa-flask', color: 'text-blue-400', desc: 'Restaura +50 de KI e +5 KI Máximo permanente.', effect: 'ki_boost' },
+                { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, currency: 'zeni', icon: 'fa-capsules', color: 'text-yellow-400', desc: '+300 de EXP imediatamente.', effect: 'exp_boost' },
+                { id: 'vip_pass', name: 'Passe VIP (Ativação)', cost: 100, currency: 'dbCoins', icon: 'fa-crown', color: 'text-yellow-300', desc: 'Concede Status VIP permanente no Ranking e multiplica toda EXP e Zeni do jogo por 2x!', effect: 'vip_activation' }
             ];
 
-            // 30 SETS REAIS DOS PERSONAGENS (INCLUINDO +10 NOVOS SETS EXTREMAMENTE PODEROSOS)
             const REAL_CHARACTER_SETS = [
                 { id: 'set_1_kami', name: 'Set Mestre Kami', cost: 12000, str: 250, res: 200, speed: 150, maxHp: 2000, icon: 'fa-shirt', color: 'text-orange-400', desc: 'Kimono e óculos escuros lendários do Mestre das Artes Martiais.' },
                 { id: 'set_2_yamcha', name: 'Set Bandido Yamcha', cost: 25000, str: 450, res: 350, speed: 400, maxHp: 4000, icon: 'fa-user-ninja', color: 'text-amber-400', desc: 'Traje verde clássico das estepes do deserto.' },
@@ -912,8 +921,6 @@
                 { id: 'set_18_broly', name: 'Set Fúria do Lendário Super Saiyajin (Broly)', cost: 5000000, str: 115000, res: 110000, speed: 95000, maxHp: 1350000, icon: 'fa-fire-flame-curved', color: 'text-green-300', desc: 'Armadura e colar de contenção do lendário guerreiro de poder ilimitado.' },
                 { id: 'set_19_beerus', name: 'Set Túnica do Deus da Destruição (Beerus)', cost: 5000000, str: 150000, res: 145000, speed: 140000, maxHp: 1750000, icon: 'fa-sun', color: 'text-purple-600', desc: 'Vestimenta egípcia sagrada banhada com o poder do Hakai.' },
                 { id: 'set_20_whis', name: 'Set Anjo Supremo (Whis)', cost: 5000000, str: 200000, res: 190000, speed: 195000, maxHp: 2300000, icon: 'fa-wand-magic-sparkles', color: 'text-cyan-300', desc: 'Túnica angélica reservada aos guardiões e mestres dos Deuses.' },
-
-                // --- 10 NOVOS SETS ADICIONADOS ---
                 { id: 'set_21_ssj4_goku', name: 'Set Goku Super Saiyajin 4', cost: 6500000, str: 260000, res: 240000, speed: 250000, maxHp: 3000000, icon: 'fa-paw', color: 'text-red-500', desc: 'Pelagem vermelha e aura ancestral do lendário guerreiro de DBGT.' },
                 { id: 'set_22_ssj4_vegeta', name: 'Set Vegeta Super Saiyajin 4', cost: 8000000, str: 330000, res: 310000, speed: 320000, maxHp: 3800000, icon: 'fa-bolt', color: 'text-red-600', desc: 'Poder das ondas Blazar amplificado com orgulho real.' },
                 { id: 'set_23_gogeta_ssj4', name: 'Set Gogeta Super Saiyajin 4', cost: 10000000, str: 420000, res: 400000, speed: 410000, maxHp: 5000000, icon: 'fa-fire', color: 'text-orange-500', desc: 'A fusão suprema definitiva capaz de subjugar qualquer ameaça universal.' },
@@ -925,95 +932,67 @@
                 { id: 'set_29_orange_piccolo', name: 'Set Orange Piccolo', cost: 30000000, str: 1550000, res: 1500000, speed: 1450000, maxHp: 20000000, icon: 'fa-cubes', color: 'text-orange-600', desc: 'Desejo concedido por Shenlong liberando o verdadeiro orgulho Namekuseijin.' },
                 { id: 'set_30_black_freeza', name: 'Set Black Freeza', cost: 35000000, str: 2000000, res: 1950000, speed: 1900000, maxHp: 25000000, icon: 'fa-crown', color: 'text-amber-200', desc: 'Forma negra forjada em 10 anos de treino na Sala do Tempo de outra dimensão.' }
             ];
-    
     const ENEMIES = [
                 // --- DRAGON BALL CLÁSSICO (Lv 1 - 25) ---
-                { id: 'yumcha_db', name: 'Yamcha (Clássico)', hp: 100, str: 10, expReward: 15, zeniReward: 25, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/88/Yamcha_Bandit.png' },
-                { id: 'kuririn_db', name: 'Kuririn (Jovem)', hp: 150, str: 15, expReward: 25, zeniReward: 35, levelReq: 3, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/KrillinYoungNV.png' },
-                { id: 'mestre_kami', name: 'Mestre Kami (Jackie Chun)', hp: 250, str: 22, expReward: 40, zeniReward: 60, levelReq: 5, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/bd/JackieChunEps.png' },
-                { id: 'taopaipai', name: 'Tao Pai Pai', hp: 380, str: 32, expReward: 55, zeniReward: 80, levelReq: 8, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/TaoPaiPaiNV.png' },
-                { id: 'vovo_gohan', name: 'Vovô Gohan', hp: 500, str: 40, expReward: 70, zeniReward: 100, levelReq: 11, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/GrandpaGohanEps.png' },
-                { id: 'tenshinhan_db', name: 'Tenshinhan (22º Torneio)', hp: 650, str: 50, expReward: 90, zeniReward: 130, levelReq: 14, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/6/63/Tien_Dragon_Ball.png' },
-                { id: 'tambourine', name: 'Tambourine', hp: 800, str: 62, expReward: 110, zeniReward: 160, levelReq: 17, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4b/Tambourine.png' },
-                { id: 'king_piccolo', name: 'Piccolo Daimaoh', hp: 1100, str: 80, expReward: 140, zeniReward: 200, levelReq: 21, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b5/KingPiccoloOld.png' },
-                { id: 'piccolo_jr', name: 'Piccolo Jr.', hp: 1400, str: 100, expReward: 180, zeniReward: 250, levelReq: 25, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/Piccolo_Jr_23rd_BT.png' },
+                { id: 'yumcha_db', name: 'Yamcha (Clássico)', hp: 100, str: 10, expReward: 15, zeniReward: 25, dbCoinsReward: 1, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/88/Yamcha_Bandit.png' },
+                { id: 'kuririn_db', name: 'Kuririn (Jovem)', hp: 150, str: 15, expReward: 25, zeniReward: 35, dbCoinsReward: 2, levelReq: 3, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/KrillinYoungNV.png' },
+                { id: 'mestre_kami', name: 'Mestre Kami (Jackie Chun)', hp: 250, str: 22, expReward: 40, zeniReward: 60, dbCoinsReward: 3, levelReq: 5, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/bd/JackieChunEps.png' },
+                { id: 'taopaipai', name: 'Tao Pai Pai', hp: 380, str: 32, expReward: 55, zeniReward: 80, dbCoinsReward: 4, levelReq: 8, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/TaoPaiPaiNV.png' },
+                { id: 'vovo_gohan', name: 'Vovô Gohan', hp: 500, str: 40, expReward: 70, zeniReward: 100, dbCoinsReward: 5, levelReq: 11, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/GrandpaGohanEps.png' },
+                { id: 'tenshinhan_db', name: 'Tenshinhan (22º Torneio)', hp: 650, str: 50, expReward: 90, zeniReward: 130, dbCoinsReward: 6, levelReq: 14, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/6/63/Tien_Dragon_Ball.png' },
+                { id: 'tambourine', name: 'Tambourine', hp: 800, str: 62, expReward: 110, zeniReward: 160, dbCoinsReward: 7, levelReq: 17, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4b/Tambourine.png' },
+                { id: 'king_piccolo', name: 'Piccolo Daimaoh', hp: 1100, str: 80, expReward: 140, zeniReward: 200, dbCoinsReward: 8, levelReq: 21, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b5/KingPiccoloOld.png' },
+                { id: 'piccolo_jr', name: 'Piccolo Jr.', hp: 1400, str: 100, expReward: 180, zeniReward: 250, dbCoinsReward: 10, levelReq: 25, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/Piccolo_Jr_23rd_BT.png' },
 
                 // --- SAGA SAIYAJIN (Lv 28 - 42) ---
-                { id: 'saibaman', name: 'Saibaman', hp: 1800, str: 125, expReward: 230, zeniReward: 320, levelReq: 28, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
-                { id: 'raditz', name: 'Raditz', hp: 2400, str: 160, expReward: 300, zeniReward: 400, levelReq: 32, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
-                { id: 'nappa', name: 'Nappa', hp: 3200, str: 210, expReward: 380, zeniReward: 520, levelReq: 36, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
-                { id: 'vegeta_scouter', name: 'Vegeta (Scouter)', hp: 4200, str: 270, expReward: 480, zeniReward: 650, levelReq: 39, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
-                { id: 'vegeta_great_ape', name: 'Vegeta (Oozaru)', hp: 5500, str: 340, expReward: 600, zeniReward: 800, levelReq: 42, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8a/GreatApeVegetaNV.png' },
+                { id: 'saibaman', name: 'Saibaman', hp: 1800, str: 125, expReward: 230, zeniReward: 320, dbCoinsReward: 12, levelReq: 28, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/Saibaman_NV.png' },
+                { id: 'raditz', name: 'Raditz', hp: 2400, str: 160, expReward: 300, zeniReward: 400, dbCoinsReward: 14, levelReq: 32, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/Raditz_DBFZ.png' },
+                { id: 'nappa', name: 'Nappa', hp: 3200, str: 210, expReward: 380, zeniReward: 520, dbCoinsReward: 16, levelReq: 36, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/Nappa_DBFZ.png' },
+                { id: 'vegeta_scouter', name: 'Vegeta (Scouter)', hp: 4200, str: 270, expReward: 480, zeniReward: 650, dbCoinsReward: 18, levelReq: 39, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/Vegeta_Scouter_DBFZ.png' },
+                { id: 'vegeta_great_ape', name: 'Vegeta (Oozaru)', hp: 5500, str: 340, expReward: 600, zeniReward: 800, dbCoinsReward: 20, levelReq: 42, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8a/GreatApeVegetaNV.png' },
 
                 // --- SAGA FREEZA (Lv 46 - 65) ---
-                { id: 'dodoria', name: 'Dodoria', hp: 7000, str: 420, expReward: 750, zeniReward: 1000, levelReq: 46, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/46/DodoriaNV.png' },
-                { id: 'zarbon', name: 'Zarbon (Transformado)', hp: 8800, str: 510, expReward: 920, zeniReward: 1250, levelReq: 49, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonMonsterNV.png' },
-                { id: 'guldo', name: 'Guldo', hp: 10500, str: 600, expReward: 1100, zeniReward: 1500, levelReq: 52, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/GuldoNV.png' },
-                { id: 'recoome', name: 'Recoome', hp: 12500, str: 700, expReward: 1300, zeniReward: 1800, levelReq: 55, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/77/RecoomeNV.png' },
-                { id: 'burter_jeice', name: 'Burter & Jeice', hp: 15000, str: 820, expReward: 1550, zeniReward: 2100, levelReq: 58, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e9/BurterJeiceNV.png' },
-                { id: 'ginyu', name: 'Capitão Ginyu', hp: 18000, str: 950, expReward: 1800, zeniReward: 2500, levelReq: 60, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e5/Ginyu_DBFZ.png' },
-                { id: 'freeza_1', name: 'Freeza (1ª Forma)', hp: 22000, str: 1100, expReward: 2100, zeniReward: 2900, levelReq: 62, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/FriezaFirstFormNV.png' },
-                { id: 'freeza_final', name: 'Freeza (Forma Final 100%)', hp: 27000, str: 1300, expReward: 2500, zeniReward: 3500, levelReq: 65, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
+                { id: 'dodoria', name: 'Dodoria', hp: 7000, str: 420, expReward: 750, zeniReward: 1000, dbCoinsReward: 22, levelReq: 46, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/46/DodoriaNV.png' },
+                { id: 'zarbon', name: 'Zarbon (Transformado)', hp: 8800, str: 510, expReward: 920, zeniReward: 1250, dbCoinsReward: 25, levelReq: 49, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/ZarbonMonsterNV.png' },
+                { id: 'guldo', name: 'Guldo', hp: 10500, str: 600, expReward: 1100, zeniReward: 1500, dbCoinsReward: 28, levelReq: 52, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/GuldoNV.png' },
+                { id: 'recoome', name: 'Recoome', hp: 12500, str: 700, expReward: 1300, zeniReward: 1800, dbCoinsReward: 30, levelReq: 55, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/77/RecoomeNV.png' },
+                { id: 'burter_jeice', name: 'Burter & Jeice', hp: 15000, str: 820, expReward: 1550, zeniReward: 2100, dbCoinsReward: 33, levelReq: 58, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e9/BurterJeiceNV.png' },
+                { id: 'ginyu', name: 'Capitão Ginyu', hp: 18000, str: 950, expReward: 1800, zeniReward: 2500, dbCoinsReward: 36, levelReq: 60, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e5/Ginyu_DBFZ.png' },
+                { id: 'freeza_1', name: 'Freeza (1ª Forma)', hp: 22000, str: 1100, expReward: 2100, zeniReward: 2900, dbCoinsReward: 40, levelReq: 62, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/FriezaFirstFormNV.png' },
+                { id: 'freeza_final', name: 'Freeza (Forma Final 100%)', hp: 27000, str: 1300, expReward: 2500, zeniReward: 3500, dbCoinsReward: 45, levelReq: 65, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Frieza_DBFZ.png' },
 
                 // --- SAGA DOS ANDROIDES E CELL (Lv 68 - 95) ---
-                { id: 'king_cold', name: 'King Cold', hp: 33000, str: 1500, expReward: 2900, zeniReward: 4000, levelReq: 68, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/KingColdNV.png' },
-                { id: 'mecha_freeza', name: 'Mecha Freeza', hp: 40000, str: 1750, expReward: 3400, zeniReward: 4700, levelReq: 71, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c3/MechaFriezaNV.png' },
-                { id: 'android_19', name: 'Androide 19', hp: 48000, str: 2000, expReward: 4000, zeniReward: 5500, levelReq: 74, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/72/Android19NV.png' },
-                { id: 'dr_gero', name: 'Dr. Gero (Androide 20)', hp: 57000, str: 2300, expReward: 4600, zeniReward: 6300, levelReq: 77, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/Android20NV.png' },
-                { id: 'android_18', name: 'Androide 18', hp: 68000, str: 2650, expReward: 5300, zeniReward: 7200, levelReq: 80, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e8/Android18DBFZ.png' },
-                { id: 'android_17', name: 'Androide 17', hp: 80000, str: 3000, expReward: 6000, zeniReward: 8200, levelReq: 83, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/Android17DBFZ.png' },
-                { id: 'cell_imperfect', name: 'Cell Imparfeito', hp: 95000, str: 3400, expReward: 6800, zeniReward: 9300, levelReq: 86, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/06/CellImperfectNV.png' },
-                { id: 'android_16', name: 'Androide 16', hp: 110000, str: 3900, expReward: 7700, zeniReward: 10500, levelReq: 89, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Android16DBFZ.png' },
-                { id: 'cell_jr', name: 'Cell Jr.', hp: 128000, str: 4400, expReward: 8700, zeniReward: 11800, levelReq: 92, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/ab/CellJrNV.png' },
-                { id: 'cell_perfect', name: 'Cell Perfeito', hp: 150000, str: 5000, expReward: 9800, zeniReward: 13200, levelReq: 95, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
+                { id: 'king_cold', name: 'King Cold', hp: 33000, str: 1500, expReward: 2900, zeniReward: 4000, dbCoinsReward: 50, levelReq: 68, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/KingColdNV.png' },
+                { id: 'mecha_freeza', name: 'Mecha Freeza', hp: 40000, str: 1750, expReward: 3400, zeniReward: 4700, dbCoinsReward: 55, levelReq: 71, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c3/MechaFriezaNV.png' },
+                { id: 'android_19', name: 'Androide 19', hp: 48000, str: 2000, expReward: 4000, zeniReward: 5500, dbCoinsReward: 60, levelReq: 74, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/72/Android19NV.png' },
+                { id: 'dr_gero', name: 'Dr. Gero (Androide 20)', hp: 57000, str: 2300, expReward: 4600, zeniReward: 6300, dbCoinsReward: 65, levelReq: 77, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/Android20NV.png' },
+                { id: 'android_18', name: 'Androide 18', hp: 68000, str: 2650, expReward: 5300, zeniReward: 7200, dbCoinsReward: 70, levelReq: 80, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e8/Android18DBFZ.png' },
+                { id: 'android_17', name: 'Androide 17', hp: 80000, str: 3000, expReward: 6000, zeniReward: 8200, dbCoinsReward: 75, levelReq: 83, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/22/Android17DBFZ.png' },
+                { id: 'cell_imperfect', name: 'Cell Imperfeito', hp: 95000, str: 3400, expReward: 6800, zeniReward: 9300, dbCoinsReward: 80, levelReq: 86, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/06/CellImperfectNV.png' },
+                { id: 'android_16', name: 'Androide 16', hp: 110000, str: 3900, expReward: 7700, zeniReward: 10500, dbCoinsReward: 85, levelReq: 89, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/0/07/Android16DBFZ.png' },
+                { id: 'cell_jr', name: 'Cell Jr.', hp: 128000, str: 4400, expReward: 8700, zeniReward: 11800, dbCoinsReward: 90, levelReq: 92, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/ab/CellJrNV.png' },
+                { id: 'cell_perfect', name: 'Cell Perfeito', hp: 150000, str: 5000, expReward: 9800, zeniReward: 13200, dbCoinsReward: 100, levelReq: 95, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/Cell_DBFZ.png' },
 
                 // --- SAGA MAJIN BOO (Lv 98 - 128) ---
-                { id: 'pui_pui', name: 'Pui Pui', hp: 175000, str: 5600, expReward: 11000, zeniReward: 14800, levelReq: 98, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/PuiPuiNV.png' },
-                { id: 'yakon', name: 'Yakon', hp: 205000, str: 6300, expReward: 12300, zeniReward: 16500, levelReq: 101, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b8/YakonNV.png' },
-                { id: 'dabura', name: 'Dabura', hp: 240000, str: 7100, expReward: 13700, zeniReward: 18300, levelReq: 104, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/DaburaNV.png' },
-                { id: 'majin_vegeta', name: 'Majin Vegeta', hp: 280000, str: 8000, expReward: 15200, zeniReward: 20300, levelReq: 107, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/18/MajinVegetaNV.png' },
-                { id: 'majin_boo', name: 'Majin Boo (Gordo)', hp: 325000, str: 9000, expReward: 16800, zeniReward: 22500, levelReq: 110, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
-                { id: 'evil_boo', name: 'Evil Boo', hp: 375000, str: 10100, expReward: 18500, zeniReward: 24800, levelReq: 113, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d4/EvilBuuNV.png' },
-                { id: 'super_boo', name: 'Super Boo', hp: 430000, str: 11300, expReward: 20300, zeniReward: 27200, levelReq: 117, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a0/SuperBuuNV.png' },
-                { id: 'buutenks', name: 'Super Boo (Gotenks Absorbido)', hp: 495000, str: 12600, expReward: 22300, zeniReward: 29800, levelReq: 121, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7f/BuutenksNV.png' },
-                { id: 'buuhan', name: 'Super Boo (Gohan Absorbido)', hp: 570000, str: 14000, expReward: 24500, zeniReward: 32600, levelReq: 124, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/BuuhanNV.png' },
-                { id: 'kid_boo', name: 'Kid Boo', hp: 650000, str: 15500, expReward: 26800, zeniReward: 35600, levelReq: 128, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e1/Kid_Buu_DBFZ.png' },
+                { id: 'pui_pui', name: 'Pui Pui', hp: 175000, str: 5600, expReward: 11000, zeniReward: 14800, dbCoinsReward: 110, levelReq: 98, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1e/PuiPuiNV.png' },
+                { id: 'yakon', name: 'Yakon', hp: 205000, str: 6300, expReward: 12300, zeniReward: 16500, dbCoinsReward: 120, levelReq: 101, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b8/YakonNV.png' },
+                { id: 'dabura', name: 'Dabura', hp: 240000, str: 7100, expReward: 13700, zeniReward: 18300, dbCoinsReward: 130, levelReq: 104, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/DaburaNV.png' },
+                { id: 'majin_vegeta', name: 'Majin Vegeta', hp: 280000, str: 8000, expReward: 15200, zeniReward: 20300, dbCoinsReward: 140, levelReq: 107, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/18/MajinVegetaNV.png' },
+                { id: 'majin_boo', name: 'Majin Boo (Gordo)', hp: 325000, str: 9000, expReward: 16800, zeniReward: 22500, dbCoinsReward: 150, levelReq: 110, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/32/Majin_Buu_DBFZ.png' },
+                { id: 'evil_boo', name: 'Evil Boo', hp: 375000, str: 10100, expReward: 18500, zeniReward: 24800, dbCoinsReward: 160, levelReq: 113, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d4/EvilBuuNV.png' },
+                { id: 'super_boo', name: 'Super Boo', hp: 430000, str: 11300, expReward: 20300, zeniReward: 27200, dbCoinsReward: 170, levelReq: 117, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a0/SuperBuuNV.png' },
+                { id: 'buutenks', name: 'Super Boo (Gotenks Absorbido)', hp: 495000, str: 12600, expReward: 22300, zeniReward: 29800, dbCoinsReward: 180, levelReq: 121, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/7f/BuutenksNV.png' },
+                { id: 'buuhan', name: 'Super Boo (Gohan Absorbido)', hp: 570000, str: 14000, expReward: 24500, zeniReward: 32600, dbCoinsReward: 190, levelReq: 124, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/1/1a/BuuhanNV.png' },
+                { id: 'kid_boo', name: 'Kid Boo', hp: 650000, str: 15500, expReward: 26800, zeniReward: 35600, dbCoinsReward: 200, levelReq: 128, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e1/Kid_Buu_DBFZ.png' },
 
-                // --- DB SUPER: DEUSES E RESSURREIÇÃO (Lv 132 - 158) ---
-                { id: 'beerus_suppressed', name: 'Beerus (Contido)', hp: 750000, str: 17200, expReward: 29300, zeniReward: 38800, levelReq: 132, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d5/Beerus_DBFZ.png' },
-                { id: 'whis_test', name: 'Whis (Treinamento)', hp: 860000, str: 19000, expReward: 32000, zeniReward: 42200, levelReq: 136, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f2/WhisNV.png' },
-                { id: 'tagoma', name: 'Tagoma (Ginyu)', hp: 980000, str: 21000, expReward: 34900, zeniReward: 45800, levelReq: 140, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8d/TagomaNV.png' },
-                { id: 'golden_freeza', name: 'Golden Freeza', hp: 1120000, str: 23200, expReward: 38000, zeniReward: 49600, levelReq: 145, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f9/GoldenFriezaDBFZ.png' },
-                { id: 'botamo', name: 'Botamo', hp: 1280000, str: 25500, expReward: 41300, zeniReward: 53600, levelReq: 149, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/87/BotamoNV.png' },
-                { id: 'frost', name: 'Frost (Forma Final)', hp: 1450000, str: 28000, expReward: 44800, zeniReward: 57800, levelReq: 153, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/ea/FrostFinalFormNV.png' },
-                { id: 'cabba_ssj', name: 'Cabba (SSJ)', hp: 1640000, str: 30700, expReward: 48500, zeniReward: 62300, levelReq: 158, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/CabbaSSJ.png' },
-
-                // --- DB SUPER: TORNEIO UNIVERSO 6 & ZAMASU (Lv 163 - 192) ---
-                { id: 'magetta', name: 'Auta Magetta', hp: 1850000, str: 33600, expReward: 52400, zeniReward: 67000, levelReq: 163, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/5f/MagettaNV.png' },
-                { id: 'hit', name: 'Hit (O Assassino)', hp: 2100000, str: 36700, expReward: 56500, zeniReward: 72000, levelReq: 168, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/78/Hit_DBFZ.png' },
-                { id: 'zamasu', name: 'Zamasu', hp: 2380000, str: 40000, expReward: 60800, zeniReward: 77200, levelReq: 173, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e0/ZamasuDBFZ.png' },
-                { id: 'goku_black', name: 'Goku Black', hp: 2690000, str: 43500, expReward: 65300, zeniReward: 82700, levelReq: 178, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/e/e2/GokuBlackDBFZ.png' },
-                { id: 'goku_black_rosed', name: 'Goku Black (SSJ Rosé)', hp: 3030000, str: 47200, expReward: 70000, zeniReward: 88500, levelReq: 183, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f6/GokuBlackRoseDBFZ.png' },
-                { id: 'fused_zamasu', name: 'Zamasu (Fusão)', hp: 3400000, str: 51100, expReward: 75000, zeniReward: 94600, levelReq: 188, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/8f/FusedZamasuDBFZ.png' },
-                { id: 'corrupted_zamasu', name: 'Zamasu (Corrompido)', hp: 3810000, str: 55200, expReward: 80200, zeniReward: 101000, levelReq: 192, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a2/ZamasuCorrupted.png' },
-
-                // --- DB SUPER: TORNEIO DO PODER (Lv 197 - 232) ---
-                { id: 'trio_de_dangers', name: 'Bergamo (Trio de Dangers)', hp: 4260000, str: 59500, expReward: 85600, zeniReward: 107700, levelReq: 197, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/36/BergamoNV.png' },
-                { id: 'ribrianne', name: 'Ribrianne', hp: 4750000, str: 64000, expReward: 91200, zeniReward: 114700, levelReq: 202, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/RibrianneNV.png' },
-                { id: 'caulifla_ssj2', name: 'Caulifla (SSJ2)', hp: 5280000, str: 68700, expReward: 97000, zeniReward: 122000, levelReq: 206, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/91/CauliflaSSJ2.png' },
-                { id: 'kale_berserk', name: 'Kale (Berserk)', hp: 5860000, str: 73600, expReward: 103000, zeniReward: 129600, levelReq: 210, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/3d/KaleBerserk.png' },
-                { id: 'kefla_ssj2', name: 'Kefla (SSJ2)', hp: 6490000, str: 78700, expReward: 109200, zeniReward: 137500, levelReq: 214, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/a/a1/KeflaDBFZ.png' },
-                { id: 'aniraza', name: 'Aniraza', hp: 7170000, str: 84000, expReward: 115600, zeniReward: 145700, levelReq: 218, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/c/c2/AnirazaNV.png' },
-                { id: 'dyspo', name: 'Dyspo (Super Máxima Velocidade)', hp: 7900000, str: 89500, expReward: 122200, zeniReward: 154200, levelReq: 222, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/5/52/DyspoNV.png' },
-                { id: 'toppo_god', name: 'Toppo (Deus da Destruição)', hp: 8690000, str: 95200, expReward: 129000, zeniReward: 163000, levelReq: 227, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/b/b3/ToppoHakai.png' },
-                { id: 'jiren', name: 'Jiren', hp: 9540000, str: 101100, expReward: 136000, zeniReward: 172100, levelReq: 232, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/JirenDBFZ.png' },
-
-                // --- ENDGAME / FILMES DB SUPER (Lv 237 - 250) ---
-                { id: 'jiren_full_power', name: 'Jiren (Poder Total)', hp: 10450000, str: 107200, expReward: 143200, zeniReward: 181500, levelReq: 237, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/25/JirenFullPower.png' },
-                { id: 'broly_wrath', name: 'Broly (Ira)', hp: 11420000, str: 113500, expReward: 150600, zeniReward: 191200, levelReq: 241, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/4/4e/BrolyWrath.png' },
-                { id: 'broly_ssj_full', name: 'Broly (SSJ Poder Total)', hp: 12450000, str: 120000, expReward: 158200, zeniReward: 201200, levelReq: 245, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/9/90/Broly_DBFZ.png' },
-                { id: 'moro_prime', name: 'Moro (Forma Final)', hp: 13550000, str: 126700, expReward: 166000, zeniReward: 211500, levelReq: 248, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/75/MoroPrime.png' },
-                { id: 'cell_max', name: 'Cell Max', hp: 15000000, str: 135000, expReward: 175000, zeniReward: 225000, levelReq: 250, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d2/CellMax.png' }
+                // --- DB SUPER & ENDGAME (Lv 132 - 250) ---
+                { id: 'beerus_suppressed', name: 'Beerus (Contido)', hp: 750000, str: 17200, expReward: 29300, zeniReward: 38800, dbCoinsReward: 220, levelReq: 132, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d5/Beerus_DBFZ.png' },
+                { id: 'whis_test', name: 'Whis (Treinamento)', hp: 860000, str: 19000, expReward: 32000, zeniReward: 42200, dbCoinsReward: 240, levelReq: 136, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f2/WhisNV.png' },
+                { id: 'golden_freeza', name: 'Golden Freeza', hp: 1120000, str: 23200, expReward: 38000, zeniReward: 49600, dbCoinsReward: 260, levelReq: 145, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f9/GoldenFriezaDBFZ.png' },
+                { id: 'hit', name: 'Hit (O Assassino)', hp: 2100000, str: 36700, expReward: 56500, zeniReward: 72000, dbCoinsReward: 300, levelReq: 168, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/7/78/Hit_DBFZ.png' },
+                { id: 'goku_black_rosed', name: 'Goku Black (SSJ Rosé)', hp: 3030000, str: 47200, expReward: 70000, zeniReward: 88500, dbCoinsReward: 350, levelReq: 183, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/f/f6/GokuBlackRoseDBFZ.png' },
+                { id: 'jiren', name: 'Jiren', hp: 9540000, str: 101100, expReward: 136000, zeniReward: 172100, dbCoinsReward: 450, levelReq: 232, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/2/23/JirenDBFZ.png' },
+                { id: 'cell_max', name: 'Cell Max', hp: 15000000, str: 135000, expReward: 175000, zeniReward: 225000, dbCoinsReward: 500, levelReq: 250, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/d/d2/CellMax.png' }
             ];
 
             function getUsersData() {
@@ -1024,44 +1003,44 @@
                 localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
             }
 
-            // REFORMULAÇÃO DOS BOTS: EQUIPADOS AUTOMATICAMENTE COM SETS E ATRIBUTOS ESCALÁVEIS FORTE
+            // BOTS EXTREMAMENTE FORTALECIDOS E MESCLADOS
             function getBotsData() {
                 let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
 
                 const createBotStats = (level, race) => {
                     let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
-                    if (race === 'Namekuseijin') raceHp = 40;
-                    if (race === 'Saiyajin') raceStr = 5;
-                    if (race === 'Android') raceRes = 5;
-                    if (race === 'Humano') raceSpeed = 5;
+                    if (race === 'Namekuseijin') raceHp = 100;
+                    if (race === 'Saiyajin') raceStr = 20;
+                    if (race === 'Android') raceRes = 20;
+                    if (race === 'Humano') raceSpeed = 20;
 
-                    let baseMaxHp = 100 + raceHp + ((level - 1) * 35);
-                    let baseStr = 10 + raceStr + Math.floor((level - 1) * 12);
-                    let baseRes = 10 + raceRes + Math.floor((level - 1) * 10);
-                    let baseSpeed = 10 + raceSpeed + Math.floor((level - 1) * 10);
+                    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
+                    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
+                    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
+                    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
 
-                    // Bot equipa automaticamente o melhor Set disponível para a faixa de nível dele
                     let setIndex = Math.min(REAL_CHARACTER_SETS.length - 1, Math.floor((level / 250) * REAL_CHARACTER_SETS.length));
                     let autoSet = REAL_CHARACTER_SETS[setIndex];
 
                     if (autoSet) {
-                        baseStr += autoSet.str;
-                        baseRes += autoSet.res;
-                        baseSpeed += autoSet.speed;
-                        baseMaxHp += autoSet.maxHp;
+                        baseStr += Math.floor(autoSet.str * 1.2);
+                        baseRes += Math.floor(autoSet.res * 1.2);
+                        baseSpeed += Math.floor(autoSet.speed * 1.2);
+                        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
                     }
 
-                    const combatPower = (level * 250) + (baseStr * 15) + (baseRes * 12) + (baseSpeed * 10) + (baseMaxHp * 2);
+                    const combatPower = Math.floor((level * 400) + (baseStr * 25) + (baseRes * 20) + (baseSpeed * 18) + (baseMaxHp * 3));
 
                     return {
                         level: level,
                         hp: baseMaxHp,
                         maxHp: baseMaxHp,
-                        ki: 100 + (level * 10),
-                        maxKi: 100 + (level * 10),
+                        ki: 200 + (level * 20),
+                        maxKi: 200 + (level * 20),
                         str: baseStr,
                         res: baseRes,
                         speed: baseSpeed,
+                        isVip: level > 100 || Math.random() < 0.3,
                         equippedSet: autoSet ? autoSet.name : 'Nenhum',
                         combatPower: combatPower
                     };
@@ -1070,7 +1049,7 @@
                 if (bots.length === 0) {
                     bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
                         const race = name === '[ADM]-Irin_tomaz' ? 'Android' : BOT_RACES[i % BOT_RACES.length];
-                        const lvl = name === '[ADM]-Irin_tomaz' ? 180 : Math.floor(Math.random() * 120) + 1;
+                        const lvl = name === '[ADM]-Irin_tomaz' ? 220 : Math.floor(Math.random() * 210) + 1;
                         const stats = createBotStats(lvl, race);
 
                         return {
@@ -1088,7 +1067,7 @@
                     });
 
                     if (!bots.some(bot => bot.username === '[ADM]-Irin_tomaz')) {
-                        const stats = createBotStats(180, 'Android');
+                        const stats = createBotStats(220, 'Android');
                         bots.push({
                             username: '[ADM]-Irin_tomaz',
                             race: 'Android',
@@ -1173,6 +1152,8 @@
                     const users = getUsersData();
                     if (users[savedUsername]) {
                         _currentUser = users[savedUsername];
+                        _currentUser.dbCoins = _currentUser.dbCoins || 0;
+                        _currentUser.isVip = _currentUser.isVip || false;
                         _currentUser.setInventory = _currentUser.setInventory || [];
                         _currentUser.equippedSet = _currentUser.equippedSet || null;
                         simulateBotProgress();
@@ -1278,6 +1259,8 @@
                         speed: 10 + raceSpeed,
                         statPoints: 5,
                         zeni: 300,
+                        dbCoins: 0,
+                        isVip: false,
                         inventory: [],
                         setInventory: [],
                         equippedSet: null,
@@ -1303,6 +1286,8 @@
                     }
 
                     _currentUser = users[username];
+                    _currentUser.dbCoins = _currentUser.dbCoins || 0;
+                    _currentUser.isVip = _currentUser.isVip || false;
                     _currentUser.setInventory = _currentUser.setInventory || [];
                     _currentUser.equippedSet = _currentUser.equippedSet || null;
                     localStorage.setItem(STORAGE_SESSION, username);
@@ -1334,6 +1319,14 @@
 
                 document.getElementById('sideAvatar').src = _currentUser.avatar;
                 document.getElementById('sideZeni').innerText = `${_currentUser.zeni} Z$`;
+                document.getElementById('sideDbCoins').innerText = `${_currentUser.dbCoins || 0} 🐉`;
+
+                const vipBadge = document.getElementById('sideVipBadge');
+                if (_currentUser.isVip) {
+                    vipBadge.classList.remove('hidden');
+                } else {
+                    vipBadge.classList.add('hidden');
+                }
 
                 const sideAfkBadge = document.getElementById('sideAfkBadge');
                 if (_currentUser.afkState) {
@@ -1360,6 +1353,7 @@
                 document.getElementById('dashSpeed').innerText = _currentUser.speed;
                 document.getElementById('dashAttrPoints').innerText = `Pontos: ${_currentUser.statPoints}`;
                 document.getElementById('shopUserZeni').innerText = _currentUser.zeni;
+                document.getElementById('shopUserDbCoins').innerText = _currentUser.dbCoins || 0;
 
                 const statControls = document.querySelectorAll('.stat-controls');
                 statControls.forEach(ctrl => {
@@ -1369,6 +1363,7 @@
 
                 populateCombatSkillsSelect();
                 populatePvpSkillsSelect();
+                populateOpenPvpSkillsSelect();
                 renderInventory();
                 renderSetInventory();
                 renderRanking();
@@ -1470,7 +1465,9 @@
                 }
 
                 _currentUser.ki -= 5;
-                const gainedExp = Math.floor(Math.random() * 15) + 15;
+                let gainedExp = Math.floor(Math.random() * 15) + 15;
+                if (_currentUser.isVip) gainedExp *= 2;
+
                 _currentUser.exp += gainedExp;
 
                 showToast(`Treino concluído! +${gainedExp} EXP (-5 KI)`);
@@ -1507,7 +1504,6 @@
                 reader.readAsDataURL(file);
             };
 
-            // LIBERAÇÃO DAS ABAS PERFIL, CASA, PLATAFORMA, SHOP E RANKING DURANTE TREINO CELESTE
             switchTab = function(tabName) {
                 if (_currentUser && _currentUser.afkState) {
                     const allowedTabs = ['dashboard', 'home', 'celestial', 'shop', 'ranking'];
@@ -1629,9 +1625,15 @@
                     _currentUser.ki = Math.min(_currentUser.maxKi, _currentUser.ki + 50);
                     showToast("Essência de Ki consumida! +50 KI e +5 KI Máximo permanente!");
                 } else if (item.effect === 'exp_boost') {
-                    _currentUser.exp += 300;
-                    showToast("Cápsula de Treino ativada! +300 EXP obtidos!");
+                    let expGained = 300;
+                    if (_currentUser.isVip) expGained *= 2;
+                    _currentUser.exp += expGained;
+                    showToast(`Cápsula de Treino ativada! +${expGained} EXP obtidos!`);
                     checkLevelUp();
+                } else if (item.effect === 'vip_activation') {
+                    _currentUser.isVip = true;
+                    pushGlobalAnnouncement(`👑 NOVO VIP: ${_currentUser.username} adquiriu o Passe VIP e agora tem bônus de 2x EXP e Zeni!`);
+                    showToast("Sua conta agora é VIP! Bônus de 2x EXP e Zeni ativado permanentemente!");
                 }
 
                 saveCurrentUserData();
@@ -1725,6 +1727,7 @@
                 const shopCons = document.getElementById('shopConsumablesContainer');
                 let htmlCons = '';
                 SHOP_ITEMS.forEach(item => {
+                    const priceLabel = item.currency === 'dbCoins' ? `${item.cost} 🐉 (DB Coins)` : `${item.cost.toLocaleString('pt-BR')} Z$`;
                     htmlCons += `
                         <div class="bg-black/40 p-3.5 rounded-lg border border-dbzBorder flex flex-col justify-between space-y-3">
                             <div class="flex items-start space-x-3">
@@ -1735,7 +1738,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center justify-between border-t border-dbzBorder/50 pt-2.5">
-                                <span class="font-pixel text-xs text-yellow-400"><i class="fa-solid fa-coins mr-1"></i>${item.cost} Z$</span>
+                                <span class="font-pixel text-xs text-yellow-400">${priceLabel}</span>
                                 <button onclick="buyShopItem('${item.id}')" class="retro-btn px-3 py-1 text-xs font-bold text-white rounded uppercase">Comprar</button>
                             </div>
                         </div>
@@ -1775,12 +1778,20 @@
                 const item = SHOP_ITEMS.find(i => i.id === itemId);
                 if (!item) return;
 
-                if (_currentUser.zeni < item.cost) {
-                    showToast("Zeni insuficiente!");
-                    return;
+                if (item.currency === 'dbCoins') {
+                    if ((_currentUser.dbCoins || 0) < item.cost) {
+                        showToast("Esferas do Dragão (DB Coins) insuficientes! Vença batalhas PvE para obter mais.");
+                        return;
+                    }
+                    _currentUser.dbCoins -= item.cost;
+                } else {
+                    if (_currentUser.zeni < item.cost) {
+                        showToast("Zeni insuficiente!");
+                        return;
+                    }
+                    _currentUser.zeni -= item.cost;
                 }
 
-                _currentUser.zeni -= item.cost;
                 _currentUser.inventory = _currentUser.inventory || [];
                 _currentUser.inventory.push(item.id);
 
@@ -1818,7 +1829,7 @@
                                 <div>
                                     <h4 class="font-pixel text-xs text-yellow-300">${enemy.name}</h4>
                                     <p class="text-[10px] text-gray-400 mt-0.5">Req. Nível: <span class="text-yellow-400 font-bold">${enemy.levelReq}</span></p>
-                                    <p class="text-[10px] text-gray-400">Recompensa: +${enemy.expReward} EXP | +${enemy.zeniReward} Z$</p>
+                                    <p class="text-[10px] text-gray-400">Drops: +${enemy.expReward} EXP | +${enemy.zeniReward} Z$ | <span class="text-orange-400 font-bold">+${enemy.dbCoinsReward} 🐉</span></p>
                                 </div>
                             </div>
                             <button onclick="startCombat('${enemy.id}')" ${!canFight ? 'disabled' : ''} class="${canFight ? 'retro-btn' : 'bg-gray-800 text-gray-500 border border-gray-700 cursor-not-allowed'} px-3 py-1.5 text-xs font-bold text-white rounded">
@@ -1860,6 +1871,25 @@
                     const isUnlocked = _currentUser.level >= skill.reqLevel;
                     if (isUnlocked) {
                         html += `<option value="${skill.id}">${skill.name} (Custo: ${skill.kiCost} KI)</option>`;
+                    } else {
+                        html += `<option value="${skill.id}" disabled>${skill.name} [Req. Nível ${skill.reqLevel}]</option>`;
+                    }
+                });
+
+                selectEl.innerHTML = html;
+            }
+
+            function populateOpenPvpSkillsSelect() {
+                const selectEl = document.getElementById('openPvpSkillSelect');
+                if (!selectEl || !_currentUser) return;
+
+                const skills = RACE_SKILLS[_currentUser.race] || [];
+                let html = '';
+
+                skills.forEach(skill => {
+                    const isUnlocked = _currentUser.level >= skill.reqLevel;
+                    if (isUnlocked) {
+                        html += `<option value="${skill.id}">${skill.name} (Custo: ${skill.kiCost} KI) - Dano: ${skill.multiplier || 1}x</option>`;
                     } else {
                         html += `<option value="${skill.id}" disabled>${skill.name} [Req. Nível ${skill.reqLevel}]</option>`;
                     }
@@ -1976,9 +2006,20 @@
                 updateCombatScreenUI();
 
                 if (combatState.enemyHp <= 0) {
+                    let expReward = activeEnemy.expReward;
+                    let zeniReward = activeEnemy.zeniReward;
+
+                    if (_currentUser.isVip) {
+                        expReward *= 2;
+                        zeniReward *= 2;
+                    }
+
                     log.innerHTML += `<div class="text-green-400 font-bold">-> VITÓRIA! Você derrotou ${activeEnemy.name}!</div>`;
-                    _currentUser.exp += activeEnemy.expReward;
-                    _currentUser.zeni += activeEnemy.zeniReward;
+                    log.innerHTML += `<div class="text-orange-400">-> Recompensas: +${expReward} EXP | +${zeniReward} Z$ | +${activeEnemy.dbCoinsReward} 🐉 (DB Coins)!</div>`;
+
+                    _currentUser.exp += expReward;
+                    _currentUser.zeni += zeniReward;
+                    _currentUser.dbCoins = (_currentUser.dbCoins || 0) + activeEnemy.dbCoinsReward;
                     _currentUser.hp = combatState.playerHp;
 
                     checkLevelUp();
@@ -2027,8 +2068,8 @@
                             <div class="flex items-center space-x-3">
                                 <img src="${bot.avatar}" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
                                 <div>
-                                    <h4 class="font-bold text-xs text-yellow-300">${bot.username} <span class="text-[10px] text-orange-400 font-normal">(${bot.race})</span></h4>
-                                    <p class="text-[10px] text-gray-400">Nível ${bot.level} | Set: ${bot.equippedSet}</p>
+                                    <h4 class="font-bold text-xs text-yellow-300 flex items-center gap-1">${bot.username} ${bot.isVip ? '<span class="text-[9px] bg-yellow-500 text-black px-1 rounded font-pixel">VIP</span>' : ''}</h4>
+                                    <p class="text-[10px] text-gray-400">Nível ${bot.level} (${bot.race}) | Set: ${bot.equippedSet}</p>
                                     <p class="text-[10px] text-orange-400 font-pixel">Poder: ${formatPower(bot.combatPower)}</p>
                                 </div>
                             </div>
@@ -2041,7 +2082,6 @@
                 container.innerHTML = html;
             }
 
-            // PVP DIRECT COM CONFRONTADOR DIRETO ESTILO PVE (COM SKILLS E BARRA DE HP)
             startPvpDirect = function(targetUsername) {
                 if (!_currentUser) return;
                 if (_currentUser.afkState) {
@@ -2151,10 +2191,15 @@
                 updatePvpCombatScreenUI();
 
                 if (pvpCombatState.botHp <= 0) {
-                    const zeniGained = Math.floor(Math.random() * 200) + 150;
-                    const expGained = Math.floor(Math.random() * 120) + 80;
+                    let zeniGained = Math.floor(Math.random() * 1000) + 800;
+                    let expGained = Math.floor(Math.random() * 800) + 500;
 
-                    log.innerHTML += `<div class="text-green-400 font-bold">-> VITÓRIA PVP! Você superou ${activePvpBot.username}!</div>`;
+                    if (_currentUser.isVip) {
+                        zeniGained *= 2;
+                        expGained *= 2;
+                    }
+
+                    log.innerHTML += `<div class="text-green-400 font-bold">-> VITÓRIA PVP! Você superou ${activePvpBot.username}! (+${expGained} EXP / +${zeniGained} Z$)</div>`;
                     _currentUser.exp += expGained;
                     _currentUser.zeni += zeniGained;
                     _currentUser.hp = pvpCombatState.playerHp;
@@ -2172,8 +2217,8 @@
                     return;
                 }
 
-                // Bot Turn com Força Equiparável
-                const botDamage = Math.max(10, Math.floor((activePvpBot.str * 1.1) - (_currentUser.res * 0.3)));
+                // Bot Turn com Dano Realista
+                const botDamage = Math.max(15, Math.floor((activePvpBot.str * 1.2) - (_currentUser.res * 0.3)));
                 pvpCombatState.playerHp = Math.max(0, pvpCombatState.playerHp - botDamage);
                 _currentUser.hp = pvpCombatState.playerHp;
 
@@ -2238,7 +2283,8 @@
                     document.getElementById('openPvpTimerDisplay').innerText = `${mins}:${secs}`;
 
                     if (openPvpTimer % 10 === 0) {
-                        const rewardZeni = 20;
+                        let rewardZeni = 50;
+                        if (_currentUser.isVip) rewardZeni *= 2;
                         _currentUser.zeni += rewardZeni;
                         saveCurrentUserData();
                     }
@@ -2253,6 +2299,7 @@
                 inOpenPvp = false;
                 if (openPvpTimerInterval) clearInterval(openPvpTimerInterval);
                 if (openPvpBotAttackTimeout) clearTimeout(openPvpBotAttackTimeout);
+                if (openPvpCooldownInterval) clearInterval(openPvpCooldownInterval);
 
                 document.getElementById('openPvpLobby').classList.remove('hidden');
                 document.getElementById('openPvpActiveContainer').classList.add('hidden');
@@ -2272,12 +2319,14 @@
                         <div class="bg-black/70 p-2.5 rounded border border-red-900/50 flex flex-col items-center justify-between text-center space-y-1.5 hover:border-red-500 transition">
                             <img src="${bot.avatar}" class="w-12 h-12 rounded-full border border-yellow-500 object-cover">
                             <div class="w-full truncate">
-                                <div class="font-pixel text-[10px] text-yellow-300 truncate">${bot.username}</div>
+                                <div class="font-pixel text-[10px] text-yellow-300 truncate flex items-center justify-center gap-1">
+                                    ${bot.username} ${bot.isVip ? '<span class="text-[8px] bg-yellow-500 text-black px-0.5 rounded font-pixel">VIP</span>' : ''}
+                                </div>
                                 <div class="text-[9px] text-gray-400">Lv.${bot.level}</div>
                                 <div class="text-[9px] text-orange-400 font-pixel mt-0.5">${formatPower(bot.combatPower)}</div>
                             </div>
-                            <button onclick="attackOpenPvpTarget('${bot.username}')" class="w-full retro-btn-red py-1 text-[10px] font-bold text-white rounded uppercase tracking-wider">
-                                Atacar
+                            <button id="btnOpenAttack_${bot.username}" onclick="attackOpenPvpTarget('${bot.username}')" ${openPvpCooldownSeconds > 0 ? 'disabled' : ''} class="w-full ${openPvpCooldownSeconds > 0 ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700' : 'retro-btn-red'} py-1 text-[9px] font-bold text-white rounded uppercase tracking-wider">
+                                ${openPvpCooldownSeconds > 0 ? `Aguarde (${openPvpCooldownSeconds}s)` : 'Atacar c/ Skill'}
                             </button>
                         </div>
                     `;
@@ -2285,35 +2334,79 @@
                 grid.innerHTML = html;
             }
 
+            // ATAQUE COM SKILL E TIMER DE COOLDOWN DE 20 SEGUNDOS
             attackOpenPvpTarget = function(targetUsername) {
                 if (!_currentUser || !inOpenPvp) return;
+                if (openPvpCooldownSeconds > 0) {
+                    showToast(`Aguarde ${openPvpCooldownSeconds} segundos para poder usar a skill novamente!`);
+                    return;
+                }
+
+                const selectEl = document.getElementById('openPvpSkillSelect');
+                const skillId = selectEl ? selectEl.value : null;
+
+                const skills = RACE_SKILLS[_currentUser.race] || [];
+                const selectedSkill = skills.find(s => s.id === skillId) || skills[0];
+
+                if (selectedSkill && selectedSkill.kiCost && _currentUser.ki < selectedSkill.kiCost) {
+                    showToast(`KI insuficiente para usar ${selectedSkill.name}!`);
+                    return;
+                }
+
+                if (selectedSkill && selectedSkill.kiCost) {
+                    _currentUser.ki -= selectedSkill.kiCost;
+                }
 
                 const bots = getBotsData();
                 const targetBot = bots.find(b => b.username === targetUsername);
                 if (!targetBot) return;
 
-                const myPower = _currentUser.combatPower;
+                const skillMult = selectedSkill ? (selectedSkill.multiplier || 1.5) : 1.5;
+                const myPower = _currentUser.combatPower * skillMult;
                 const targetPower = targetBot.combatPower;
 
-                if (myPower >= targetPower * 0.8) {
+                if (myPower >= targetPower * 0.7) {
                     openPvpKills++;
                     document.getElementById('openPvpKillsDisplay').innerText = openPvpKills;
 
-                    const zeniBonus = Math.floor(Math.random() * 80) + 50;
-                    const expBonus = Math.floor(Math.random() * 50) + 30;
+                    let zeniBonus = Math.floor(Math.random() * 500) + 300;
+                    let expBonus = Math.floor(Math.random() * 400) + 200;
+
+                    if (_currentUser.isVip) {
+                        zeniBonus *= 2;
+                        expBonus *= 2;
+                    }
 
                     _currentUser.zeni += zeniBonus;
                     _currentUser.exp += expBonus;
                     checkLevelUp();
                     saveCurrentUserData();
 
-                    showToast(`Abate na Arena Aberta! Eliminou ${targetBot.username} (+${expBonus} EXP / +${zeniBonus} Z$)`);
+                    showToast(`Skill ${selectedSkill.name} executada! Eliminou ${targetBot.username} (+${expBonus} EXP / +${zeniBonus} Z$)`);
                 } else {
-                    _currentUser.hp = Math.max(1, _currentUser.hp - 20);
+                    _currentUser.hp = Math.max(1, _currentUser.hp - 40);
                     saveCurrentUserData();
-                    showToast(`Ataque fracassou! ${targetBot.username} repeliu o seu golpe.`);
+                    showToast(`Ataque repelido! ${targetBot.username} contra-atacou-o com força superior!`);
                 }
+
+                // Iniciar Cooldown de 20 segundos
+                startOpenPvpCooldown(20);
             };
+
+            function startOpenPvpCooldown(seconds) {
+                openPvpCooldownSeconds = seconds;
+                renderOpenPvpGrid();
+
+                if (openPvpCooldownInterval) clearInterval(openPvpCooldownInterval);
+                openPvpCooldownInterval = setInterval(() => {
+                    openPvpCooldownSeconds--;
+                    if (openPvpCooldownSeconds <= 0) {
+                        clearInterval(openPvpCooldownInterval);
+                        openPvpCooldownSeconds = 0;
+                    }
+                    renderOpenPvpGrid();
+                }, 1000);
+            }
 
             function scheduleBotAttacksInOpenPvp() {
                 if (!inOpenPvp) return;
@@ -2324,11 +2417,11 @@
                         const bots = getBotsData();
                         const randomBot = bots[Math.floor(Math.random() * bots.length)];
 
-                        const damage = Math.floor(Math.random() * 15) + 5;
+                        const damage = Math.floor(Math.random() * 25) + 10;
                         _currentUser.hp = Math.max(1, _currentUser.hp - damage);
                         saveCurrentUserData();
 
-                        showToast(` Alerta! ${randomBot.username} atacou-o na Arena Aberta causando ${damage} de dano!`);
+                        showToast(` Alerta! ${randomBot.username} lançou uma rajada em você causando ${damage} de dano!`);
                         scheduleBotAttacksInOpenPvp();
                     }
                 }, randomDelay);
@@ -2341,6 +2434,9 @@
                 let html = '';
                 CELESTIAL_ROOMS.forEach(room => {
                     const canEnter = _currentUser && _currentUser.level >= room.reqLevel && _currentUser.combatPower >= room.reqPL;
+                    const expLabel = _currentUser && _currentUser.isVip ? room.expRate * 2 : room.expRate;
+                    const zeniLabel = _currentUser && _currentUser.isVip ? room.zeniRate * 2 : room.zeniRate;
+
                     html += `
                         <div class="bg-black/50 p-3.5 rounded-lg border border-dbzBorder flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                             <div class="flex items-center space-x-3">
@@ -2349,7 +2445,7 @@
                                     <h4 class="font-pixel text-xs text-yellow-300">${room.name}</h4>
                                     <p class="text-[11px] text-gray-400 mt-0.5">${room.desc}</p>
                                     <div class="text-[10px] text-cyan-300 font-semibold mt-1">
-                                        Ganhos: +${room.expRate} EXP e +${room.zeniRate} Z$ / 5seg
+                                        Ganhos: +${expLabel} EXP e +${zeniLabel} Z$ / 5seg
                                     </div>
                                 </div>
                             </div>
@@ -2408,7 +2504,9 @@
                 document.getElementById('afkRoomsContainer').classList.add('hidden');
 
                 document.getElementById('afkRoomTitle').innerText = room.name;
-                document.getElementById('afkRoomRates').innerText = `Ganhando +${room.expRate} EXP e +${room.zeniRate} Z$ a cada 5s`;
+                const expLabel = _currentUser.isVip ? room.expRate * 2 : room.expRate;
+                const zeniLabel = _currentUser.isVip ? room.zeniRate * 2 : room.zeniRate;
+                document.getElementById('afkRoomRates').innerText = `Ganhando +${expLabel} EXP e +${zeniLabel} Z$ a cada 5s`;
             }
 
             function initAfkLoop() {
@@ -2422,11 +2520,19 @@
                     if (_currentUser && _currentUser.afkState) {
                         const room = CELESTIAL_ROOMS.find(r => r.id === _currentUser.afkState.roomId);
                         if (room) {
-                            _currentUser.afkState.accumulatedExp += room.expRate;
-                            _currentUser.afkState.accumulatedZeni += room.zeniRate;
+                            let expGained = room.expRate;
+                            let zeniGained = room.zeniRate;
 
-                            _currentUser.exp += room.expRate;
-                            _currentUser.zeni += room.zeniRate;
+                            if (_currentUser.isVip) {
+                                expGained *= 2;
+                                zeniGained *= 2;
+                            }
+
+                            _currentUser.afkState.accumulatedExp += expGained;
+                            _currentUser.afkState.accumulatedZeni += zeniGained;
+
+                            _currentUser.exp += expGained;
+                            _currentUser.zeni += zeniGained;
                             checkLevelUp();
 
                             saveCurrentUserData();
@@ -2456,8 +2562,13 @@
                 const cycles = Math.floor(elapsedMs / 5000);
 
                 if (cycles > 0) {
-                    const offlineExp = cycles * room.expRate;
-                    const offlineZeni = cycles * room.zeniRate;
+                    let offlineExp = cycles * room.expRate;
+                    let offlineZeni = cycles * room.zeniRate;
+
+                    if (_currentUser.isVip) {
+                        offlineExp *= 2;
+                        offlineZeni *= 2;
+                    }
 
                     _currentUser.afkState.accumulatedExp += offlineExp;
                     _currentUser.afkState.accumulatedZeni += offlineZeni;
@@ -2470,6 +2581,7 @@
                 }
             }
 
+            // RANKING GLOBAL COM EXIBIÇÃO DA TAG VIP
             function renderRanking() {
                 const tbody = document.getElementById('rankingTableBody');
                 if (!tbody) return;
@@ -2489,7 +2601,10 @@
                             <td class="p-2 text-center font-pixel text-[10px] ${idx < 3 ? 'text-yellow-400' : 'text-gray-400'}">${idx + 1}</td>
                             <td class="p-2 flex items-center space-x-2">
                                 <img src="${p.avatar}" class="w-6 h-6 rounded-full object-cover border border-yellow-500">
-                                <span class="${isSelf ? 'text-yellow-300' : 'text-gray-200'}">${p.username}</span>
+                                <span class="${isSelf ? 'text-yellow-300' : 'text-gray-200'} flex items-center gap-1.5">
+                                    ${p.username} 
+                                    ${p.isVip ? '<span class="text-[9px] bg-gradient-to-r from-yellow-500 to-amber-300 text-black px-1 rounded font-pixel font-bold shadow">[VIP]</span>' : ''}
+                                </span>
                             </td>
                             <td class="p-2 text-center text-gray-400">${p.race}</td>
                             <td class="p-2 text-center font-pixel text-[10px] text-yellow-400">${p.level}</td>
@@ -2511,7 +2626,7 @@
                 const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
                 messages.push({
-                    sender: _currentUser.username,
+                    sender: _currentUser.username + (_currentUser.isVip ? ' [VIP]' : ''),
                     text: text,
                     time: timeStr
                 });
