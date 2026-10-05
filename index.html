@@ -534,7 +534,7 @@
                 <div class="bg-dbzCardBg retro-border rounded-lg p-5">
                     <div class="flex justify-between items-center border-b border-dbzBorder pb-3 mb-4">
                         <h2 class="font-pixel text-sm text-red-400"><i class="fa-solid fa-swords mr-2"></i>ARENAS PVP ONLINE</h2>
-                        <span class="text-xs text-green-400 flex items-center"><i class="fa-solid fa-circle text-[8px] mr-1 animate-pulse"></i> 50 Jogadores Conectados</span>
+                        <span class="text-xs text-green-400 flex items-center"><i class="fa-solid fa-circle text-[8px] mr-1 animate-pulse"></i> 51 Jogadores Conectados</span>
                     </div>
 
                     <!-- Sub-abas PVP -->
@@ -549,9 +549,64 @@
 
                     <!-- Sub-aba 1: PVP 1x1 Direto -->
                     <div id="pvpSubDirect" class="space-y-3">
-                        <p class="text-xs text-gray-400">Escolha um guerreiro da lista online para um combate direto. A ordem da lista altera-se cada vez que visitas a página!</p>
+                        <p class="text-xs text-gray-400">Escolha um guerreiro para um duelo em tempo real! Os bots estão equipados com Sets potentes de acordo com o nível deles.</p>
+                        
+                        <!-- Lista de oponentes para seleção -->
                         <div id="pvpDirectList" class="grid grid-cols-1 gap-2 max-h-96 overflow-y-auto pr-1">
                             <!-- Populated via JS -->
+                        </div>
+
+                        <!-- Tela de Confronto PVP Direct Em Tempo Real -->
+                        <div id="pvpCombatScreen" class="hidden space-y-4 pt-2">
+                            <div class="bg-black/60 p-4 rounded-lg border border-red-500 grid grid-cols-5 items-center text-center">
+                                <div class="col-span-2 flex flex-col items-center">
+                                    <img id="pvpPlayerAvatar" src="" class="w-16 h-16 rounded-full border-2 border-yellow-400 object-cover mb-1">
+                                    <span id="pvpPlayerName" class="font-pixel text-xs text-yellow-300 truncate w-full">Player</span>
+                                    <div class="w-full bg-gray-800 rounded-full h-2 border border-red-900 mt-2">
+                                        <div id="pvpPlayerHpBar" class="bg-red-500 h-full rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <span id="pvpPlayerHpText" class="text-[10px] text-gray-300 mt-0.5">100/100</span>
+                                </div>
+
+                                <div class="col-span-1 font-pixel text-lg text-red-500 animate-pulse">VS</div>
+
+                                <div class="col-span-2 flex flex-col items-center">
+                                    <img id="pvpBotAvatar" src="" class="w-16 h-16 rounded-full border-2 border-red-500 object-cover mb-1">
+                                    <span id="pvpBotName" class="font-pixel text-xs text-red-400 truncate w-full">Inimigo</span>
+                                    <div class="w-full bg-gray-800 rounded-full h-2 border border-red-900 mt-2">
+                                        <div id="pvpBotHpBar" class="bg-red-600 h-full rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <span id="pvpBotHpText" class="text-[10px] text-gray-300 mt-0.5">100/100</span>
+                                </div>
+                            </div>
+
+                            <!-- Seleção de Skills PvP -->
+                            <div class="space-y-3 bg-black/40 p-3 rounded-lg border border-dbzBorder">
+                                <div class="flex flex-col sm:flex-row gap-2 items-center">
+                                    <div class="flex-1 w-full">
+                                        <label class="block text-[10px] font-pixel text-yellow-400 mb-1">SKILL / TRANSFORMAÇÃO DE RAÇA:</label>
+                                        <select id="pvpCombatSkillSelect" class="w-full bg-dbzDarkBg border border-dbzBorder text-xs text-white rounded p-2 focus:outline-none focus:border-orange-500">
+                                            <!-- Populated via JS -->
+                                        </select>
+                                    </div>
+                                    <button onclick="useSelectedPvpSkillFromSelect()" class="w-full sm:w-auto retro-btn-blue px-4 py-2.5 text-xs font-bold text-white rounded">
+                                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Usar Skill
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-dbzBorder/50">
+                                    <button onclick="executePvpCombatTurn('attack')" class="retro-btn py-2.5 text-xs font-bold text-white rounded">
+                                        <i class="fa-solid fa-hand-fist mr-1"></i> Ataque Físico
+                                    </button>
+                                    <button onclick="executePvpCombatTurn('flee')" class="bg-gray-700 hover:bg-gray-600 border border-gray-500 py-2.5 text-xs font-bold text-white rounded">
+                                        <i class="fa-solid fa-person-running mr-1"></i> Fugir
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-black/80 border border-dbzBorder rounded p-3 h-40 overflow-y-auto text-xs space-y-1 font-mono" id="pvpBattleLog">
+                                <div class="text-yellow-400">-> Duelo PvP Iniciado!</div>
+                            </div>
                         </div>
                     </div>
 
@@ -624,7 +679,7 @@
                             <div class="flex justify-between"><span>Zeni Acumulado:</span><span id="afkZeniGained" class="font-pixel text-yellow-300">+0 Z$</span></div>
                         </div>
 
-                        <p class="text-[11px] text-red-400 italic font-semibold"><i class="fa-solid fa-lock mr-1"></i>Enquanto estiver treinando aqui, todas as outras ações ficam bloqueadas!</p>
+                        <p class="text-[11px] text-green-400 italic font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>Você pode navegar pelo Perfil, Casa, Loja e Ranking livremente enquanto treina!</p>
 
                         <button onclick="leaveAfkRoom()" class="retro-btn-purple px-6 py-2 text-xs font-bold text-white rounded">
                             <i class="fa-solid fa-door-open mr-1"></i> Sair do Treino Celeste
@@ -663,7 +718,7 @@
                         <!-- Populated via JS -->
                     </div>
 
-                    <!-- Conteúdo 2: 20 Sets Reais de Personagem -->
+                    <!-- Conteúdo 2: 30 Sets Reais de Personagem -->
                     <div id="shopSetsContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-1">
                         <!-- Populated via JS -->
                     </div>
@@ -733,6 +788,7 @@
         let useInventoryItem, buyShopItem, buySetItem, equipSetItem, unequipSetItem, switchDashSubTab, switchShopSubTab;
         let startCombat, executeCombatTurn, useSelectedSkillFromSelect, sendChatMessage, switchTab, startHomeResting;
         let enterAfkRoom, leaveAfkRoom, switchPvpSubTab, startPvpDirect, enterOpenPvpArena, leaveOpenPvpArena, attackOpenPvpTarget;
+        let useSelectedPvpSkillFromSelect, executePvpCombatTurn;
 
         (function() {
             const STORAGE_USERS = 'dbz_rpg_users_v2';
@@ -743,6 +799,8 @@
             let _currentUser = null;
             let activeEnemy = null;
             let combatState = null;
+            let pvpCombatState = null;
+            let activePvpBot = null;
             let restInterval = null;
             let afkInterval = null;
 
@@ -753,7 +811,7 @@
             let openPvpKills = 0;
             let openPvpBotAttackTimeout = null;
 
-            // 50 BOTS COM NOMES VARIADOS (Animes, Celebridades, Memes, Pessoas Comuns)
+            // 50 BOTS COM NOMES VARIADOS
             const AUTHENTIC_BOT_NAMES = [
                 "Lucas_Ninja", "Matheus_XPro", "Naruto_Uzumaki", "Neymar_Jr", "Silvio_Santos",
                 "Luffy_Capitao", "Cleiton_Rasta", "Monkey_D_Goku", "Saitama_OnePinch", "Mumu_Mano",
@@ -832,7 +890,7 @@
                 { id: 'training_capsule', name: 'Cápsula de Treino 10x', cost: 1500, icon: 'fa-capsules', color: 'text-yellow-400', desc: '+300 de EXP imediatamente.', effect: 'exp_boost' },
             ];
 
-            // 20 SETS REAIS DOS PERSONAGENS (DO MAIS FRACO AO MAIS FORTE COM PREÇOS ELEVADOS)
+            // 30 SETS REAIS DOS PERSONAGENS (INCLUINDO +10 NOVOS SETS EXTREMAMENTE PODEROSOS)
             const REAL_CHARACTER_SETS = [
                 { id: 'set_1_kami', name: 'Set Mestre Kami', cost: 12000, str: 250, res: 200, speed: 150, maxHp: 2000, icon: 'fa-shirt', color: 'text-orange-400', desc: 'Kimono e óculos escuros lendários do Mestre das Artes Martiais.' },
                 { id: 'set_2_yamcha', name: 'Set Bandido Yamcha', cost: 25000, str: 450, res: 350, speed: 400, maxHp: 4000, icon: 'fa-user-ninja', color: 'text-amber-400', desc: 'Traje verde clássico das estepes do deserto.' },
@@ -853,10 +911,22 @@
                 { id: 'set_17_goku', name: 'Set Dogi do Instinto Superior (Goku)', cost: 4500000, str: 88000, res: 83000, speed: 85000, maxHp: 1050000, icon: 'fa-dragon', color: 'text-yellow-400', desc: 'Dogi de combate desgastado que ressoa com o brilho da aura dos Deuses.' },
                 { id: 'set_18_broly', name: 'Set Fúria do Lendário Super Saiyajin (Broly)', cost: 5000000, str: 115000, res: 110000, speed: 95000, maxHp: 1350000, icon: 'fa-fire-flame-curved', color: 'text-green-300', desc: 'Armadura e colar de contenção do lendário guerreiro de poder ilimitado.' },
                 { id: 'set_19_beerus', name: 'Set Túnica do Deus da Destruição (Beerus)', cost: 5000000, str: 150000, res: 145000, speed: 140000, maxHp: 1750000, icon: 'fa-sun', color: 'text-purple-600', desc: 'Vestimenta egípcia sagrada banhada com o poder do Hakai.' },
-                { id: 'set_20_whis', name: 'Set Anjo Supremo (Whis)', cost: 5000000, str: 200000, res: 190000, speed: 195000, maxHp: 2300000, icon: 'fa-wand-magic-sparkles', color: 'text-cyan-300', desc: 'Túnica angélica reservada aos guardiões e mestres dos Deuses.' }
-            ];
+                { id: 'set_20_whis', name: 'Set Anjo Supremo (Whis)', cost: 5000000, str: 200000, res: 190000, speed: 195000, maxHp: 2300000, icon: 'fa-wand-magic-sparkles', color: 'text-cyan-300', desc: 'Túnica angélica reservada aos guardiões e mestres dos Deuses.' },
 
-            const ENEMIES = [
+                // --- 10 NOVOS SETS ADICIONADOS ---
+                { id: 'set_21_ssj4_goku', name: 'Set Goku Super Saiyajin 4', cost: 6500000, str: 260000, res: 240000, speed: 250000, maxHp: 3000000, icon: 'fa-paw', color: 'text-red-500', desc: 'Pelagem vermelha e aura ancestral do lendário guerreiro de DBGT.' },
+                { id: 'set_22_ssj4_vegeta', name: 'Set Vegeta Super Saiyajin 4', cost: 8000000, str: 330000, res: 310000, speed: 320000, maxHp: 3800000, icon: 'fa-bolt', color: 'text-red-600', desc: 'Poder das ondas Blazar amplificado com orgulho real.' },
+                { id: 'set_23_gogeta_ssj4', name: 'Set Gogeta Super Saiyajin 4', cost: 10000000, str: 420000, res: 400000, speed: 410000, maxHp: 5000000, icon: 'fa-fire', color: 'text-orange-500', desc: 'A fusão suprema definitiva capaz de subjugar qualquer ameaça universal.' },
+                { id: 'set_24_golden_cubo', name: 'Set Super Baby 2', cost: 12500000, str: 520000, res: 500000, speed: 490000, maxHp: 6500000, icon: 'fa-virus', color: 'text-yellow-300', desc: 'Infeção parasitária com poder de todos os Saiyajins escravizados.' },
+                { id: 'set_25_omega_shenron', name: 'Set Omega Shenron', cost: 15000000, str: 650000, res: 630000, speed: 610000, maxHp: 8000000, icon: 'fa-ring', color: 'text-blue-600', desc: 'Esferas do Dragão Negras absorvidas com a energia da corrupção.' },
+                { id: 'set_26_ego_vegeta', name: 'Set Vegeta Ego Superior', cost: 18500000, str: 800000, res: 780000, speed: 760000, maxHp: 10000000, icon: 'fa-skull-crossbones', color: 'text-purple-500', desc: 'Poder da destruição ilimitado impulsionado pela paixão da batalha.' },
+                { id: 'set_27_ui_mastered', name: 'Set Goku Instinto Superior Completo', cost: 22000000, str: 1000000, res: 980000, speed: 990000, maxHp: 13000000, icon: 'fa-star', color: 'text-slate-100', desc: 'Cabelos prateados e esquiva automática do estado divino perfeito.' },
+                { id: 'set_28_gohan_beast', name: 'Set Gohan Beast', cost: 26000000, str: 1250000, res: 1200000, speed: 1220000, maxHp: 16000000, icon: 'fa-khanda', color: 'text-red-400', desc: 'Aura rubra e fúria desperta que transcende a todos os limites de combate.' },
+                { id: 'set_29_orange_piccolo', name: 'Set Orange Piccolo', cost: 30000000, str: 1550000, res: 1500000, speed: 1450000, maxHp: 20000000, icon: 'fa-cubes', color: 'text-orange-600', desc: 'Desejo concedido por Shenlong liberando o verdadeiro orgulho Namekuseijin.' },
+                { id: 'set_30_black_freeza', name: 'Set Black Freeza', cost: 35000000, str: 2000000, res: 1950000, speed: 1900000, maxHp: 25000000, icon: 'fa-crown', color: 'text-amber-200', desc: 'Forma negra forjada em 10 anos de treino na Sala do Tempo de outra dimensão.' }
+            ];
+    
+    const ENEMIES = [
                 // --- DRAGON BALL CLÁSSICO (Lv 1 - 25) ---
                 { id: 'yumcha_db', name: 'Yamcha (Clássico)', hp: 100, str: 10, expReward: 15, zeniReward: 25, levelReq: 1, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/8/88/Yamcha_Bandit.png' },
                 { id: 'kuririn_db', name: 'Kuririn (Jovem)', hp: 150, str: 15, expReward: 25, zeniReward: 35, levelReq: 3, avatar: 'https://vignette.wikia.nocookie.net/dragonball/images/3/30/KrillinYoungNV.png' },
@@ -954,6 +1024,7 @@
                 localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
             }
 
+            // REFORMULAÇÃO DOS BOTS: EQUIPADOS AUTOMATICAMENTE COM SETS E ATRIBUTOS ESCALÁVEIS FORTE
             function getBotsData() {
                 let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
 
@@ -964,31 +1035,42 @@
                     if (race === 'Android') raceRes = 5;
                     if (race === 'Humano') raceSpeed = 5;
 
-                    const maxHp = 100 + raceHp + ((level - 1) * 20);
-                    const maxKi = 50 + ((level - 1) * 10);
-                    const str = 10 + raceStr;
-                    const res = 10 + raceRes;
-                    const speed = 10 + raceSpeed;
-                    const statPoints = 5 + ((level - 1) * 3);
+                    let baseMaxHp = 100 + raceHp + ((level - 1) * 35);
+                    let baseStr = 10 + raceStr + Math.floor((level - 1) * 12);
+                    let baseRes = 10 + raceRes + Math.floor((level - 1) * 10);
+                    let baseSpeed = 10 + raceSpeed + Math.floor((level - 1) * 10);
+
+                    // Bot equipa automaticamente o melhor Set disponível para a faixa de nível dele
+                    let setIndex = Math.min(REAL_CHARACTER_SETS.length - 1, Math.floor((level / 250) * REAL_CHARACTER_SETS.length));
+                    let autoSet = REAL_CHARACTER_SETS[setIndex];
+
+                    if (autoSet) {
+                        baseStr += autoSet.str;
+                        baseRes += autoSet.res;
+                        baseSpeed += autoSet.speed;
+                        baseMaxHp += autoSet.maxHp;
+                    }
+
+                    const combatPower = (level * 250) + (baseStr * 15) + (baseRes * 12) + (baseSpeed * 10) + (baseMaxHp * 2);
 
                     return {
                         level: level,
-                        hp: maxHp,
-                        maxHp: maxHp,
-                        ki: maxKi,
-                        maxKi: maxKi,
-                        str: str,
-                        res: res,
-                        speed: speed,
-                        statPoints: statPoints,
-                        combatPower: (level * 250) + (str * 15) + (res * 12) + (speed * 10) + (maxHp * 2)
+                        hp: baseMaxHp,
+                        maxHp: baseMaxHp,
+                        ki: 100 + (level * 10),
+                        maxKi: 100 + (level * 10),
+                        str: baseStr,
+                        res: baseRes,
+                        speed: baseSpeed,
+                        equippedSet: autoSet ? autoSet.name : 'Nenhum',
+                        combatPower: combatPower
                     };
                 };
 
                 if (bots.length === 0) {
                     bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
                         const race = name === '[ADM]-Irin_tomaz' ? 'Android' : BOT_RACES[i % BOT_RACES.length];
-                        const lvl = name === '[ADM]-Irin_tomaz' ? 78 : Math.floor(Math.random() * 35) + 1;
+                        const lvl = name === '[ADM]-Irin_tomaz' ? 180 : Math.floor(Math.random() * 120) + 1;
                         const stats = createBotStats(lvl, race);
 
                         return {
@@ -1000,15 +1082,13 @@
                     });
                     localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
                 } else {
-                    // Mantém os bots antigos com exatamente a mesma progressão de atributos de um player real.
                     bots.forEach(bot => {
                         const stats = createBotStats(bot.level, bot.race);
                         Object.assign(bot, stats);
                     });
 
-                    // Adiciona o novo bot mesmo em instalações que já possuem bots salvos no localStorage.
                     if (!bots.some(bot => bot.username === '[ADM]-Irin_tomaz')) {
-                        const stats = createBotStats(78, 'Android');
+                        const stats = createBotStats(180, 'Android');
                         bots.push({
                             username: '[ADM]-Irin_tomaz',
                             race: 'Android',
@@ -1027,33 +1107,6 @@
                 localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
             }
 
-            function getBotStatsForLevel(level, race) {
-                let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
-                if (race === 'Namekuseijin') raceHp = 40;
-                if (race === 'Saiyajin') raceStr = 5;
-                if (race === 'Android') raceRes = 5;
-                if (race === 'Humano') raceSpeed = 5;
-
-                const maxHp = 100 + raceHp + ((level - 1) * 20);
-                const maxKi = 50 + ((level - 1) * 10);
-                const str = 10 + raceStr;
-                const res = 10 + raceRes;
-                const speed = 10 + raceSpeed;
-                const statPoints = 5 + ((level - 1) * 3);
-
-                return {
-                    hp: maxHp,
-                    maxHp: maxHp,
-                    ki: maxKi,
-                    maxKi: maxKi,
-                    str: str,
-                    res: res,
-                    speed: speed,
-                    statPoints: statPoints,
-                    combatPower: (level * 250) + (str * 15) + (res * 12) + (speed * 10) + (maxHp * 2)
-                };
-            }
-
             function simulateBotProgress() {
                 const bots = getBotsData();
                 let leveledBots = [];
@@ -1061,15 +1114,10 @@
                 bots.forEach(bot => {
                     if (Math.random() < 0.25) {
                         bot.level += 1;
-                        const oldLevel = bot.level;
-                        const stats = getBotStatsForLevel(bot.level, bot.race);
-                        Object.assign(bot, stats);
-                        bot.hp = bot.maxHp;
+                        saveBotsData(bots);
                         leveledBots.push(bot);
                     }
                 });
-
-                saveBotsData(bots);
 
                 if (leveledBots.length > 0) {
                     const messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
@@ -1320,6 +1368,7 @@
                 });
 
                 populateCombatSkillsSelect();
+                populatePvpSkillsSelect();
                 renderInventory();
                 renderSetInventory();
                 renderRanking();
@@ -1415,10 +1464,6 @@
 
             trainCharacter = function() {
                 if (!_currentUser) return;
-                if (_currentUser.afkState) {
-                    showToast("Sua energia está concentrada no Treino Celeste!");
-                    return;
-                }
                 if (_currentUser.ki < 5) {
                     showToast("KI insuficiente para treinar!");
                     return;
@@ -1462,10 +1507,14 @@
                 reader.readAsDataURL(file);
             };
 
+            // LIBERAÇÃO DAS ABAS PERFIL, CASA, PLATAFORMA, SHOP E RANKING DURANTE TREINO CELESTE
             switchTab = function(tabName) {
-                if (_currentUser && _currentUser.afkState && tabName !== 'celestial' && tabName !== 'dashboard') {
-                    showToast("Você está treinando na Plataforma Celeste! Cancele o treino para navegar.");
-                    return;
+                if (_currentUser && _currentUser.afkState) {
+                    const allowedTabs = ['dashboard', 'home', 'celestial', 'shop', 'ranking'];
+                    if (!allowedTabs.includes(tabName)) {
+                        showToast("Em treino Celeste! Apenas Perfil, Casa, Loja e Ranking estão liberados. Batalhas continuam bloqueadas por segurança.");
+                        return;
+                    }
                 }
 
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
@@ -1485,10 +1534,6 @@
 
             startHomeResting = function() {
                 if (!_currentUser) return;
-                if (_currentUser.afkState) {
-                    showToast("Cancele o treino Celeste antes de descansar na Casa.");
-                    return;
-                }
 
                 const btn = document.getElementById('btnHomeRest');
                 const container = document.getElementById('restProgressContainer');
@@ -1804,10 +1849,29 @@
                 selectEl.innerHTML = html;
             }
 
+            function populatePvpSkillsSelect() {
+                const selectEl = document.getElementById('pvpCombatSkillSelect');
+                if (!selectEl || !_currentUser) return;
+
+                const skills = RACE_SKILLS[_currentUser.race] || [];
+                let html = '';
+
+                skills.forEach(skill => {
+                    const isUnlocked = _currentUser.level >= skill.reqLevel;
+                    if (isUnlocked) {
+                        html += `<option value="${skill.id}">${skill.name} (Custo: ${skill.kiCost} KI)</option>`;
+                    } else {
+                        html += `<option value="${skill.id}" disabled>${skill.name} [Req. Nível ${skill.reqLevel}]</option>`;
+                    }
+                });
+
+                selectEl.innerHTML = html;
+            }
+
             startCombat = function(enemyId) {
                 if (!_currentUser) return;
                 if (_currentUser.afkState) {
-                    showToast("Cancele o treino Celeste para entrar em combate.");
+                    showToast("Batalhas estão bloqueadas durante o Treino Celeste.");
                     return;
                 }
 
@@ -1964,7 +2028,8 @@
                                 <img src="${bot.avatar}" class="w-10 h-10 rounded-full border border-yellow-500 object-cover">
                                 <div>
                                     <h4 class="font-bold text-xs text-yellow-300">${bot.username} <span class="text-[10px] text-orange-400 font-normal">(${bot.race})</span></h4>
-                                    <p class="text-[10px] text-gray-400">Nível ${bot.level} | Poder: ${formatPower(bot.combatPower)}</p>
+                                    <p class="text-[10px] text-gray-400">Nível ${bot.level} | Set: ${bot.equippedSet}</p>
+                                    <p class="text-[10px] text-orange-400 font-pixel">Poder: ${formatPower(bot.combatPower)}</p>
                                 </div>
                             </div>
                             <button onclick="startPvpDirect('${bot.username}')" class="retro-btn-red px-3 py-1 text-xs font-bold text-white rounded">
@@ -1976,37 +2041,160 @@
                 container.innerHTML = html;
             }
 
+            // PVP DIRECT COM CONFRONTADOR DIRETO ESTILO PVE (COM SKILLS E BARRA DE HP)
             startPvpDirect = function(targetUsername) {
                 if (!_currentUser) return;
+                if (_currentUser.afkState) {
+                    showToast("Batalhas estão bloqueadas durante o Treino Celeste.");
+                    return;
+                }
+
                 const bots = getBotsData();
                 const targetBot = bots.find(b => b.username === targetUsername);
-
                 if (!targetBot) return;
 
-                const myPower = _currentUser.combatPower;
-                const opponentPower = targetBot.combatPower;
+                activePvpBot = { ...targetBot };
+                pvpCombatState = {
+                    playerHp: _currentUser.hp,
+                    playerMaxHp: _currentUser.maxHp,
+                    playerKi: _currentUser.ki,
+                    playerMaxKi: _currentUser.maxKi,
+                    botHp: targetBot.maxHp,
+                    botMaxHp: targetBot.maxHp,
+                    playerTransMultiplier: 1.0
+                };
 
-                let winChance = myPower / (myPower + opponentPower);
-                const isVictory = Math.random() < winChance;
+                document.getElementById('pvpDirectList').classList.add('hidden');
+                document.getElementById('pvpCombatScreen').classList.remove('hidden');
 
-                if (isVictory) {
-                    const zeniGained = Math.floor(Math.random() * 50) + 50;
-                    const expGained = Math.floor(Math.random() * 30) + 20;
-                    _currentUser.zeni += zeniGained;
+                document.getElementById('pvpPlayerAvatar').src = _currentUser.avatar;
+                document.getElementById('pvpPlayerName').innerText = _currentUser.username;
+                document.getElementById('pvpBotAvatar').src = targetBot.avatar;
+                document.getElementById('pvpBotName').innerText = targetBot.username;
+
+                updatePvpCombatScreenUI();
+                document.getElementById('pvpBattleLog').innerHTML = `<div class="text-yellow-400">-> Duelo PvP Iniciado contra ${targetBot.username}!</div>`;
+            };
+
+            function updatePvpCombatScreenUI() {
+                if (!pvpCombatState) return;
+                const pPct = Math.max(0, (pvpCombatState.playerHp / pvpCombatState.playerMaxHp) * 100);
+                const bPct = Math.max(0, (pvpCombatState.botHp / pvpCombatState.botMaxHp) * 100);
+
+                document.getElementById('pvpPlayerHpBar').style.width = `${pPct}%`;
+                document.getElementById('pvpPlayerHpText').innerText = `${pvpCombatState.playerHp}/${pvpCombatState.playerMaxHp}`;
+
+                document.getElementById('pvpBotHpBar').style.width = `${bPct}%`;
+                document.getElementById('pvpBotHpText').innerText = `${pvpCombatState.botHp}/${pvpCombatState.botMaxHp}`;
+            }
+
+            useSelectedPvpSkillFromSelect = function() {
+                const selectEl = document.getElementById('pvpCombatSkillSelect');
+                if (!selectEl) return;
+                const skillId = selectEl.value;
+                if (skillId) executePvpCombatTurn('skill', skillId);
+            };
+
+            executePvpCombatTurn = function(actionType, skillId = null) {
+                if (!pvpCombatState || !activePvpBot) return;
+
+                const log = document.getElementById('pvpBattleLog');
+
+                if (actionType === 'flee') {
+                    log.innerHTML += `<div class="text-gray-400">-> Você recuou da arena PvP!</div>`;
+                    setTimeout(() => {
+                        document.getElementById('pvpCombatScreen').classList.add('hidden');
+                        document.getElementById('pvpDirectList').classList.remove('hidden');
+                    }, 1200);
+                    return;
+                }
+
+                let playerDamage = 0;
+
+                if (actionType === 'attack') {
+                    playerDamage = Math.floor((_currentUser.str * 1.2 * pvpCombatState.playerTransMultiplier) + Math.random() * 10);
+                    pvpCombatState.botHp = Math.max(0, pvpCombatState.botHp - playerDamage);
+                    log.innerHTML += `<div class="text-cyan-300">-> Você desferiu um ataque direto infligindo <b>${playerDamage}</b> de dano!</div>`;
+                } else if (actionType === 'skill') {
+                    const skills = RACE_SKILLS[_currentUser.race] || [];
+                    const skill = skills.find(s => s.id === skillId);
+
+                    if (!skill) return;
+                    if (pvpCombatState.playerKi < skill.kiCost) {
+                        log.innerHTML += `<div class="text-red-400">-> KI insuficiente para usar ${skill.name}!</div>`;
+                        return;
+                    }
+
+                    pvpCombatState.playerKi -= skill.kiCost;
+                    _currentUser.ki = pvpCombatState.playerKi;
+
+                    if (skill.type === 'attack') {
+                        playerDamage = Math.floor((_currentUser.str * skill.multiplier * pvpCombatState.playerTransMultiplier) + Math.random() * 15);
+                        pvpCombatState.botHp = Math.max(0, pvpCombatState.botHp - playerDamage);
+                        log.innerHTML += `<div class="text-yellow-300">-> Você usou <b>${skill.name}</b> infligindo <b>${playerDamage}</b> de dano!</div>`;
+                    } else if (skill.type === 'heal') {
+                        const healAmount = Math.floor(pvpCombatState.playerMaxHp * skill.healMultiplier);
+                        pvpCombatState.playerHp = Math.min(pvpCombatState.playerMaxHp, pvpCombatState.playerHp + healAmount);
+                        log.innerHTML += `<div class="text-green-400">-> Você usou <b>${skill.name}</b> regenerando <b>${healAmount}</b> HP!</div>`;
+                    } else if (skill.type === 'drain') {
+                        playerDamage = Math.floor((_currentUser.str * skill.multiplier * pvpCombatState.playerTransMultiplier));
+                        pvpCombatState.botHp = Math.max(0, pvpCombatState.botHp - playerDamage);
+                        pvpCombatState.playerKi = Math.min(pvpCombatState.playerMaxKi, pvpCombatState.playerKi + skill.drainKi);
+                        _currentUser.ki = pvpCombatState.playerKi;
+                        log.innerHTML += `<div class="text-purple-400">-> Drenou <b>${playerDamage}</b> de dano do rival e recuperou Ki!</div>`;
+                    } else if (skill.type === 'transform') {
+                        pvpCombatState.playerTransMultiplier = skill.multiplier;
+                        log.innerHTML += `<div class="text-orange-400 font-bold">-> TRANSFORMAÇÃO! <b>${skill.name}</b> ativado!</div>`;
+                    }
+                }
+
+                updatePvpCombatScreenUI();
+
+                if (pvpCombatState.botHp <= 0) {
+                    const zeniGained = Math.floor(Math.random() * 200) + 150;
+                    const expGained = Math.floor(Math.random() * 120) + 80;
+
+                    log.innerHTML += `<div class="text-green-400 font-bold">-> VITÓRIA PVP! Você superou ${activePvpBot.username}!</div>`;
                     _currentUser.exp += expGained;
+                    _currentUser.zeni += zeniGained;
+                    _currentUser.hp = pvpCombatState.playerHp;
 
                     checkLevelUp();
                     saveCurrentUserData();
 
-                    pushGlobalAnnouncement(` 🥊 PVP 1x1: ${_currentUser.username} VENCEU ${targetBot.username} num duelo feroz!`);
-                    showToast(`Vitória PvP! Você venceu ${targetBot.username} (+${expGained} EXP / +${zeniGained} Z$)`);
-                } else {
-                    _currentUser.hp = Math.max(1, Math.floor(_currentUser.hp * 0.3));
+                    pushGlobalAnnouncement(` 🥊 PVP 1x1: ${_currentUser.username} VENCEU ${activePvpBot.username} num duelo feroz!`);
+
+                    setTimeout(() => {
+                        document.getElementById('pvpCombatScreen').classList.add('hidden');
+                        document.getElementById('pvpDirectList').classList.remove('hidden');
+                        renderPvpDirectList();
+                    }, 2000);
+                    return;
+                }
+
+                // Bot Turn com Força Equiparável
+                const botDamage = Math.max(10, Math.floor((activePvpBot.str * 1.1) - (_currentUser.res * 0.3)));
+                pvpCombatState.playerHp = Math.max(0, pvpCombatState.playerHp - botDamage);
+                _currentUser.hp = pvpCombatState.playerHp;
+
+                log.innerHTML += `<div class="text-red-400">-> ${activePvpBot.username} usou um contra-golpe causando <b>${botDamage}</b> de dano!</div>`;
+                updatePvpCombatScreenUI();
+
+                if (pvpCombatState.playerHp <= 0) {
+                    log.innerHTML += `<div class="text-red-600 font-bold">-> DERROTA PVP! ${activePvpBot.username} venceu o combate!</div>`;
+                    _currentUser.hp = 1;
                     saveCurrentUserData();
 
-                    pushGlobalAnnouncement(` 🥊 PVP 1x1: ${targetBot.username} DERROTOU ${_currentUser.username} no combate!`);
-                    showToast(`Derrota PvP! Você foi superado por ${targetBot.username}.`);
+                    pushGlobalAnnouncement(` 🥊 PVP 1x1: ${activePvpBot.username} DERROTOU ${_currentUser.username} no combate!`);
+
+                    setTimeout(() => {
+                        document.getElementById('pvpCombatScreen').classList.add('hidden');
+                        document.getElementById('pvpDirectList').classList.remove('hidden');
+                        renderPvpDirectList();
+                    }, 2000);
                 }
+
+                log.scrollTop = log.scrollHeight;
             };
 
             switchPvpSubTab = function(mode) {
@@ -2031,7 +2219,7 @@
             enterOpenPvpArena = function() {
                 if (!_currentUser) return;
                 if (_currentUser.afkState) {
-                    showToast("Cancele o treino Celeste para entrar na Arena Aberta.");
+                    showToast("Batalhas estão bloqueadas durante o Treino Celeste.");
                     return;
                 }
 
