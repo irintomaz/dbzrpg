@@ -856,32 +856,109 @@
             }
 
             const RACE_SKILLS = {
-                'Saiyajin': [
-                    { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki.' },
-                    { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Onda de energia devastadora.' },
-                    { id: 'trans_ssj1', name: '[TRANSF] Super Saiyajin 1', type: 'transform', kiCost: 35, multiplier: 3.2, reqLevel: 10, desc: 'Aumenta significativamente seu poder!' },
-                    { id: 'trans_ssj2', name: '[TRANSF] Super Saiyajin 2', type: 'transform', kiCost: 60, multiplier: 4.5, reqLevel: 20, desc: 'Aura faiscante com poder tremendo.' },
-                    { id: 'trans_ssj3', name: '[TRANSF] Super Saiyajin 3', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 30, desc: 'Poder máximo da raça Saiyajin!' }
-                ],
-                'Namekuseijin': [
-                    { id: 'nam_ki_blast', name: 'Raio Demoníaco', type: 'attack', kiCost: 10, multiplier: 1.4, reqLevel: 1, desc: 'Disparo rápido de energia.' },
-                    { id: 'nam_regen', name: 'Regeneração', type: 'heal', kiCost: 25, healMultiplier: 0.35, reqLevel: 2, desc: 'Restaura uma porção da sua vida.' },
-                    { id: 'trans_nam_giant', name: '[TRANSF] Namekuseijin Gigante', type: 'transform', kiCost: 40, multiplier: 3.0, reqLevel: 10, desc: 'Aumenta de tamanho expandindo a força.' },
-                    { id: 'trans_nam_super', name: '[TRANSF] Super Namekuseijin', type: 'transform', kiCost: 70, multiplier: 4.8, reqLevel: 20, desc: 'Fusão interior alcançando poder supremo.' }
-                ],
-                'Android': [
-                    { id: 'and_photon', name: 'Canhão de Fótons', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Disparo de energia sintética.' },
-                    { id: 'and_drain', name: 'Absorção de Energia', type: 'drain', kiCost: 5, multiplier: 1.2, drainKi: 20, reqLevel: 3, desc: 'Causa dano e rouba KI do inimigo.' },
-                    { id: 'trans_and_overclock', name: '[TRANSF] Overclock de Energia', type: 'transform', kiCost: 30, multiplier: 3.1, reqLevel: 10, desc: 'Liberar trava de segurança do gerador.' },
-                    { id: 'trans_and_super', name: '[TRANSF] Super Androide', type: 'transform', kiCost: 65, multiplier: 5.0, reqLevel: 22, desc: 'Fusão de circuitos com poder infinito.' }
-                ],
-                'Humano': [
-                    { id: 'hum_dodon', name: 'Dodonpa', type: 'attack', kiCost: 8, multiplier: 1.3, reqLevel: 1, desc: 'Feixe de energia rápido.' },
-                    { id: 'hum_solar', name: 'Taiyoken (Kiai)', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 3, desc: 'Cega o oponente causando dano.' },
-                    { id: 'trans_hum_kaio', name: '[TRANSF] Kaioken', type: 'transform', kiCost: 30, multiplier: 2.8, reqLevel: 8, desc: 'Multiplica a aura e poder de combate.' },
-                    { id: 'trans_hum_potential', name: '[TRANSF] Potencial Liberado', type: 'transform', kiCost: 75, multiplier: 5.2, reqLevel: 25, desc: 'Libera o poder oculto da raça humana.' }
-                ]
-            };
+    'Saiyajin': [
+
+        // --- HABILIDADES ---
+        { id: 'saiyan_ki_blast', name: 'Garlik Ho', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Ataque concentrado de Ki.' },
+        { id: 'saiyan_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 20, multiplier: 2.2, reqLevel: 3, desc: 'Onda de energia devastadora.' },
+        { id: 'saiyan_combo', name: 'Combo Saiyajin', type: 'attack', kiCost: 15, multiplier: 1.8, reqLevel: 5, desc: 'Sequência rápida de golpes físicos.' },
+        { id: 'saiyan_finish', name: 'Golpe Final', type: 'attack', kiCost: 25, multiplier: 2.5, reqLevel: 8, desc: 'Concentra toda a força em um único golpe.' },
+        { id: 'saiyan_energy_wave', name: 'Onda Explosiva', type: 'attack', kiCost: 30, multiplier: 2.8, reqLevel: 12, desc: 'Grande explosão de energia.' },
+        { id: 'saiyan_big_bang', name: 'Big Bang Attack', type: 'attack', kiCost: 40, multiplier: 3.2, reqLevel: 18, desc: 'Disparo concentrado de enorme poder.' },
+        { id: 'saiyan_final_flash', name: 'Final Flash', type: 'attack', kiCost: 50, multiplier: 3.8, reqLevel: 25, desc: 'Ataque de energia extremamente poderoso.' },
+        { id: 'saiyan_ultimate', name: 'Explosão Saiyajin', type: 'attack', kiCost: 60, multiplier: 4.2, reqLevel: 35, desc: 'Libera uma grande quantidade de energia de uma só vez.' },
+        { id: 'saiyan_critical', name: 'Fúria Saiyajin', type: 'attack', kiCost: 35, multiplier: 3.0, reqLevel: 40, desc: 'Ataque impulsionado pela fúria de batalha.' },
+        { id: 'saiyan_spirit', name: 'Espírito de Batalha', type: 'heal', kiCost: 30, healMultiplier: 0.25, reqLevel: 15, desc: 'Recupera parte da vida durante a batalha.' },
+        { id: 'saiyan_rage', name: 'Ira Saiyajin', type: 'attack', kiCost: 45, multiplier: 3.5, reqLevel: 45, desc: 'Ataque poderoso alimentado pela ira.' },
+        { id: 'saiyan_ki_storm', name: 'Tempestade de Ki', type: 'attack', kiCost: 55, multiplier: 3.9, reqLevel: 50, desc: 'Uma sequência de explosões de energia.' },
+        { id: 'saiyan_dragon_fist', name: 'Punho do Dragão', type: 'attack', kiCost: 70, multiplier: 4.5, reqLevel: 60, desc: 'Golpe físico revestido por uma poderosa energia.' },
+        { id: 'saiyan_limit_break', name: 'Quebra de Limite', type: 'attack', kiCost: 80, multiplier: 5.0, reqLevel: 70, desc: 'Ultrapassa temporariamente os limites do corpo.' },
+        { id: 'saiyan_god_blast', name: 'Explosão Divina', type: 'attack', kiCost: 100, multiplier: 5.5, reqLevel: 80, desc: 'Ataque de energia de altíssimo poder.' },
+
+        // --- TRANSFORMAÇÕES / BUFFS ---
+        { id: 'trans_ssj1', name: '[TRANSF] Super Saiyajin 1', type: 'transform', kiCost: 35, multiplier: 3.0, reqLevel: 10, desc: 'Aumenta significativamente o poder de combate.' },
+        { id: 'trans_ssj2', name: '[TRANSF] Super Saiyajin 2', type: 'transform', kiCost: 60, multiplier: 4.5, reqLevel: 25, desc: 'Libera uma enorme quantidade de poder.' },
+        { id: 'trans_ssj3', name: '[TRANSF] Super Saiyajin 3', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 40, desc: 'Transformação extremamente poderosa.' }
+    ],
+
+
+    'Namekuseijin': [
+
+        // --- HABILIDADES ---
+        { id: 'nam_ki_blast', name: 'Raio Demoníaco', type: 'attack', kiCost: 10, multiplier: 1.4, reqLevel: 1, desc: 'Disparo rápido de energia.' },
+        { id: 'nam_regen', name: 'Regeneração', type: 'heal', kiCost: 25, healMultiplier: 0.35, reqLevel: 2, desc: 'Restaura uma porção da sua vida.' },
+        { id: 'nam_combo', name: 'Combo Namekuseijin', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 5, desc: 'Sequência rápida de ataques físicos.' },
+        { id: 'nam_energy_wave', name: 'Onda Demoníaca', type: 'attack', kiCost: 25, multiplier: 2.3, reqLevel: 8, desc: 'Grande onda de energia.' },
+        { id: 'nam_makankosappo', name: 'Makankosappo', type: 'attack', kiCost: 40, multiplier: 3.2, reqLevel: 12, desc: 'Ataque perfurante de energia concentrada.' },
+        { id: 'nam_grenade', name: 'Granada Infernal', type: 'attack', kiCost: 35, multiplier: 2.8, reqLevel: 18, desc: 'Explosão de energia que causa grande dano.' },
+        { id: 'nam_regen2', name: 'Regeneração Avançada', type: 'heal', kiCost: 45, healMultiplier: 0.45, reqLevel: 20, desc: 'Recupera uma grande quantidade de vida.' },
+        { id: 'nam_lightning', name: 'Raio Namekuseijin', type: 'attack', kiCost: 45, multiplier: 3.4, reqLevel: 25, desc: 'Disparo de energia extremamente rápido.' },
+        { id: 'nam_energy_storm', name: 'Tempestade Demoníaca', type: 'attack', kiCost: 55, multiplier: 3.8, reqLevel: 30, desc: 'Libera várias rajadas de energia.' },
+        { id: 'nam_power_wave', name: 'Onda de Poder', type: 'attack', kiCost: 60, multiplier: 4.0, reqLevel: 35, desc: 'Concentra grande quantidade de Ki em um ataque.' },
+        { id: 'nam_healing_wave', name: 'Onda Restauradora', type: 'heal', kiCost: 60, healMultiplier: 0.55, reqLevel: 40, desc: 'Grande recuperação de vida.' },
+        { id: 'nam_hell_zone', name: 'Hellzone Grenade', type: 'attack', kiCost: 70, multiplier: 4.3, reqLevel: 45, desc: 'Diversas esferas de energia cercam o inimigo.' },
+        { id: 'nam_dragon_attack', name: 'Ataque do Dragão', type: 'attack', kiCost: 75, multiplier: 4.6, reqLevel: 50, desc: 'Ataque físico combinado com energia.' },
+        { id: 'nam_ancient_power', name: 'Poder Ancestral', type: 'attack', kiCost: 85, multiplier: 5.0, reqLevel: 60, desc: 'Libera o poder acumulado do guerreiro Namekuseijin.' },
+        { id: 'nam_final_blast', name: 'Explosão Namekuseijin', type: 'attack', kiCost: 100, multiplier: 5.5, reqLevel: 75, desc: 'Ataque máximo de energia Namekuseijin.' },
+
+        // --- TRANSFORMAÇÕES / BUFFS ---
+        { id: 'trans_nam_giant', name: '[TRANSF] Namekuseijin Gigante', type: 'transform', kiCost: 40, multiplier: 3.0, reqLevel: 10, desc: 'Aumenta de tamanho e eleva a força física.' },
+        { id: 'trans_nam_super', name: '[TRANSF] Super Namekuseijin', type: 'transform', kiCost: 70, multiplier: 4.5, reqLevel: 25, desc: 'Eleva o poder do Namekuseijin ao seu limite.' },
+        { id: 'trans_nam_ultimate', name: '[TRANSF] Namekuseijin Supremo', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 45, desc: 'Libera todo o potencial do guerreiro.' }
+    ],
+
+
+    'Android': [
+
+        // --- HABILIDADES ---
+        { id: 'and_photon', name: 'Canhão de Fótons', type: 'attack', kiCost: 10, multiplier: 1.5, reqLevel: 1, desc: 'Disparo de energia sintética.' },
+        { id: 'and_drain', name: 'Absorção de Energia', type: 'drain', kiCost: 5, multiplier: 1.2, drainKi: 20, reqLevel: 3, desc: 'Causa dano e rouba KI do inimigo.' },
+        { id: 'and_combo', name: 'Combate Mecânico', type: 'attack', kiCost: 15, multiplier: 1.8, reqLevel: 5, desc: 'Sequência de golpes rápidos e precisos.' },
+        { id: 'and_laser', name: 'Rajada de Laser', type: 'attack', kiCost: 20, multiplier: 2.1, reqLevel: 8, desc: 'Dispara vários lasers de energia.' },
+        { id: 'and_energy_cannon', name: 'Canhão de Energia', type: 'attack', kiCost: 30, multiplier: 2.7, reqLevel: 12, desc: 'Grande disparo de energia.' },
+        { id: 'and_barrier', name: 'Barreira Energética', type: 'heal', kiCost: 35, healMultiplier: 0.30, reqLevel: 15, desc: 'Converte energia em recuperação defensiva.' },
+        { id: 'and_absorption', name: 'Absorção Avançada', type: 'drain', kiCost: 10, multiplier: 2.0, drainKi: 30, reqLevel: 20, desc: 'Rouba uma quantidade maior de KI do inimigo.' },
+        { id: 'and_machine_gun', name: 'Metralhadora de Ki', type: 'attack', kiCost: 40, multiplier: 3.0, reqLevel: 25, desc: 'Dispara uma sequência intensa de rajadas.' },
+        { id: 'and_plasma', name: 'Canhão de Plasma', type: 'attack', kiCost: 50, multiplier: 3.5, reqLevel: 30, desc: 'Disparo concentrado de plasma.' },
+        { id: 'and_overdrive', name: 'Overdrive', type: 'attack', kiCost: 55, multiplier: 3.8, reqLevel: 35, desc: 'Sobrecarrega temporariamente os sistemas.' },
+        { id: 'and_energy_storm', name: 'Tempestade Mecânica', type: 'attack', kiCost: 60, multiplier: 4.0, reqLevel: 40, desc: 'Libera uma chuva de ataques energéticos.' },
+        { id: 'and_core_blast', name: 'Explosão do Núcleo', type: 'attack', kiCost: 70, multiplier: 4.3, reqLevel: 45, desc: 'Libera uma enorme quantidade de energia do núcleo.' },
+        { id: 'and_infinite_energy', name: 'Energia Infinita', type: 'attack', kiCost: 75, multiplier: 4.6, reqLevel: 50, desc: 'Ataque sustentado utilizando energia interna.' },
+        { id: 'and_destroyer', name: 'Canhão Destruidor', type: 'attack', kiCost: 90, multiplier: 5.0, reqLevel: 60, desc: 'Poderoso disparo de energia concentrada.' },
+        { id: 'and_final_cannon', name: 'Canhão Supremo', type: 'attack', kiCost: 100, multiplier: 5.5, reqLevel: 75, desc: 'Ataque máximo do sistema Android.' },
+
+        // --- TRANSFORMAÇÕES / BUFFS ---
+        { id: 'trans_and_overclock', name: '[TRANSF] Overclock de Energia', type: 'transform', kiCost: 30, multiplier: 3.0, reqLevel: 10, desc: 'Libera as travas de segurança do sistema.' },
+        { id: 'trans_and_super', name: '[TRANSF] Super Androide', type: 'transform', kiCost: 65, multiplier: 4.5, reqLevel: 25, desc: 'Ativa o potencial máximo do sistema energético.' },
+        { id: 'trans_and_ultimate', name: '[TRANSF] Androide Supremo', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 45, desc: 'Libera todo o poder armazenado no núcleo.' }
+    ],
+
+
+    'Humano': [
+
+        // --- HABILIDADES ---
+        { id: 'hum_dodon', name: 'Dodonpa', type: 'attack', kiCost: 8, multiplier: 1.3, reqLevel: 1, desc: 'Feixe de energia rápido e preciso.' },
+        { id: 'hum_solar', name: 'Taiyoken', type: 'attack', kiCost: 15, multiplier: 1.7, reqLevel: 3, desc: 'Libera uma forte explosão de energia.' },
+        { id: 'hum_combo', name: 'Combo Marcial', type: 'attack', kiCost: 15, multiplier: 1.8, reqLevel: 5, desc: 'Sequência de golpes rápidos de artes marciais.' },
+        { id: 'hum_kamehameha', name: 'Kamehameha', type: 'attack', kiCost: 25, multiplier: 2.3, reqLevel: 8, desc: 'Onda de energia concentrada.' },
+        { id: 'hum_taiyoken', name: 'Taiyoken Avançado', type: 'attack', kiCost: 25, multiplier: 2.5, reqLevel: 12, desc: 'Versão aprimorada da técnica de energia.' },
+        { id: 'hum_kikokan', name: 'Kikokan', type: 'attack', kiCost: 30, multiplier: 2.8, reqLevel: 18, desc: 'Disparo concentrado de Ki.' },
+        { id: 'hum_spirit', name: 'Espírito de Luta', type: 'heal', kiCost: 30, healMultiplier: 0.30, reqLevel: 20, desc: 'Recupera parte da vida através do controle do Ki.' },
+        { id: 'hum_ki_barrage', name: 'Rajada de Ki', type: 'attack', kiCost: 40, multiplier: 3.0, reqLevel: 25, desc: 'Dispara várias rajadas consecutivas.' },
+        { id: 'hum_tribeam', name: 'Kikoho', type: 'attack', kiCost: 45, multiplier: 3.5, reqLevel: 30, desc: 'Técnica de energia extremamente poderosa.' },
+        { id: 'hum_final_kame', name: 'Kamehameha Poderoso', type: 'attack', kiCost: 55, multiplier: 3.8, reqLevel: 35, desc: 'Versão aprimorada do Kamehameha.' },
+        { id: 'hum_dragon_attack', name: 'Golpe do Dragão', type: 'attack', kiCost: 60, multiplier: 4.0, reqLevel: 40, desc: 'Golpe físico carregado com grande quantidade de Ki.' },
+        { id: 'hum_spirit_bomb', name: 'Genki Dama', type: 'attack', kiCost: 70, multiplier: 4.4, reqLevel: 45, desc: 'Concentra energia para formar uma poderosa esfera.' },
+        { id: 'hum_ultimate', name: 'Explosão Humana', type: 'attack', kiCost: 80, multiplier: 4.7, reqLevel: 50, desc: 'Libera uma grande quantidade de energia.' },
+        { id: 'hum_limit', name: 'Limite Humano', type: 'attack', kiCost: 90, multiplier: 5.0, reqLevel: 60, desc: 'Ultrapassa temporariamente os limites do corpo humano.' },
+        { id: 'hum_final_attack', name: 'Técnica Suprema', type: 'attack', kiCost: 100, multiplier: 5.5, reqLevel: 75, desc: 'O ataque máximo do guerreiro humano.' },
+
+        // --- TRANSFORMAÇÕES / BUFFS ---
+        { id: 'trans_hum_kaio', name: '[TRANSF] Kaioken', type: 'transform', kiCost: 30, multiplier: 3.0, reqLevel: 10, desc: 'Multiplica o poder de combate através do controle extremo do Ki.' },
+        { id: 'trans_hum_potential', name: '[TRANSF] Potencial Liberado', type: 'transform', kiCost: 65, multiplier: 4.5, reqLevel: 25, desc: 'Libera o potencial oculto do guerreiro humano.' },
+        { id: 'trans_hum_ultimate', name: '[TRANSF] Poder Supremo', type: 'transform', kiCost: 100, multiplier: 6.0, reqLevel: 45, desc: 'Libera o máximo potencial do guerreiro.' }
+    ]
+};
 
             const CELESTIAL_ROOMS = [
                 { id: 1, name: 'Pátio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 20, zeniRate: 4, desc: 'Treino básico para iniciantes.', icon: 'fa-feather' },
