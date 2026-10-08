@@ -1083,30 +1083,72 @@ const ENEMIES = [
             }
 
             // BOTS EXTREMAMENTE FORTALECIDOS E MESCLADOS
-            function getBotsData() {
-                let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
+            const createBotStats = (level, race) => {
+    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
 
-                const createBotStats = (level, race) => {
-                    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
-                    if (race === 'Namekuseijin') raceHp = 100;
-                    if (race === 'Saiyajin') raceStr = 20;
-                    if (race === 'Android') raceRes = 20;
-                    if (race === 'Humano') raceSpeed = 20;
+    if (race === 'Namekuseijin') raceHp = 100;
+    if (race === 'Saiyajin') raceStr = 20;
+    if (race === 'Android') raceRes = 20;
+    if (race === 'Humano') raceSpeed = 20;
 
-                    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
-                    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
-                    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
-                    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
+    // Cada bot terá um nível de força diferente
+    const powerRoll = Math.random();
 
-                    let setIndex = Math.min(REAL_CHARACTER_SETS.length - 1, Math.floor((level / 250) * REAL_CHARACTER_SETS.length));
-                    let autoSet = REAL_CHARACTER_SETS[setIndex];
+    let powerMultiplier;
 
-                    if (autoSet) {
-                        baseStr += Math.floor(autoSet.str * 1.2);
-                        baseRes += Math.floor(autoSet.res * 1.2);
-                        baseSpeed += Math.floor(autoSet.speed * 1.2);
-                        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
-                    }
+    if (powerRoll < 0.35) {
+        // 35% - bots comuns
+        powerMultiplier = 1.0 + Math.random() * 0.3;
+    } 
+    else if (powerRoll < 0.65) {
+        // 30% - bots fortes
+        powerMultiplier = 1.3 + Math.random() * 0.5;
+    } 
+    else if (powerRoll < 0.88) {
+        // 23% - bots muito fortes
+        powerMultiplier = 1.8 + Math.random() * 0.7;
+    } 
+    else if (powerRoll < 0.98) {
+        // 10% - bots extremamente fortes
+        powerMultiplier = 2.5 + Math.random() * 0.8;
+    } 
+    else {
+        // 2% - monstros
+        powerMultiplier = 3.3 + Math.random() * 0.5;
+    }
+
+    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
+    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
+    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
+    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
+
+    let setIndex = Math.min(
+        REAL_CHARACTER_SETS.length - 1,
+        Math.floor((level / 250) * REAL_CHARACTER_SETS.length)
+    );
+
+    let autoSet = REAL_CHARACTER_SETS[setIndex];
+
+    if (autoSet) {
+        baseStr += Math.floor(autoSet.str * 1.2);
+        baseRes += Math.floor(autoSet.res * 1.2);
+        baseSpeed += Math.floor(autoSet.speed * 1.2);
+        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
+    }
+
+    // Aplica a diferença de força individual de cada bot
+    baseMaxHp = Math.floor(baseMaxHp * powerMultiplier);
+    baseStr = Math.floor(baseStr * powerMultiplier);
+    baseRes = Math.floor(baseRes * powerMultiplier);
+    baseSpeed = Math.floor(baseSpeed * powerMultiplier);
+
+    return {
+        maxHp: baseMaxHp,
+        str: baseStr,
+        res: baseRes,
+        speed: baseSpeed
+    };
+};
 
                     const combatPower = Math.floor((level * 400) + (baseStr * 25) + (baseRes * 20) + (baseSpeed * 18) + (baseMaxHp * 3));
 
