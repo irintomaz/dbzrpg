@@ -1190,47 +1190,102 @@
             function getBotsData() {
                 let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
 
-                const createBotStats = (level, race) => {
-                    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
-                    if (race === 'Namekuseijin') raceHp = 100;
-                    if (race === 'Saiyajin') raceStr = 20;
-                    if (race === 'Android') raceRes = 20;
-                    if (race === 'Humano') raceSpeed = 20;
+                
+const createBotStats = (level, race) => {
+    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
 
-                    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
-                    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
-                    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
-                    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
+    if (race === 'Namekuseijin') raceHp = 100;
+    if (race === 'Saiyajin') raceStr = 20;
+    if (race === 'Android') raceRes = 20;
+    if (race === 'Humano') raceSpeed = 20;
 
-                    let setIndex = Math.min(REAL_CHARACTER_SETS.length - 1, Math.floor((level / 250) * REAL_CHARACTER_SETS.length));
-                    let autoSet = REAL_CHARACTER_SETS[setIndex];
+    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
+    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
+    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
+    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
 
-                    if (autoSet) {
-                        baseStr += Math.floor(autoSet.str * 1.2);
-                        baseRes += Math.floor(autoSet.res * 1.2);
-                        baseSpeed += Math.floor(autoSet.speed * 1.2);
-                        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
-                    }
+    let setIndex = Math.min(
+        REAL_CHARACTER_SETS.length - 1,
+        Math.floor((level / 250) * REAL_CHARACTER_SETS.length)
+    );
 
+    let autoSet = REAL_CHARACTER_SETS[setIndex];
 
+    if (autoSet) {
+        baseStr += Math.floor(autoSet.str * 1.2);
+        baseRes += Math.floor(autoSet.res * 1.2);
+        baseSpeed += Math.floor(autoSet.speed * 1.2);
+        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
+    }
 
-                    const combatPower = Math.floor((level * 400) + (baseStr * 25) + (baseRes * 20) + (baseSpeed * 18) + (baseMaxHp * 3));
+    // Multiplicadores variados de poder
+    const sorte = Math.random();
+    let multiplicador;
 
-                    return {
-                        level: level,
-                        hp: baseMaxHp,
-                        maxHp: baseMaxHp,
-                        ki: 200 + (level * 20),
-                        maxKi: 200 + (level * 20),
-                        str: baseStr,
-                        res: baseRes,
-                        speed: baseSpeed,
-                        isVip: level > 100 || Math.random() < 0.3,
-                        equippedSet: autoSet ? autoSet.name : 'Nenhum',
-                        combatPower: combatPower
-                    };
-                };
+    if (sorte < 0.10) {
+        multiplicador = 180000; // Extremamente poderoso
+    } else if (sorte < 0.25) {
+        multiplicador = 100000; // Muito poderoso
+    } else if (sorte < 0.45) {
+        multiplicador = 50000; // Poderoso
+    } else if (sorte < 0.70) {
+        multiplicador = 20000; // Forte
+    } else if (sorte < 0.90) {
+        multiplicador = 8000; // Intermediário
+    } else {
+        multiplicador = 3000; // Mais fraco
+    }
 
+    // Aplica o multiplicador aos atributos
+    baseStr = Math.floor(baseStr * multiplicador);
+    baseRes = Math.floor(baseRes * multiplicador);
+    baseSpeed = Math.floor(baseSpeed * multiplicador);
+    baseMaxHp = Math.floor(baseMaxHp * multiplicador);
+
+    let baseKi = Math.floor((200 + (level * 20)) * multiplicador);
+
+    // Calcula o poder de luta usando a fórmula dos jogadores
+    let combatPower = Math.floor(
+        (level * 250) +
+        (baseStr * 15) +
+        (baseRes * 12) +
+        (baseSpeed * 10) +
+        (baseMaxHp * 2)
+    );
+
+    // Limita o poder máximo a aproximadamente 400 milhões
+    if (combatPower > 400000000) {
+        const fatorReducao = 400000000 / combatPower;
+
+        baseStr = Math.floor(baseStr * fatorReducao);
+        baseRes = Math.floor(baseRes * fatorReducao);
+        baseSpeed = Math.floor(baseSpeed * fatorReducao);
+        baseMaxHp = Math.floor(baseMaxHp * fatorReducao);
+        baseKi = Math.floor(baseKi * fatorReducao);
+
+        combatPower = Math.floor(
+            (level * 250) +
+            (baseStr * 15) +
+            (baseRes * 12) +
+            (baseSpeed * 10) +
+            (baseMaxHp * 2)
+        );
+    }
+
+    return {
+        level: level,
+        hp: baseMaxHp,
+        maxHp: baseMaxHp,
+        ki: baseKi,
+        maxKi: baseKi,
+        str: baseStr,
+        res: baseRes,
+        speed: baseSpeed,
+        isVip: level > 100 || Math.random() < 0.3,
+        equippedSet: autoSet ? autoSet.name : 'Nenhum',
+        combatPower: combatPower
+    };
+};
                 if (bots.length === 0) {
                     bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
                         const race = name === '[ADM]-Irin_tomaz' ? 'Android' : BOT_RACES[i % BOT_RACES.length];
