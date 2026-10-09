@@ -1223,19 +1223,19 @@ const createBotStats = (level, race) => {
     let multiplicador;
 
     if (sorte < 0.05) {
-        multiplicador = 1000000;
+        multiplicador = 10000000;
     } else if (sorte < 0.15) {
-        multiplicador = 500000;
+        multiplicador = 5000000;
     } else if (sorte < 0.30) {
-        multiplicador = 200000;
+        multiplicador = 2000000;
     } else if (sorte < 0.50) {
-        multiplicador = 100000;
+        multiplicador = 1000000;
     } else if (sorte < 0.70) {
-        multiplicador = 50000;
+        multiplicador = 500000;
     } else if (sorte < 0.85) {
-        multiplicador = 20000;
+        multiplicador = 200000;
     } else {
-        multiplicador = 10000;
+        multiplicador = 100000;
     }
 
     baseStr = Math.floor(baseStr * multiplicador);
