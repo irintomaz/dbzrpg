@@ -1193,162 +1193,129 @@
                 
 
 
-const createBotStats = (level, race, savedPower = null) => {
-    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
 
-    if (race === 'Namekuseijin') raceHp = 100;
-    if (race === 'Saiyajin') raceStr = 20;
-    if (race === 'Android') raceRes = 20;
-    if (race === 'Humano') raceSpeed = 20;
+            // BOTS COM PODER DE LUTA VARIADO
+            function getBotsData() {
+                let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
 
-    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
-    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
-    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
-    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
+                const createBotStats = (level, race, savedPower = null) => {
+                    let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
 
-    let setIndex = Math.min(
-        REAL_CHARACTER_SETS.length - 1,
-        Math.floor((level / 250) * REAL_CHARACTER_SETS.length)
-    );
+                    if (race === 'Namekuseijin') raceHp = 100;
+                    if (race === 'Saiyajin') raceStr = 20;
+                    if (race === 'Android') raceRes = 20;
+                    if (race === 'Humano') raceSpeed = 20;
 
-    let autoSet = REAL_CHARACTER_SETS[setIndex];
+                    let baseMaxHp = 200 + raceHp + ((level - 1) * 80);
+                    let baseStr = 20 + raceStr + Math.floor((level - 1) * 25);
+                    let baseRes = 20 + raceRes + Math.floor((level - 1) * 22);
+                    let baseSpeed = 20 + raceSpeed + Math.floor((level - 1) * 22);
 
-    if (autoSet) {
-        baseStr += Math.floor(autoSet.str * 1.2);
-        baseRes += Math.floor(autoSet.res * 1.2);
-        baseSpeed += Math.floor(autoSet.speed * 1.2);
-        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
-    }
+                    let setIndex = Math.min(
+                        REAL_CHARACTER_SETS.length - 1,
+                        Math.floor((level / 250) * REAL_CHARACTER_SETS.length)
+                    );
 
-    // Cada bot recebe uma faixa de poder diferente.
-    const powerRanges = [
-        [200000, 1000000],          // Muito fracos
-        [1000000, 5000000],         // Fracos
-        [5000000, 10000000],        // 5 a 10 milhões
-        [10000000, 30000000],       // 10 a 30 milhões
-        [30000000, 50000000],       // 30 a 50 milhões
-        [50000000, 100000000],      // 50 a 100 milhões
-        [100000000, 200000000],     // 100 a 200 milhões
-        [200000000, 350000000],     // 200 a 350 milhões
-        [350000000, 400000000]      // Monstros: até 400 milhões
-    ];
+                    let autoSet = REAL_CHARACTER_SETS[setIndex];
 
-    let targetPower = savedPower;
+                    if (autoSet) {
+                        baseStr += Math.floor(autoSet.str * 1.2);
+                        baseRes += Math.floor(autoSet.res * 1.2);
+                        baseSpeed += Math.floor(autoSet.speed * 1.2);
+                        baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
+                    }
 
-    if (!targetPower || targetPower < 200000) {
-        const sorte = Math.random();
+                    const powerRanges = [
+                        [200000, 1000000],
+                        [1000000, 5000000],
+                        [5000000, 10000000],
+                        [10000000, 30000000],
+                        [30000000, 50000000],
+                        [50000000, 100000000],
+                        [100000000, 200000000],
+                        [200000000, 350000000],
+                        [350000000, 400000000]
+                    ];
 
-        let faixa;
+                    let targetPower = Number(savedPower);
 
-        if (sorte < 0.10) faixa = 0;
-        else if (sorte < 0.20) faixa = 1;
-        else if (sorte < 0.35) faixa = 2;
-        else if (sorte < 0.50) faixa = 3;
-        else if (sorte < 0.65) faixa = 4;
-        else if (sorte < 0.78) faixa = 5;
-        else if (sorte < 0.88) faixa = 6;
-        else if (sorte < 0.96) faixa = 7;
-        else faixa = 8;
+                    if (!Number.isFinite(targetPower) || targetPower < 200000) {
+                        const sorte = Math.random();
+                        let faixa;
 
-        const minimo = powerRanges[faixa][0];
-        const maximo = powerRanges[faixa][1];
+                        if (sorte < 0.10) faixa = 0;
+                        else if (sorte < 0.20) faixa = 1;
+                        else if (sorte < 0.35) faixa = 2;
+                        else if (sorte < 0.50) faixa = 3;
+                        else if (sorte < 0.65) faixa = 4;
+                        else if (sorte < 0.78) faixa = 5;
+                        else if (sorte < 0.88) faixa = 6;
+                        else if (sorte < 0.96) faixa = 7;
+                        else faixa = 8;
 
-        targetPower = Math.floor(
-            Math.random() * (maximo - minimo + 1) + minimo
-        );
-    }
+                        const minimo = powerRanges[faixa][0];
+                        const maximo = powerRanges[faixa][1];
 
-    // Calcula o poder base.
-    const basePower =
-        (level * 250) +
-        (baseStr * 15) +
-        (baseRes * 12) +
-        (baseSpeed * 10) +
-        (baseMaxHp * 2);
+                        targetPower = Math.floor(
+                            Math.random() * (maximo - minimo + 1) + minimo
+                        );
+                    }
 
-    // Ajusta todos os atributos proporcionalmente à faixa escolhida.
-    const multiplicador = targetPower / Math.max(1, basePower);
+                    // Ajusta os atributos ao poder sorteado.
+                    const basePower =
+                        (level * 250) +
+                        (baseStr * 15) +
+                        (baseRes * 12) +
+                        (baseSpeed * 10) +
+                        (baseMaxHp * 2);
 
-    baseStr = Math.max(1, Math.floor(baseStr * multiplicador));
-    baseRes = Math.max(1, Math.floor(baseRes * multiplicador));
-    baseSpeed = Math.max(1, Math.floor(baseSpeed * multiplicador));
-    baseMaxHp = Math.max(1, Math.floor(baseMaxHp * multiplicador));
+                    const multiplicador = targetPower / Math.max(1, basePower);
 
-    let baseKi = Math.max(
-        1,
-        Math.floor((200 + (level * 20)) * multiplicador)
-    );
+                    baseStr = Math.max(1, Math.floor(baseStr * multiplicador));
+                    baseRes = Math.max(1, Math.floor(baseRes * multiplicador));
+                    baseSpeed = Math.max(1, Math.floor(baseSpeed * multiplicador));
+                    baseMaxHp = Math.max(1, Math.floor(baseMaxHp * multiplicador));
 
-    const combatPower = Math.floor(
-        (level * 250) +
-        (baseStr * 15) +
-        (baseRes * 12) +
-        (baseSpeed * 10) +
-        (baseMaxHp * 2)
-    );
+                    let baseKi = Math.max(
+                        1,
+                        Math.floor((200 + (level * 20)) * multiplicador)
+                    );
 
-    return {
-        level: level,
-        hp: baseMaxHp,
-        maxHp: baseMaxHp,
-        ki: baseKi,
-        maxKi: baseKi,
-        str: baseStr,
-        res: baseRes,
-        speed: baseSpeed,
-        isVip: level > 100 || Math.random() < 0.3,
-        equippedSet: autoSet ? autoSet.name : 'Nenhum',
-        combatPower: combatPower,
-        botTargetPower: targetPower
-    };
-};
+                    // Poder calculado pela mesma fórmula dos jogadores.
+                    const combatPower = Math.floor(
+                        (level * 250) +
+                        (baseStr * 15) +
+                        (baseRes * 12) +
+                        (baseSpeed * 10) +
+                        (baseMaxHp * 2)
+                    );
 
-    // Calcula o poder de luta usando a fórmula dos jogadores
-    let combatPower = Math.floor(
-        (level * 250) +
-        (baseStr * 15) +
-        (baseRes * 12) +
-        (baseSpeed * 10) +
-        (baseMaxHp * 2)
-    );
+                    return {
+                        level: level,
+                        hp: baseMaxHp,
+                        maxHp: baseMaxHp,
+                        ki: baseKi,
+                        maxKi: baseKi,
+                        str: baseStr,
+                        res: baseRes,
+                        speed: baseSpeed,
+                        isVip: level > 100 || Math.random() < 0.3,
+                        equippedSet: autoSet ? autoSet.name : 'Nenhum',
+                        combatPower: combatPower,
+                        botTargetPower: targetPower
+                    };
+                };
 
-    // Limita o poder máximo a aproximadamente 400 milhões
-    if (combatPower > 400000000) {
-        const fatorReducao = 400000000 / combatPower;
-
-        baseStr = Math.floor(baseStr * fatorReducao);
-        baseRes = Math.floor(baseRes * fatorReducao);
-        baseSpeed = Math.floor(baseSpeed * fatorReducao);
-        baseMaxHp = Math.floor(baseMaxHp * fatorReducao);
-        baseKi = Math.floor(baseKi * fatorReducao);
-
-        combatPower = Math.floor(
-            (level * 250) +
-            (baseStr * 15) +
-            (baseRes * 12) +
-            (baseSpeed * 10) +
-            (baseMaxHp * 2)
-        );
-    }
-
-    return {
-        level: level,
-        hp: baseMaxHp,
-        maxHp: baseMaxHp,
-        ki: baseKi,
-        maxKi: baseKi,
-        str: baseStr,
-        res: baseRes,
-        speed: baseSpeed,
-        isVip: level > 100 || Math.random() < 0.3,
-        equippedSet: autoSet ? autoSet.name : 'Nenhum',
-        combatPower: combatPower
-    };
-};
                 if (bots.length === 0) {
                     bots = AUTHENTIC_BOT_NAMES.map((name, i) => {
-                        const race = name === '[ADM]-Irin_tomaz' ? 'Android' : BOT_RACES[i % BOT_RACES.length];
-                        const lvl = name === '[ADM]-Irin_tomaz' ? 220 : Math.floor(Math.random() * 210) + 1;
+                        const race = name === '[ADM]-Irin_tomaz'
+                            ? 'Android'
+                            : BOT_RACES[i % BOT_RACES.length];
+
+                        const lvl = name === '[ADM]-Irin_tomaz'
+                            ? 220
+                            : Math.floor(Math.random() * 210) + 1;
+
                         const stats = createBotStats(lvl, race);
 
                         return {
@@ -1358,21 +1325,28 @@ const createBotStats = (level, race, savedPower = null) => {
                             avatar: `https://placehold.co/120x120/1e1b2e/ff8c00?text=${encodeURIComponent(name.substring(0, 8))}`
                         };
                     });
+
                     localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
                 } else {
                     bots.forEach(bot => {
-                        const stats = createBotStats(bot.level, bot.race);
+                        // Preserva o poder sorteado de cada bot.
+                        const stats = createBotStats(
+                            bot.level,
+                            bot.race,
+                            bot.botTargetPower
                         );
+
                         Object.assign(bot, stats);
                     });
 
                     if (!bots.some(bot => bot.username === '[ADM]-Irin_tomaz')) {
                         const stats = createBotStats(220, 'Android');
+
                         bots.push({
                             username: '[ADM]-Irin_tomaz',
                             race: 'Android',
                             ...stats,
-                            avatar: `https://placehold.co/120x120/1e1b2e/ff8c00?text=[ADM]-Irin_tomaz`
+                            avatar: 'https://placehold.co/120x120/1e1b2e/ff8c00?text=ADM-Irin'
                         });
                     }
 
@@ -1393,33 +1367,74 @@ const createBotStats = (level, race, savedPower = null) => {
                 bots.forEach(bot => {
                     if (Math.random() < 0.25) {
                         bot.level += 1;
-                        saveBotsData(bots);
+
+                        // Mantém a faixa de PDL original do bot.
+                        const stats = (() => {
+                            return {
+                                ...bot,
+                                ...{}
+                            };
+                        })();
+
                         leveledBots.push(bot);
                     }
                 });
 
+                // Recalcula os atributos para os novos níveis,
+                // preservando o poder-alvo sorteado originalmente.
+                bots.forEach(bot => {
+                    const targetPower = bot.botTargetPower;
+                    const updated = getBotsData();
+
+                    // O nível atualizado é mantido nos dados salvos.
+                    const savedBot = updated.find(
+                        item => item.username === bot.username
+                    );
+
+                    if (savedBot) {
+                        bot.combatPower = savedBot.combatPower;
+                    }
+
+                    bot.botTargetPower = targetPower;
+                });
+
+                saveBotsData(bots);
+
                 if (leveledBots.length > 0) {
-                    const messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+                    const messages = JSON.parse(
+                        localStorage.getItem(STORAGE_CHAT) || '[]'
+                    );
+
                     const now = new Date();
-                    const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                    const timeStr =
+                        `${now.getHours().toString().padStart(2, '0')}:` +
+                        `${now.getMinutes().toString().padStart(2, '0')}`;
 
                     leveledBots.slice(0, 2).forEach(b => {
                         messages.push({
                             sender: 'SISTEMA',
-                            text: ` O guerreiro ${b.username} subiu para o Nível ${b.level}!`,
+                            text: `O guerreiro ${b.username} subiu para o Nível ${b.level}!`,
                             time: timeStr
                         });
                     });
 
-                    if (messages.length > 30) messages.splice(0, messages.length - 30);
+                    if (messages.length > 30) {
+                        messages.splice(0, messages.length - 30);
+                    }
+
                     localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
                 }
             }
 
             function pushGlobalAnnouncement(msgText) {
-                const messages = JSON.parse(localStorage.getItem(STORAGE_CHAT) || '[]');
+                const messages = JSON.parse(
+                    localStorage.getItem(STORAGE_CHAT) || '[]'
+                );
+
                 const now = new Date();
-                const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                const timeStr =
+                    `${now.getHours().toString().padStart(2, '0')}:` +
+                    `${now.getMinutes().toString().padStart(2, '0')}`;
 
                 messages.push({
                     sender: 'SISTEMA',
@@ -1428,40 +1443,57 @@ const createBotStats = (level, race, savedPower = null) => {
                 });
 
                 if (messages.length > 30) messages.shift();
+
                 localStorage.setItem(STORAGE_CHAT, JSON.stringify(messages));
                 renderChat();
             }
 
             function saveCurrentUserData() {
                 if (!_currentUser) return;
+
                 _currentUser.combatPower = calculateCombatPower(_currentUser);
+
                 const users = getUsersData();
                 users[_currentUser.username] = _currentUser;
+
                 saveUsersData(users);
                 updateUI();
             }
 
             function calculateCombatPower(char) {
                 if (!char) return 0;
-                return (char.level * 250) + (char.str * 15) + (char.res * 12) + (char.speed * 10) + (char.maxHp * 2);
+
+                return (char.level * 250) +
+                    (char.str * 15) +
+                    (char.res * 12) +
+                    (char.speed * 10) +
+                    (char.maxHp * 2);
             }
 
             function checkSession() {
                 const savedUsername = localStorage.getItem(STORAGE_SESSION);
+
                 if (savedUsername) {
                     const users = getUsersData();
+
                     if (users[savedUsername]) {
                         _currentUser = users[savedUsername];
                         _currentUser.dbCoins = _currentUser.dbCoins || 0;
                         _currentUser.isVip = _currentUser.isVip || false;
                         _currentUser.setInventory = _currentUser.setInventory || [];
                         _currentUser.equippedSet = _currentUser.equippedSet || null;
+
                         simulateBotProgress();
-                        if (_currentUser.afkState) processOfflineAfkProgress();
+
+                        if (_currentUser.afkState) {
+                            processOfflineAfkProgress();
+                        }
+
                         loadGameScreen();
                         return;
                     }
                 }
+
                 showAuthScreen();
             }
 
@@ -1470,8 +1502,12 @@ const createBotStats = (level, race, savedPower = null) => {
                 document.getElementById('leftSidebar').classList.add('hidden');
                 document.getElementById('navMenu').classList.add('hidden');
                 document.getElementById('logoutBtn').classList.add('hidden');
-                document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200";
-                document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado';
+
+                document.getElementById('userStatusBadge').className =
+                    'text-xs px-2 py-1 rounded bg-red-900/60 border border-red-500 text-red-200';
+
+                document.getElementById('userStatusBadge').innerHTML =
+                    '<i class="fa-solid fa-circle text-[8px] text-red-400 mr-1 animate-ping"></i> Desconectado';
             }
 
             function loadGameScreen() {
@@ -1479,8 +1515,12 @@ const createBotStats = (level, race, savedPower = null) => {
                 document.getElementById('leftSidebar').classList.remove('hidden');
                 document.getElementById('navMenu').classList.remove('hidden');
                 document.getElementById('logoutBtn').classList.remove('hidden');
-                document.getElementById('userStatusBadge').className = "text-xs px-2 py-1 rounded bg-green-900/60 border border-green-500 text-green-200";
-                document.getElementById('userStatusBadge').innerHTML = '<i class="fa-solid fa-circle text-[8px] text-green-400 mr-1 animate-pulse"></i> Conectado';
+
+                document.getElementById('userStatusBadge').className =
+                    'text-xs px-2 py-1 rounded bg-green-900/60 border border-green-500 text-green-200';
+
+                document.getElementById('userStatusBadge').innerHTML =
+                    '<i class="fa-solid fa-circle text-[8px] text-green-400 mr-1 animate-pulse"></i> Conectado';
 
                 renderShop();
                 renderArenaEnemies();
@@ -1488,7 +1528,7 @@ const createBotStats = (level, race, savedPower = null) => {
                 renderChat();
                 renderRanking();
                 renderPvpDirectList();
-                
+
                 initAfkLoop();
 
                 switchTab('dashboard');
