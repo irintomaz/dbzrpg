@@ -1222,21 +1222,22 @@ const createBotStats = (level, race) => {
     const sorte = Math.random();
     let multiplicador;
 
-    if (sorte < 0.10) {
-        multiplicador = 180000; // Extremamente poderoso
-    } else if (sorte < 0.25) {
-        multiplicador = 100000; // Muito poderoso
-    } else if (sorte < 0.45) {
-        multiplicador = 50000; // Poderoso
+    if (sorte < 0.05) {
+        multiplicador = 1000000;
+    } else if (sorte < 0.15) {
+        multiplicador = 500000;
+    } else if (sorte < 0.30) {
+        multiplicador = 200000;
+    } else if (sorte < 0.50) {
+        multiplicador = 100000;
     } else if (sorte < 0.70) {
-        multiplicador = 20000; // Forte
-    } else if (sorte < 0.90) {
-        multiplicador = 8000; // Intermediário
+        multiplicador = 50000;
+    } else if (sorte < 0.85) {
+        multiplicador = 20000;
     } else {
-        multiplicador = 3000; // Mais fraco
+        multiplicador = 10000;
     }
 
-    // Aplica o multiplicador aos atributos
     baseStr = Math.floor(baseStr * multiplicador);
     baseRes = Math.floor(baseRes * multiplicador);
     baseSpeed = Math.floor(baseSpeed * multiplicador);
