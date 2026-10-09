@@ -1361,10 +1361,7 @@ const createBotStats = (level, race, savedPower = null) => {
                     localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
                 } else {
                     bots.forEach(bot => {
-                        const stats = createBotStats(
-                            bot.level,
-                            bot.race,
-                            bot.botTargetPower || null
+                        const stats = createBotStats(bot.level, bot.race);
                         );
                         Object.assign(bot, stats);
                     });
