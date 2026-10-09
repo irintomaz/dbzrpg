@@ -1191,7 +1191,9 @@
                 let bots = JSON.parse(localStorage.getItem(STORAGE_BOTS) || '[]');
 
                 
-const createBotStats = (level, race) => {
+
+
+const createBotStats = (level, race, savedPower = null) => {
     let raceHp = 0, raceStr = 0, raceRes = 0, raceSpeed = 0;
 
     if (race === 'Namekuseijin') raceHp = 100;
@@ -1218,32 +1220,88 @@ const createBotStats = (level, race) => {
         baseMaxHp += Math.floor(autoSet.maxHp * 1.2);
     }
 
-    // Multiplicadores variados de poder
-    const sorte = Math.random();
-    let multiplicador;
+    // Cada bot recebe uma faixa de poder diferente.
+    const powerRanges = [
+        [200000, 1000000],          // Muito fracos
+        [1000000, 5000000],         // Fracos
+        [5000000, 10000000],        // 5 a 10 milhões
+        [10000000, 30000000],       // 10 a 30 milhões
+        [30000000, 50000000],       // 30 a 50 milhões
+        [50000000, 100000000],      // 50 a 100 milhões
+        [100000000, 200000000],     // 100 a 200 milhões
+        [200000000, 350000000],     // 200 a 350 milhões
+        [350000000, 400000000]      // Monstros: até 400 milhões
+    ];
 
-    if (sorte < 0.05) {
-        multiplicador = 10000000;
-    } else if (sorte < 0.15) {
-        multiplicador = 5000000;
-    } else if (sorte < 0.30) {
-        multiplicador = 2000000;
-    } else if (sorte < 0.50) {
-        multiplicador = 1000000;
-    } else if (sorte < 0.70) {
-        multiplicador = 500000;
-    } else if (sorte < 0.85) {
-        multiplicador = 200000;
-    } else {
-        multiplicador = 100000;
+    let targetPower = savedPower;
+
+    if (!targetPower || targetPower < 200000) {
+        const sorte = Math.random();
+
+        let faixa;
+
+        if (sorte < 0.10) faixa = 0;
+        else if (sorte < 0.20) faixa = 1;
+        else if (sorte < 0.35) faixa = 2;
+        else if (sorte < 0.50) faixa = 3;
+        else if (sorte < 0.65) faixa = 4;
+        else if (sorte < 0.78) faixa = 5;
+        else if (sorte < 0.88) faixa = 6;
+        else if (sorte < 0.96) faixa = 7;
+        else faixa = 8;
+
+        const minimo = powerRanges[faixa][0];
+        const maximo = powerRanges[faixa][1];
+
+        targetPower = Math.floor(
+            Math.random() * (maximo - minimo + 1) + minimo
+        );
     }
 
-    baseStr = Math.floor(baseStr * multiplicador);
-    baseRes = Math.floor(baseRes * multiplicador);
-    baseSpeed = Math.floor(baseSpeed * multiplicador);
-    baseMaxHp = Math.floor(baseMaxHp * multiplicador);
+    // Calcula o poder base.
+    const basePower =
+        (level * 250) +
+        (baseStr * 15) +
+        (baseRes * 12) +
+        (baseSpeed * 10) +
+        (baseMaxHp * 2);
 
-    let baseKi = Math.floor((200 + (level * 20)) * multiplicador);
+    // Ajusta todos os atributos proporcionalmente à faixa escolhida.
+    const multiplicador = targetPower / Math.max(1, basePower);
+
+    baseStr = Math.max(1, Math.floor(baseStr * multiplicador));
+    baseRes = Math.max(1, Math.floor(baseRes * multiplicador));
+    baseSpeed = Math.max(1, Math.floor(baseSpeed * multiplicador));
+    baseMaxHp = Math.max(1, Math.floor(baseMaxHp * multiplicador));
+
+    let baseKi = Math.max(
+        1,
+        Math.floor((200 + (level * 20)) * multiplicador)
+    );
+
+    const combatPower = Math.floor(
+        (level * 250) +
+        (baseStr * 15) +
+        (baseRes * 12) +
+        (baseSpeed * 10) +
+        (baseMaxHp * 2)
+    );
+
+    return {
+        level: level,
+        hp: baseMaxHp,
+        maxHp: baseMaxHp,
+        ki: baseKi,
+        maxKi: baseKi,
+        str: baseStr,
+        res: baseRes,
+        speed: baseSpeed,
+        isVip: level > 100 || Math.random() < 0.3,
+        equippedSet: autoSet ? autoSet.name : 'Nenhum',
+        combatPower: combatPower,
+        botTargetPower: targetPower
+    };
+};
 
     // Calcula o poder de luta usando a fórmula dos jogadores
     let combatPower = Math.floor(
@@ -1303,7 +1361,11 @@ const createBotStats = (level, race) => {
                     localStorage.setItem(STORAGE_BOTS, JSON.stringify(bots));
                 } else {
                     bots.forEach(bot => {
-                        const stats = createBotStats(bot.level, bot.race);
+                        const stats = createBotStats(
+                            bot.level,
+                            bot.race,
+                            bot.botTargetPower || null
+                        );
                         Object.assign(bot, stats);
                     });
 
