@@ -961,14 +961,20 @@
 };
 
             const CELESTIAL_ROOMS = [
-                { id: 1, name: 'Pátio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 20, zeniRate: 4, desc: 'Treino básico para iniciantes.', icon: 'fa-feather' },
-                { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 500, zeniRate: 30, desc: 'Treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
-                { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 5000, zeniRate: 35, desc: 'Meditação profunda no topo do mundo.', icon: 'fa-synagogue' },
-                { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 10000, zeniRate: 90, desc: 'Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
-                { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 30000, zeniRate: 240, desc: 'Condições brutais para desafiar os limites.', icon: 'fa-fire-burner' },
-                { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 40000, zeniRate: 650, desc: 'Dimensão alternativa de Ki denso.', icon: 'fa-atom' },
-                { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 50000, zeniRate: 5000, desc: 'Reservado a quem rivaliza com Poder Divino.', icon: 'fa-sun' }
-            ];
+    { id: 1, name: 'Pátio de Treino do Sr. Popo', reqLevel: 1, reqPL: 0, expRate: 100, zeniRate: 4, desc: 'Treino básico para iniciantes.', icon: 'fa-feather' },
+    { id: 2, name: 'Torre de Karin', reqLevel: 5, reqPL: 2500, expRate: 5000, zeniRate: 30, desc: 'Treine sob a orientação do Mestre Karin.', icon: 'fa-mountain' },
+    { id: 3, name: 'Templo Sagrado de Kami-Sama', reqLevel: 10, reqPL: 10000, expRate: 50000, zeniRate: 35, desc: 'Meditação profunda no topo do mundo.', icon: 'fa-synagogue' },
+    { id: 4, name: 'Sala do Tempo e Espaço (Nível 1)', reqLevel: 15, reqPL: 30000, expRate: 250000, zeniRate: 90, desc: 'Gravidade elevada e ambiente rigoroso.', icon: 'fa-hourglass-start' },
+    { id: 5, name: 'Sala do Tempo - Gravidade Extrema', reqLevel: 25, reqPL: 90000, expRate: 1000000, zeniRate: 240, desc: 'Condições brutais para desafiar os limites.', icon: 'fa-fire-burner' },
+    { id: 6, name: 'Dimensão do Espaço Sagrado', reqLevel: 35, reqPL: 250000, expRate: 5000000, zeniRate: 650, desc: 'Dimensão alternativa de Ki denso.', icon: 'fa-atom' },
+    { id: 7, name: 'Domínio dos Deuses', reqLevel: 45, reqPL: 800000, expRate: 10000000, zeniRate: 5000, desc: 'Reservado a quem rivaliza com Poder Divino.', icon: 'fa-sun' },
+    // --- NOVAS SALAS CELESTIAIS ---
+    { id: 8, name: 'Mundo Sagrado dos Kaioshins', reqLevel: 55, reqPL: 2000000, expRate: 20000000, zeniRate: 10000, desc: 'Treine em uma dimensão protegida pelos Kaioshins.', icon: 'fa-star' },
+    { id: 9, name: 'Dimensão da Gravidade Divina', reqLevel: 65, reqPL: 5000000, expRate: 30000000, zeniRate: 20000, desc: 'Supere a gravidade esmagadora de uma dimensão divina.', icon: 'fa-globe' },
+    { id: 10, name: 'Santuário dos Deuses da Destruição', reqLevel: 75, reqPL: 15000000, expRate: 45000000, zeniRate: 40000, desc: 'Um ambiente de treinamento para guerreiros extraordinários.', icon: 'fa-bolt' },
+    { id: 11, name: 'Dimensão do Ki Supremo', reqLevel: 85, reqPL: 50000000, expRate: 70000000, zeniRate: 75000, desc: 'Domine quantidades colossais de energia.', icon: 'fa-fire' },
+    { id: 12, name: 'Plano Celestial Infinito', reqLevel: 100, reqPL: 100000000, expRate: 100000000, zeniRate: 150000, desc: 'O ápice do treinamento celestial, reservado aos guerreiros mais poderosos.', icon: 'fa-crown' }
+];
 
             const SHOP_ITEMS = [
                 { id: 'senzu', name: 'Semente dos Deuses', cost: 100, currency: 'zeni', icon: 'fa-seedling', color: 'text-green-400', desc: 'Restaura 100% de HP e KI.', effect: 'heal_full' },
